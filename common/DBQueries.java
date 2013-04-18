@@ -8,8 +8,6 @@ import java.util.Date;
 
 public class DBQueries extends Database {
 
-	public static final boolean loaded = false;
-
 	public DBQueries() throws SQLException {
 		super();
 	}

@@ -52,7 +52,7 @@ public class TileEntityLChest extends TileEntity implements IInventory
 
 	private int facing;
 
-	protected TileEntityLChest()
+	public TileEntityLChest()
 	{
 		super();
 		this.modelTexture = "/mods/learncraft/textures/model/ironchest.png";

@@ -10,6 +10,8 @@ public class Database {
 	
 	protected Connection conn;
 	protected ResultSet resultSet;
+
+	public static boolean loaded = false;
 	
 	public Database() throws SQLException
 	{
@@ -19,6 +21,7 @@ public class Database {
 	public void initConnect() throws SQLException
 	{
 		conn = DriverManager.getConnection(Configuration.DatabaseURL+Configuration.DatabaseName, Configuration.DatabaseUser, Configuration.DatabasePass);
+		loaded = true;
 	}
 	
 	public void executeQuery(String query) throws SQLException

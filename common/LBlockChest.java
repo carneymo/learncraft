@@ -356,7 +356,8 @@ public class LBlockChest extends BlockContainer {
     				
     				itemstack = new ItemStack(itemid, quantity, 0);
     				for(int i=0;i<iinventory.getSizeInventory();i++) {
-    					if(iinventory.isStackValidForSlot(i, itemstack)) {
+    					ItemStack stack =  iinventory.getStackInSlot(i);
+    					if(iinventory.isStackValidForSlot(i, itemstack) && stack == null) {
     						iinventory.setInventorySlotContents(i, itemstack);
     						// Bust out of "for" loop
     						i = iinventory.getSizeInventory() + 1;
