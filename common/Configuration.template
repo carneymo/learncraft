@@ -1,0 +1,10 @@
+package mods.learncraft.common;
+
+public class Configuration {
+
+    public static String DatabaseURL = "jdbc:mysql://localhost/";
+    public static String DatabaseName = "database_name";
+    public static String DatabaseUser = "username";
+    public static String DatabasePass = "password";
+    
+}

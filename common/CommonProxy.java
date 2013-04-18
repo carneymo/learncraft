@@ -13,4 +13,9 @@ public class CommonProxy {
     	
     }
 
+	public void registerTileEntitySpecialRenderer() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

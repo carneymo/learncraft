@@ -1,6 +1,9 @@
 package mods.learncraft.common;
 
+import java.sql.SQLException;
+
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockChest;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.EnumToolMaterial;
 import net.minecraft.item.Item;
@@ -17,9 +20,12 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
+import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import net.minecraft.client.gui.achievement.*;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.stats.Achievement;
 import net.minecraft.stats.AchievementList;
 import net.minecraftforge.common.Configuration;
@@ -41,6 +47,13 @@ public class Common {
     public static int LCBlockID;
     public static Block LCBlock;
     
+    public static DBQueries dbqueries = null;
+
+    public static LBlockChest lchest;
+    public static EntityPlayerMP[] playerlist = new EntityPlayerMP[100];
+    public static int currentNumPlayers = 0;
+    
+    
     @PreInit
     public void preInit(FMLPreInitializationEvent event) {
 		Configuration config = new Configuration(event.getSuggestedConfigurationFile());
@@ -58,15 +71,31 @@ public class Common {
     	LCBlock = (new LBlock(LCBlockID, Material.iron)).setUnlocalizedName("lcblock");
         LanguageRegistry.addName(LCBlock, "Learning block");
         GameRegistry.registerBlock(LCBlock, "lcblock");
-    	
+
+        lchest = (LBlockChest) (new LBlockChest(502, 0)).setUnlocalizedName("lc_chest");
+        LanguageRegistry.addName(lchest, "Learning chest");
+        GameRegistry.registerBlock(lchest, "lc_chest");
+        GameRegistry.registerTileEntity(TileEntityLChest.class, "LChest.chest");
+        
+        proxy.registerTileEntitySpecialRenderer();
     	proxy.registerRenderThings();
+
+    	// Add DBQueries to the Common handler
+		try {
+			dbqueries = new DBQueries();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		NetworkRegistry.instance().registerConnectionHandler(new ConnectionHandler());
+		
     	gameRegisters();
     	languageRegisters();
     }
     
     @PostInit
     public void postInit(FMLPostInitializationEvent event) {
-            // Stub Method
+
     }
     
     private static void gameRegisters() {
@@ -74,6 +103,16 @@ public class Common {
     }
     
     private static void languageRegisters() {
+
+    }
+
+    public void registerRenderInformation()
+    {
+
+    }
+
+    public void registerTileEntitySpecialRenderer()
+    {
 
     }
 }

@@ -1,5 +1,6 @@
 package mods.learncraft.common;
 
+import java.sql.SQLException;
 import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -45,14 +46,12 @@ public class LBlock extends Block {
     @Override
     /**
      * Testing teleportation on block activation (right clicking a learning block)
-     * 
-     * Return type: 
-     * TRUE: Block is not placed when activated
-     * FALSE: Block is placed when activated		
      */
-    public boolean onBlockActivated(World par1, int par2, int par3, int par4, EntityPlayer player, int par6, float par7, float par8, float par9) {
+    public boolean onBlockActivated(World world, int par2, int par3, int par4, EntityPlayer player, int par6, float par7, float par8, float par9) {
     	Vec3 vector = player.getPosition(1.0F);
-	player.setPositionAndUpdate(vector.xCoord, vector.yCoord + 60, vector.zCoord);
-    	return true;
+		player.setPositionAndUpdate(vector.xCoord, vector.yCoord + 50, vector.zCoord);
+		
+		this.removeBlockByPlayer(world, player, par2, par3, par4);
+    	return false;
     }
 }

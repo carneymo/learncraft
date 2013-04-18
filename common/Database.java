@@ -3,21 +3,36 @@ package mods.learncraft.common;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class Database {
 	
-	private String url = "";
-	private String user = "mcforge";
-	private String pass = "walrus";
+	protected Connection conn;
+	protected ResultSet resultSet;
 	
-	public void updateDB() throws SQLException {
-		Connection conn = DriverManager.getConnection(url, user, pass);
-		String query = "INSERT INTO learncraft.users (username,status) VALUES ('carneymo',1);";
-		PreparedStatement sampleQueryStatement = conn.prepareStatement(query);
-		sampleQueryStatement.executeUpdate();
-		sampleQueryStatement.close();
-		conn.close();
+	public Database() throws SQLException
+	{
+		this.initConnect();
+	}
+	
+	public void initConnect() throws SQLException
+	{
+		conn = DriverManager.getConnection(Configuration.DatabaseURL+Configuration.DatabaseName, Configuration.DatabaseUser, Configuration.DatabasePass);
+	}
+	
+	public void executeQuery(String query) throws SQLException
+	{
+		PreparedStatement preparedStatement = conn.prepareStatement(query);
+		preparedStatement.executeUpdate();
+		preparedStatement.close();
+	}
+	
+	public ResultSet queryRows(String query) throws SQLException
+	{
+		PreparedStatement preparedStatement = conn.prepareStatement(query);
+		resultSet = preparedStatement.executeQuery();
+		return resultSet;
 	}
 	
 }
