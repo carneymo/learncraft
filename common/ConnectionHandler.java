@@ -14,7 +14,6 @@ public class ConnectionHandler implements IConnectionHandler {
 	@Override
 	public void playerLoggedIn(Player player, NetHandler netHandler, INetworkManager manager) {
 		EntityPlayerMP player1 = (EntityPlayerMP) player;
-		Common.dbqueries.insertPlayerLoggedIn(player1.username);
 		Common.playerlist[Common.currentNumPlayers] = (EntityPlayerMP) player;
 		Common.currentNumPlayers = Common.currentNumPlayers + 1;
 	}

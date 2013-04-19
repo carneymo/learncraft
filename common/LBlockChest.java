@@ -340,39 +340,39 @@ public class LBlockChest extends BlockContainer {
     {
     	IInventory iinventory = this.func_94442_h_(par1World, par2, par3, par4);
 
-    	// START SPECIAL PULL //
-    	// RyanCM: This pulls in the special items the player has acquired
-    	if(Common.dbqueries.loaded == true) {
-        	ResultSet rs = Common.dbqueries.getPlayerSpecItems(par5EntityPlayer.username);
-        	
-            int itemid = 1;
-            int quantity = 0;
-            ItemStack itemstack = null;
-            try {
-    			while(rs.next()) {
-    				int id		= rs.getInt("id");
-    				itemid 		= rs.getInt("itemid");
-    				quantity	= rs.getInt("quantity");
-    				
-    				itemstack = new ItemStack(itemid, quantity, 0);
-    				for(int i=0;i<iinventory.getSizeInventory();i++) {
-    					ItemStack stack =  iinventory.getStackInSlot(i);
-    					if(iinventory.isStackValidForSlot(i, itemstack) && stack == null) {
-    						iinventory.setInventorySlotContents(i, itemstack);
-    						// Bust out of "for" loop
-    						i = iinventory.getSizeInventory() + 1;
-    					}
-    				}
-    				Common.dbqueries.removePlayerSpecItem(id);
-    			}
-    		} catch (SQLException e) {
-    			e.printStackTrace();
-    		}
-    	}
-    	// END SPECIAL PULL //
     	
         if (par1World.isRemote)
         {            
+        	// START SPECIAL PULL //
+        	// RyanCM: This pulls in the special items the player has acquired
+        	if(Common.dbqueries.loaded == true) {
+            	ResultSet rs = Common.dbqueries.getPlayerSpecItems(par5EntityPlayer.username);
+            	
+                int itemid = 1;
+                int quantity = 0;
+                ItemStack itemstack = null;
+                try {
+        			while(rs.next()) {
+        				int id		= rs.getInt("id");
+        				itemid 		= rs.getInt("itemid");
+        				quantity	= rs.getInt("quantity");
+        				
+        				itemstack = new ItemStack(itemid, quantity, 0);
+        				for(int i=0;i<iinventory.getSizeInventory();i++) {
+        					ItemStack stack =  iinventory.getStackInSlot(i);
+        					if(iinventory.isStackValidForSlot(i, itemstack) && stack == null) {
+        						iinventory.setInventorySlotContents(i, itemstack);
+        						// Bust out of "for" loop
+        						i = iinventory.getSizeInventory() + 1;
+        					}
+        				}
+        				Common.dbqueries.removePlayerSpecItem(id);
+        			}
+        		} catch (SQLException e) {
+        			e.printStackTrace();
+        		}
+        	}
+        	// END SPECIAL PULL //
         	return true;
         }
         
