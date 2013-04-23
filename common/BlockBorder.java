@@ -36,7 +36,7 @@ public class BlockBorder extends Block
 	 */
 	public int idDropped(int par1, Random random, int par2) 
 	{
-		return 502;
+		return 503;
 	}
 
     public boolean canDropFromExplosion(Explosion par1Explosion)

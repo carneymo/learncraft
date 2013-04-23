@@ -47,9 +47,14 @@ public class Common {
     public static int LCBlockID;
     public static Block LCBlock;
     
+    public static int BlockBorderID;
+    public static Block BorderBlock;
+    
     public static DBQueries dbqueries = null;
 
+    public static int LBlockChestID;
     public static LBlockChest lchest;
+    
     public static EntityPlayerMP[] playerlist = new EntityPlayerMP[100];
     public static int currentNumPlayers = 0;
     
@@ -59,8 +64,13 @@ public class Common {
 		Configuration config = new Configuration(event.getSuggestedConfigurationFile());
 		
 		config.load();
-		
+		System.out.println(config.toString());
 		LCBlockID = config.getBlock("LCBlock", 501).getInt();
+		LBlockChestID = config.getBlock("lchest", 502).getInt();
+		BlockBorderID = config.getBlock("BorderBlock", 503).getInt();
+		
+		System.out.println("Border Block: " + BlockBorderID);
+		System.out.println("Learning Chest: " + LBlockChestID);
 		
 		config.save();
     }
@@ -71,8 +81,12 @@ public class Common {
     	LCBlock = (new LBlock(LCBlockID, Material.iron)).setUnlocalizedName("lcblock");
         LanguageRegistry.addName(LCBlock, "Learning block");
         GameRegistry.registerBlock(LCBlock, "lcblock");
+        
+        BorderBlock = (new BlockBorder(BlockBorderID, Material.iron)).setUnlocalizedName("border_block");
+        LanguageRegistry.addName(BorderBlock, "Border Block");
+        GameRegistry.registerBlock(BorderBlock, "border_block");
 
-        lchest = (LBlockChest) (new LBlockChest(502, 0)).setUnlocalizedName("lc_chest");
+        lchest = (LBlockChest) (new LBlockChest(LBlockChestID, 0)).setUnlocalizedName("lc_chest");
         LanguageRegistry.addName(lchest, "Learning chest");
         GameRegistry.registerBlock(lchest, "lc_chest");
         GameRegistry.registerTileEntity(TileEntityLChest.class, "LChest.chest");
