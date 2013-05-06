@@ -44,11 +44,17 @@ public class Common {
     @SidedProxy(clientSide="mods.learncraft.client.ClientProxy", serverSide="mods.learncraft.common.CommonProxy")
     public static CommonProxy proxy;
     
+    public static int DiggerID;
+    public static Digger Dig;
+    
     public static int LCBlockID;
     public static Block LCBlock;
     
     public static int BlockBorderID;
     public static Block BorderBlock;
+    
+    public static int InvisibleBlockID;
+    public static Block InvisibleBlock;
     
     public static DBQueries dbqueries = null;
 
@@ -68,6 +74,8 @@ public class Common {
 		LCBlockID = config.getBlock("LCBlock", 501).getInt();
 		LBlockChestID = config.getBlock("lchest", 502).getInt();
 		BlockBorderID = config.getBlock("BorderBlock", 503).getInt();
+		DiggerID = config.getBlock("Dig", 504).getInt();
+		InvisibleBlockID = config.getBlock("InvisibleBlock", 505).getInt();
 		
 		System.out.println("Border Block: " + BlockBorderID);
 		System.out.println("Learning Chest: " + LBlockChestID);
@@ -82,7 +90,7 @@ public class Common {
         LanguageRegistry.addName(LCBlock, "Learning block");
         GameRegistry.registerBlock(LCBlock, "lcblock");
         
-        BorderBlock = (new BlockBorder(BlockBorderID, Material.iron)).setUnlocalizedName("border_block");
+        BorderBlock = (new BorderBlock(BlockBorderID, Material.iron)).setUnlocalizedName("border_block");
         LanguageRegistry.addName(BorderBlock, "Border Block");
         GameRegistry.registerBlock(BorderBlock, "border_block");
 
@@ -90,6 +98,15 @@ public class Common {
         LanguageRegistry.addName(lchest, "Learning chest");
         GameRegistry.registerBlock(lchest, "lc_chest");
         GameRegistry.registerTileEntity(TileEntityLChest.class, "LChest.chest");
+        
+        Dig = (Digger) (new Digger(DiggerID)).setUnlocalizedName("digger");
+        LanguageRegistry.addName(Dig, "Digger");
+        GameRegistry.registerItem(Dig, "Digger");
+        
+        InvisibleBlock = new InvisibleBlock(InvisibleBlockID, Material.air, false).setUnlocalizedName("invisBlock");
+        LanguageRegistry.addName(InvisibleBlock, "Invisible Block");
+        GameRegistry.registerBlock(InvisibleBlock, "Invisible Block");
+        
         
         proxy.registerTileEntitySpecialRenderer();
     	proxy.registerRenderThings();
