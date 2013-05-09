@@ -1,0 +1,55 @@
+Learncraft Ideas
+
+Border Block:
+
+
+Learning Block:
+
+
+Learning Chest:
+
+
+Digging Tool:
+-Used to break through walls faster, allows the player to get into dungeons faster
+-
+
+Dungeon:
+-Look into making a specific dungeon map
+-Learn how to create auto-generated maps?
+
+Boss Entity:
+-Can copy the current AI of some type of monster, or make new
+-Can only be damaged after being hit with the wand of learning
+
+Boss Rewards:
+-
+
+
+Wand of Learning:
+-Allows bosses to be damaged
+-Has charges that are gained by answering questions
+
+
+Dungeon Keys:
+-Allows chests to be opened
+-Keys are spawned by answering questions
+
+Prefix enchantment: "of Learning"
+-Damage increase based on amount of questions answered or difficulty?
+-Extra damage to bosses
+-Inside chests that can be opened with dungeon keys
+
+Prefix enchantment: "of the Brain"
+-Allows for opening doors that you couldn't otherwise
+-Damage increase that's flat, and greater than "of Learning"
+-Inside dungeon chests
+
+Sword of Learning:
+
+Pickaxe of Learning:
+
+Axe of Learning:
+
+Wand of Learning:
+
+
