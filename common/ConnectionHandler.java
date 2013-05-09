@@ -16,11 +16,19 @@ public class ConnectionHandler implements IConnectionHandler {
 
 	@Override
 	public void playerLoggedIn(Player player, NetHandler netHandler, INetworkManager manager) {
+<<<<<<< HEAD
+=======
+
+>>>>>>> dfa3be384a6321a7111578438271d61314ca092b
 		EntityPlayer player1 = (EntityPlayer) player;
 		
 		if(null != Common.dbqueries){
 			Common.dbqueries.insertPlayerLoggedIn(player1.username);
+<<<<<<< HEAD
 			/**
+=======
+			/*
+>>>>>>> dfa3be384a6321a7111578438271d61314ca092b
 			String teamcolor = Common.dbqueries.getPlayerTeam(player1);
 			if(teamcolor.matches("blue")) {
 				if(!Common.blueteam.hasPlayer(player1)) {
@@ -35,7 +43,11 @@ public class ConnectionHandler implements IConnectionHandler {
 			} else {
 				// Player doesn't belong to a team
 			}
+<<<<<<< HEAD
 			**/
+=======
+			*/
+>>>>>>> dfa3be384a6321a7111578438271d61314ca092b
 			Common.teleportPlayerTo(player1,"choose_team");
 			(new CheckServer()).start();
 		}

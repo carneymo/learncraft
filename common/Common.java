@@ -67,10 +67,20 @@ public class Common {
 
     public static int LBlockChestID;
     public static LBlockChest lchest;
+<<<<<<< HEAD
 
     public static int TeamChestID;
     public static TeamChest TeamChest;
     
+=======
+    
+    public static int TeamChestID;
+    public static TeamChest teamchest;
+
+
+
+    
+>>>>>>> dfa3be384a6321a7111578438271d61314ca092b
     public static EntityPlayer[] playerlist = new EntityPlayer[100];
 
     public static int currentNumPlayers = 0;
@@ -90,8 +100,11 @@ public class Common {
 		InvisibleBlockID = config.getBlock("InvisibleBlock", 505).getInt();
 		TeamChestID = config.getBlock("TeamChest", 506).getInt();
 		
+<<<<<<< HEAD
 		System.out.println("Border Block: " + BlockBorderID);
 		System.out.println("Learning Chest: " + LBlockChestID);
+=======
+>>>>>>> dfa3be384a6321a7111578438271d61314ca092b
 		
 		config.save();
     }
@@ -119,10 +132,18 @@ public class Common {
         InvisibleBlock = new InvisibleBlock(InvisibleBlockID, Material.air, false).setUnlocalizedName("invisBlock");
         LanguageRegistry.addName(InvisibleBlock, "Invisible Block");
         GameRegistry.registerBlock(InvisibleBlock, "Invisible Block");
+<<<<<<< HEAD
 
         TeamChest = (TeamChest) (new TeamChest(TeamChestID, 0)).setUnlocalizedName("teamchest");
         LanguageRegistry.addName(TeamChest, "TeamChest");
         GameRegistry.registerBlock(TeamChest, "teamchest");
+=======
+        
+
+        teamchest = (TeamChest) (new TeamChest(TeamChestID,0)).setUnlocalizedName("teamchest");
+        LanguageRegistry.addName(teamchest, "TeamChest");
+        GameRegistry.registerBlock(teamchest, "teamchest");
+>>>>>>> dfa3be384a6321a7111578438271d61314ca092b
         GameRegistry.registerTileEntity(TileEntityTeamChest.class, "TeamChest.chest");
         
         proxy.registerTileEntitySpecialRenderer();
@@ -135,6 +156,10 @@ public class Common {
 			// e.printStackTrace();
 		}
 		
+<<<<<<< HEAD
+=======
+		
+>>>>>>> dfa3be384a6321a7111578438271d61314ca092b
 		MinecraftForge.EVENT_BUS.register(new EventHookContainerClass());
 		NetworkRegistry.instance().registerConnectionHandler(new ConnectionHandler());
 		
@@ -197,10 +222,17 @@ public class Common {
 			player.setPosition(211, 116.1F, 499);
 		}
 		if(loc.matches("gold_arena")) {
+<<<<<<< HEAD
 			player.setPosition(117.17, 74, 548.35);
 		}
 		if(loc.matches("blue_arena")) {
 			player.setPosition(299.42, 74, 649.98);
+=======
+			player.setPosition(299.42, 74, 649.98);
+		}
+		if(loc.matches("blue_arena")) {
+			player.setPosition(117.17, 74, 548.35);
+>>>>>>> dfa3be384a6321a7111578438271d61314ca092b
 		}
 		if(loc.matches("maze_spawn")) {
 			player.setPositionAndRotation(264.65, 4.1, 464.49, 88, 219);
