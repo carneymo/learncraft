@@ -51,14 +51,28 @@ public class Common {
     @SidedProxy(clientSide="mods.learncraft.client.ClientProxy", serverSide="mods.learncraft.common.CommonProxy")
     public static CommonProxy proxy;
     
+    public static int DiggerID;
+    public static Digger Dig;
+    
     public static int LCBlockID;
     public static Block LCBlock;
     
+    public static int BlockBorderID;
+    public static Block BorderBlock;
+    
+    public static int InvisibleBlockID;
+    public static Block InvisibleBlock;
+    
     public static DBQueries dbqueries = null;
 
+    public static int LBlockChestID;
     public static LBlockChest lchest;
-    public static TeamChest teamchest;
+
+    public static int TeamChestID;
+    public static TeamChest TeamChest;
+    
     public static EntityPlayer[] playerlist = new EntityPlayer[100];
+
     public static int currentNumPlayers = 0;
     public static Team blueteam = new Team("blue");
     public static Team goldteam = new Team("gold");
@@ -68,8 +82,16 @@ public class Common {
 		Configuration config = new Configuration(event.getSuggestedConfigurationFile());
 		
 		config.load();
-		
+		System.out.println(config.toString());
 		LCBlockID = config.getBlock("LCBlock", 501).getInt();
+		LBlockChestID = config.getBlock("lchest", 502).getInt();
+		BlockBorderID = config.getBlock("BorderBlock", 503).getInt();
+		DiggerID = config.getBlock("Dig", 504).getInt();
+		InvisibleBlockID = config.getBlock("InvisibleBlock", 505).getInt();
+		TeamChestID = config.getBlock("TeamChest", 506).getInt();
+		
+		System.out.println("Border Block: " + BlockBorderID);
+		System.out.println("Learning Chest: " + LBlockChestID);
 		
 		config.save();
     }
@@ -80,15 +102,27 @@ public class Common {
     	LCBlock = (new LBlock(LCBlockID, Material.iron)).setUnlocalizedName("lcblock");
         LanguageRegistry.addName(LCBlock, "Learning block");
         GameRegistry.registerBlock(LCBlock, "lcblock");
+        
+        BorderBlock = (new BorderBlock(BlockBorderID, Material.iron)).setUnlocalizedName("border_block");
+        LanguageRegistry.addName(BorderBlock, "Border Block");
+        GameRegistry.registerBlock(BorderBlock, "border_block");
 
-        lchest = (LBlockChest) (new LBlockChest(502, 0)).setUnlocalizedName("lc_chest");
+        lchest = (LBlockChest) (new LBlockChest(LBlockChestID, 0)).setUnlocalizedName("lc_chest");
         LanguageRegistry.addName(lchest, "Learning chest");
         GameRegistry.registerBlock(lchest, "lc_chest");
         GameRegistry.registerTileEntity(TileEntityLChest.class, "LChest.chest");
         
-        teamchest = (TeamChest) (new TeamChest(503,0)).setUnlocalizedName("teamchest");
-        LanguageRegistry.addName(teamchest, "TeamChest");
-        GameRegistry.registerBlock(teamchest, "teamchest");
+        Dig = (Digger) (new Digger(DiggerID)).setUnlocalizedName("digger");
+        LanguageRegistry.addName(Dig, "Digger");
+        GameRegistry.registerItem(Dig, "Digger");
+        
+        InvisibleBlock = new InvisibleBlock(InvisibleBlockID, Material.air, false).setUnlocalizedName("invisBlock");
+        LanguageRegistry.addName(InvisibleBlock, "Invisible Block");
+        GameRegistry.registerBlock(InvisibleBlock, "Invisible Block");
+
+        TeamChest = (TeamChest) (new TeamChest(TeamChestID, 0)).setUnlocalizedName("teamchest");
+        LanguageRegistry.addName(TeamChest, "TeamChest");
+        GameRegistry.registerBlock(TeamChest, "teamchest");
         GameRegistry.registerTileEntity(TileEntityTeamChest.class, "TeamChest.chest");
         
         proxy.registerTileEntitySpecialRenderer();
@@ -100,7 +134,6 @@ public class Common {
 		} catch (SQLException e) {
 			// e.printStackTrace();
 		}
-		
 		
 		MinecraftForge.EVENT_BUS.register(new EventHookContainerClass());
 		NetworkRegistry.instance().registerConnectionHandler(new ConnectionHandler());
@@ -164,10 +197,10 @@ public class Common {
 			player.setPosition(211, 116.1F, 499);
 		}
 		if(loc.matches("gold_arena")) {
-			player.setPosition(299.42, 74, 649.98);
+			player.setPosition(117.17, 74, 548.35);
 		}
 		if(loc.matches("blue_arena")) {
-			player.setPosition(117.17, 74, 548.35);
+			player.setPosition(299.42, 74, 649.98);
 		}
 		if(loc.matches("maze_spawn")) {
 			player.setPositionAndRotation(264.65, 4.1, 464.49, 88, 219);

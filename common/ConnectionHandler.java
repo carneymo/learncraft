@@ -1,5 +1,8 @@
 package mods.learncraft.common;
 
+import java.sql.DriverManager;
+
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.NetLoginHandler;
