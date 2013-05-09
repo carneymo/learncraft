@@ -6,6 +6,8 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.Explosion;
@@ -18,6 +20,7 @@ public class BlockBorder extends Block
 	{
 		super(par1, mat);
 		this.setCreativeTab(CreativeTabs.tabBlock);
+		this.setBlockUnbreakable();
 	}
 
 	@Override
@@ -42,5 +45,31 @@ public class BlockBorder extends Block
     public boolean canDropFromExplosion(Explosion par1Explosion)
     {
         return false;
+    }
+    
+    public void onEntityWalking(World par1World, int par2, int par3, int par4, EntityLiving par5Entity)
+    {
+    	
+    	par5Entity.knockBack(par5Entity, par2, par3, par4);
+   
+    	int xchg = 0, ychg = 0, zchg = 0;
+    	if(par5Entity.posX > (float)par2)
+    		xchg = xchg + 2;
+    	else if((int)par5Entity.posX == (int)par2)
+    		xchg = xchg - 2;
+    	if(par5Entity.posZ > (float)par4)
+    		zchg = zchg + 2;
+    	else if((int)par5Entity.posZ == (int)par4)
+    		zchg = zchg - 2;
+    	
+    	System.out.println("X Block: " + par2 + ", X Player : " + par5Entity.posX);
+    	System.out.println("Z Block: " + par4 + ", Z Player : " + par5Entity.posZ);
+    	
+    	par5Entity.setPosition(par5Entity.posX + xchg, par5Entity.posY, par5Entity.posZ + zchg);
+    	par5Entity.setVelocity((double)xchg, 0.0, (double)zchg);
+    	
+    	
+    	
+    	
     }
 }

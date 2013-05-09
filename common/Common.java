@@ -67,13 +67,12 @@ public class Common {
 
     public static int LBlockChestID;
     public static LBlockChest lchest;
-<<<<<<< HEAD
-    
-    public static EntityPlayerMP[] playerlist = new EntityPlayerMP[100];
-=======
+
+
+
     public static TeamChest teamchest;
     public static EntityPlayer[] playerlist = new EntityPlayer[100];
->>>>>>> Teams, SQL integration, Commands
+
     public static int currentNumPlayers = 0;
     public static Team blueteam = new Team("blue");
     public static Team goldteam = new Team("gold");
@@ -112,7 +111,6 @@ public class Common {
         GameRegistry.registerBlock(lchest, "lc_chest");
         GameRegistry.registerTileEntity(TileEntityLChest.class, "LChest.chest");
         
-<<<<<<< HEAD
         Dig = (Digger) (new Digger(DiggerID)).setUnlocalizedName("digger");
         LanguageRegistry.addName(Dig, "Digger");
         GameRegistry.registerItem(Dig, "Digger");
@@ -121,12 +119,11 @@ public class Common {
         LanguageRegistry.addName(InvisibleBlock, "Invisible Block");
         GameRegistry.registerBlock(InvisibleBlock, "Invisible Block");
         
-=======
+
         teamchest = (TeamChest) (new TeamChest(503,0)).setUnlocalizedName("teamchest");
         LanguageRegistry.addName(teamchest, "TeamChest");
         GameRegistry.registerBlock(teamchest, "teamchest");
         GameRegistry.registerTileEntity(TileEntityTeamChest.class, "TeamChest.chest");
->>>>>>> Teams, SQL integration, Commands
         
         proxy.registerTileEntitySpecialRenderer();
     	proxy.registerRenderThings();
