@@ -26,7 +26,6 @@ public class BorderBlock extends Block
 	
 	/*
 	
->>>>>>> dfa3be384a6321a7111578438271d61314ca092b
 	public void onBlockAdded(World w, int x, int y, int z)
 	{
 		w.setBlock(x, y+1, z, 505);
@@ -36,8 +35,6 @@ public class BorderBlock extends Block
 	{
 		w.setBlockToAir(x, y+1, z);
 	}
-<<<<<<< HEAD
-=======
 	
 	*/
 
