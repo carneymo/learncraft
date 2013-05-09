@@ -1,9 +1,6 @@
 package mods.learncraft.common;
 
-<<<<<<< HEAD
-=======
 import java.io.Console;
->>>>>>> dfa3be384a6321a7111578438271d61314ca092b
 import java.sql.SQLException;
 import java.util.Random;
 import net.minecraft.block.Block;
@@ -11,10 +8,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
-<<<<<<< HEAD
-=======
 import net.minecraft.entity.EntityLiving;
->>>>>>> dfa3be384a6321a7111578438271d61314ca092b
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.Explosion;
@@ -27,10 +21,6 @@ public class BorderBlock extends Block
 	{
 		super(par1, mat);
 		this.setCreativeTab(CreativeTabs.tabBlock);
-<<<<<<< HEAD
-	}
-	
-=======
 		this.setBlockUnbreakable();
 	}
 	
@@ -50,7 +40,6 @@ public class BorderBlock extends Block
 =======
 	
 	*/
->>>>>>> dfa3be384a6321a7111578438271d61314ca092b
 
 	@Override
 	/**
@@ -75,10 +64,8 @@ public class BorderBlock extends Block
     {
         return false;
     }
-<<<<<<< HEAD
-=======
     
-    public void onEntityWalking(World par1World, int par2, int par3, int par4, EntityLiving par5Entity)
+    public void onEntityWalking(World par1World, int par2, int par3, int par4, EntityLiving par5Entity) 
     {
     	System.out.println("\007");
     	
@@ -100,5 +87,4 @@ public class BorderBlock extends Block
     
     	
     }
->>>>>>> dfa3be384a6321a7111578438271d61314ca092b
 }

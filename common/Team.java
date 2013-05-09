@@ -21,11 +21,7 @@ public class Team {
 	public void addPlayer(EntityPlayer player) {
 		this.roster[numroster] = player;
 		numroster++;
-<<<<<<< HEAD
 		// Common.dbqueries.addPlayerToTeam(player,this);
-=======
-		Common.dbqueries.addPlayerToTeam(player,this);
->>>>>>> dfa3be384a6321a7111578438271d61314ca092b
 		System.out.println("Added "+player.username+" to the "+teamcolor+" team!");
 	}
 	
