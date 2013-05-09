@@ -36,21 +36,21 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class LBlockChest extends BlockContainer {
+public class TeamChest extends BlockContainer {
 
     private final Random random = new Random();
     public final int field_94443_a;
 
-    protected LBlockChest(int par1, int par2)
+    protected TeamChest(int par1, int par2)
     {
         super(par1, Material.iron);
-        setUnlocalizedName("LearningChest");
+        setUnlocalizedName("TeamChest");
         setHardness(3.0F);
         this.field_94443_a = par2;
         this.setCreativeTab(CreativeTabs.tabDecorations);
         this.setBlockBounds(0.0625F, 0.0F, 0.0625F, 0.9375F, 0.875F, 0.9375F);
     }
-
+    
     /**
      * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
      * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
@@ -214,11 +214,11 @@ public class LBlockChest extends BlockContainer {
         int facing = yaw/90;
         
         // Set the facing
-        ((TileEntityLChest)par1World.getBlockTileEntity(par2, par3, par4)).setFacing(facing);
+        ((TileEntityTeamChest)par1World.getBlockTileEntity(par2, par3, par4)).setFacing(facing);
         
         if (par6ItemStack.hasDisplayName())
         {
-            ((TileEntityLChest)par1World.getBlockTileEntity(par2, par3, par4)).func_94043_a(par6ItemStack.getDisplayName());
+            ((TileEntityTeamChest)par1World.getBlockTileEntity(par2, par3, par4)).func_94043_a(par6ItemStack.getDisplayName());
         }
     }
 
@@ -275,12 +275,14 @@ public class LBlockChest extends BlockContainer {
     public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, int par5)
     {
         super.onNeighborBlockChange(par1World, par2, par3, par4, par5);
-        TileEntityLChest TileEntityLChest = (TileEntityLChest)par1World.getBlockTileEntity(par2, par3, par4);
-
-        if (TileEntityLChest != null)
-        {
-            TileEntityLChest.updateContainingBlockInfo();
+        if(par1World.getBlockTileEntity(par2, par3, par4) instanceof TileEntityTeamChest) {
+            TileEntityTeamChest TileEntityTeamChest = (TileEntityTeamChest)par1World.getBlockTileEntity(par2, par3, par4);
+            if (TileEntityTeamChest != null)
+            {
+                TileEntityTeamChest.updateContainingBlockInfo();
+            }
         }
+
     }
 
     /**
@@ -288,13 +290,13 @@ public class LBlockChest extends BlockContainer {
      */
     public void breakBlock(World par1World, int par2, int par3, int par4, int par5, int par6)
     {
-    	TileEntityLChest TileEntityLChest = (TileEntityLChest)par1World.getBlockTileEntity(par2, par3, par4);
+    	TileEntityTeamChest TileEntityTeamChest = (TileEntityTeamChest)par1World.getBlockTileEntity(par2, par3, par4);
 
-        if (TileEntityLChest != null)
+        if (TileEntityTeamChest != null)
         {
-            for (int j1 = 0; j1 < TileEntityLChest.getSizeInventory(); ++j1)
+            for (int j1 = 0; j1 < TileEntityTeamChest.getSizeInventory(); ++j1)
             {
-                ItemStack itemstack = TileEntityLChest.getStackInSlot(j1);
+                ItemStack itemstack = TileEntityTeamChest.getStackInSlot(j1);
 
                 if (itemstack != null)
                 {
@@ -335,49 +337,21 @@ public class LBlockChest extends BlockContainer {
     /**
      * Called upon block activation (right click on the block.)
      */
-    public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9)
+    public boolean onBlockActivated(World theworld, int x, int y, int z, EntityPlayer player, int par6, float par7, float par8, float par9)
     {
-    	IInventory iinventory = this.func_94442_h_(par1World, par2, par3, par4);
+    	IInventory iinventory = this.func_94442_h_(theworld, x, y, z);
     	
-        if (par1World.isRemote)
+        if (theworld.isRemote)
         {      
         	return true;
         }
 
-    	// START SPECIAL PULL //
-    	// RyanCM: This pulls in the special items the player has acquired
-    	if(Common.dbqueries.loaded == true) {
-        	ResultSet rs = Common.dbqueries.getPlayerSpecItems(par5EntityPlayer.username);
-        	
-            int itemid = 1;
-            int quantity = 0;
-            ItemStack itemstack = null;
-            try {
-    			while(rs.next()) {
-    				int id		= rs.getInt("id");
-    				itemid 		= rs.getInt("itemid");
-    				quantity	= rs.getInt("quantity");
-    				
-    				itemstack = new ItemStack(itemid, quantity, 0);
-    				for(int i=0;i<iinventory.getSizeInventory();i++) {
-    					ItemStack stack =  iinventory.getStackInSlot(i);
-    					if(iinventory.isStackValidForSlot(i, itemstack) && stack == null) {
-    						iinventory.setInventorySlotContents(i, itemstack);
-    						// Bust out of "for" loop
-    						i = iinventory.getSizeInventory() + 1;
-    					}
-    				}
-    				Common.dbqueries.updateSpecItemToTaken(id);
-    			}
-    		} catch (SQLException e) {
-    			e.printStackTrace();
-    		}
-    	}      
-
-    	// END SPECIAL PULL //
+        ((TileEntityTeamChest)theworld.getBlockTileEntity(x, y, z)).setTexture("blue");
+        ((TileEntityTeamChest)theworld.getBlockTileEntity(x, y, z)).updateEntity();
+        
         if (iinventory != null)
         {
-            par5EntityPlayer.displayGUIChest(iinventory);
+        	player.displayGUIChest(iinventory);
         }
 
         return true;
@@ -385,7 +359,7 @@ public class LBlockChest extends BlockContainer {
 
     public IInventory func_94442_h_(World par1World, int par2, int par3, int par4)
     {
-        Object object = (TileEntityLChest)par1World.getBlockTileEntity(par2, par3, par4);
+        Object object = (TileEntityTeamChest)par1World.getBlockTileEntity(par2, par3, par4);
 
         if (object == null)
         {
@@ -419,22 +393,22 @@ public class LBlockChest extends BlockContainer {
         {
             if (par1World.getBlockId(par2 - 1, par3, par4) == this.blockID)
             {
-                object = new InventoryLargeChest("container.chestDouble", (TileEntityLChest)par1World.getBlockTileEntity(par2 - 1, par3, par4), (IInventory)object);
+                object = new InventoryLargeChest("container.chestDouble", (TileEntityTeamChest)par1World.getBlockTileEntity(par2 - 1, par3, par4), (IInventory)object);
             }
 
             if (par1World.getBlockId(par2 + 1, par3, par4) == this.blockID)
             {
-                object = new InventoryLargeChest("container.chestDouble", (IInventory)object, (TileEntityLChest)par1World.getBlockTileEntity(par2 + 1, par3, par4));
+                object = new InventoryLargeChest("container.chestDouble", (IInventory)object, (TileEntityTeamChest)par1World.getBlockTileEntity(par2 + 1, par3, par4));
             }
 
             if (par1World.getBlockId(par2, par3, par4 - 1) == this.blockID)
             {
-                object = new InventoryLargeChest("container.chestDouble", (TileEntityLChest)par1World.getBlockTileEntity(par2, par3, par4 - 1), (IInventory)object);
+                object = new InventoryLargeChest("container.chestDouble", (TileEntityTeamChest)par1World.getBlockTileEntity(par2, par3, par4 - 1), (IInventory)object);
             }
 
             if (par1World.getBlockId(par2, par3, par4 + 1) == this.blockID)
             {
-                object = new InventoryLargeChest("container.chestDouble", (IInventory)object, (TileEntityLChest)par1World.getBlockTileEntity(par2, par3, par4 + 1));
+                object = new InventoryLargeChest("container.chestDouble", (IInventory)object, (TileEntityTeamChest)par1World.getBlockTileEntity(par2, par3, par4 + 1));
             }
 
             return (IInventory)object;
@@ -444,10 +418,10 @@ public class LBlockChest extends BlockContainer {
     /**
      * Returns a new instance of a block's tile entity class. Called on placing the block.
      */
-    public TileEntityLChest createNewTileEntity(World par1World)
+    public TileEntityTeamChest createNewTileEntity(World par1World)
     {
-        TileEntityLChest TileEntityLChest = new TileEntityLChest();
-        return TileEntityLChest;
+        TileEntityTeamChest TileEntityTeamChest = new TileEntityTeamChest();
+        return TileEntityTeamChest;
     }
 
     /**
@@ -471,7 +445,7 @@ public class LBlockChest extends BlockContainer {
         }
         else
         {
-            int i1 = ((TileEntityLChest)par1IBlockAccess.getBlockTileEntity(par2, par3, par4)).numUsingPlayers;
+            int i1 = ((TileEntityTeamChest)par1IBlockAccess.getBlockTileEntity(par2, par3, par4)).numUsingPlayers;
             return MathHelper.clamp_int(i1, 0, 15);
         }
     }
@@ -539,6 +513,7 @@ public class LBlockChest extends BlockContainer {
      */
     public void registerIcons(IconRegister par1IconRegister)
     {
-        this.blockIcon = par1IconRegister.registerIcon("wood");
+        this.blockIcon = par1IconRegister.registerIcon("iron");
     }
 }
+

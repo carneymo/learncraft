@@ -2,6 +2,7 @@ package mods.learncraft.common;
 
 import java.sql.SQLException;
 
+import mods.learncraft.commands.CommandTeamscore;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
 import net.minecraft.block.material.Material;
@@ -15,17 +16,23 @@ import cpw.mods.fml.common.Mod.Init;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.Mod.PostInit;
 import cpw.mods.fml.common.Mod.PreInit;
+import cpw.mods.fml.common.Mod.ServerStarting;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import net.minecraft.client.gui.achievement.*;
+import net.minecraft.command.ICommandManager;
+import net.minecraft.command.ServerCommandManager;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.stats.Achievement;
 import net.minecraft.stats.AchievementList;
 import net.minecraftforge.common.Configuration;
@@ -50,9 +57,11 @@ public class Common {
     public static DBQueries dbqueries = null;
 
     public static LBlockChest lchest;
-    public static EntityPlayerMP[] playerlist = new EntityPlayerMP[100];
+    public static TeamChest teamchest;
+    public static EntityPlayer[] playerlist = new EntityPlayer[100];
     public static int currentNumPlayers = 0;
-    
+    public static Team blueteam = new Team("blue");
+    public static Team goldteam = new Team("gold");
     
     @PreInit
     public void preInit(FMLPreInitializationEvent event) {
@@ -77,16 +86,23 @@ public class Common {
         GameRegistry.registerBlock(lchest, "lc_chest");
         GameRegistry.registerTileEntity(TileEntityLChest.class, "LChest.chest");
         
+        teamchest = (TeamChest) (new TeamChest(503,0)).setUnlocalizedName("teamchest");
+        LanguageRegistry.addName(teamchest, "TeamChest");
+        GameRegistry.registerBlock(teamchest, "teamchest");
+        GameRegistry.registerTileEntity(TileEntityTeamChest.class, "TeamChest.chest");
+        
         proxy.registerTileEntitySpecialRenderer();
     	proxy.registerRenderThings();
-
+    	
     	// Add DBQueries to the Common handler
 		try {
 			dbqueries = new DBQueries();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			// e.printStackTrace();
 		}
-
+		
+		
+		MinecraftForge.EVENT_BUS.register(new EventHookContainerClass());
 		NetworkRegistry.instance().registerConnectionHandler(new ConnectionHandler());
 		
     	gameRegisters();
@@ -96,6 +112,16 @@ public class Common {
     @PostInit
     public void postInit(FMLPostInitializationEvent event) {
 
+    }
+    
+    @ServerStarting
+    public void serverStart(FMLServerStartingEvent event)
+    {
+		MinecraftServer server = MinecraftServer.getServer(); //Gets current server
+		ICommandManager command = server.getCommandManager(); //Gets the command manager to use for server
+		ServerCommandManager serverCommand = ((ServerCommandManager) command); //Turns it into another form to use
+		
+		serverCommand.registerCommand(new CommandTeamscore());
     }
     
     private static void gameRegisters() {
@@ -115,4 +141,37 @@ public class Common {
     {
 
     }
+
+	public static Team getTeam(EntityPlayer player) {
+		// TODO Auto-generated method stub
+		if(Common.blueteam.hasPlayer(player)) {
+			return Common.blueteam;
+		} else if(Common.goldteam.hasPlayer(player)) {
+			return Common.goldteam;
+		}
+		return null;
+	}
+
+	public static void teleportPlayerTo(EntityPlayer player, String loc) {
+		// TODO Auto-generated method stub
+		if(loc.matches("choose_team")) {
+			player.setPositionAndRotation(58.47, 123, 598.58, 0, -90);
+		}
+		if(loc.matches("gold_spawn")) {
+			player.setPosition(207.96, 118, 698.06);
+		}
+		if(loc.matches("blue_spawn")) {
+			player.setPosition(211, 116.1F, 499);
+		}
+		if(loc.matches("gold_arena")) {
+			player.setPosition(299.42, 74, 649.98);
+		}
+		if(loc.matches("blue_arena")) {
+			player.setPosition(117.17, 74, 548.35);
+		}
+		if(loc.matches("maze_spawn")) {
+			player.setPositionAndRotation(264.65, 4.1, 464.49, 88, 219);
+		}
+	}
+
 }

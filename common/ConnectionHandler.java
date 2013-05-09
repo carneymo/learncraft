@@ -1,6 +1,6 @@
 package mods.learncraft.common;
 
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.NetLoginHandler;
 import net.minecraft.network.packet.NetHandler;
@@ -13,10 +13,29 @@ public class ConnectionHandler implements IConnectionHandler {
 
 	@Override
 	public void playerLoggedIn(Player player, NetHandler netHandler, INetworkManager manager) {
-		EntityPlayerMP player1 = (EntityPlayerMP) player;
-		Common.dbqueries.insertPlayerLoggedIn(player1.username);
-		Common.playerlist[Common.currentNumPlayers] = (EntityPlayerMP) player;
-		Common.currentNumPlayers = Common.currentNumPlayers + 1;
+		EntityPlayer player1 = (EntityPlayer) player;
+		
+		if(null != Common.dbqueries){
+			Common.dbqueries.insertPlayerLoggedIn(player1.username);
+			/**
+			String teamcolor = Common.dbqueries.getPlayerTeam(player1);
+			if(teamcolor.matches("blue")) {
+				if(!Common.blueteam.hasPlayer(player1)) {
+					Common.blueteam.addPlayer(player1);
+					Common.teleportPlayerTo(player1,"blue_spawn");
+				}
+			} else if(teamcolor.matches("gold")) {
+				if(!Common.goldteam.hasPlayer(player1)) {
+					Common.goldteam.addPlayer(player1);
+					Common.teleportPlayerTo(player1,"gold_spawn");
+				}
+			} else {
+				// Player doesn't belong to a team
+			}
+			**/
+			Common.teleportPlayerTo(player1,"choose_team");
+			(new CheckServer()).start();
+		}
 	}
 
 	@Override

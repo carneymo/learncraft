@@ -48,10 +48,6 @@ public class LBlock extends Block {
      * Testing teleportation on block activation (right clicking a learning block)
      */
     public boolean onBlockActivated(World world, int par2, int par3, int par4, EntityPlayer player, int par6, float par7, float par8, float par9) {
-    	Vec3 vector = player.getPosition(1.0F);
-		player.setPositionAndUpdate(vector.xCoord, vector.yCoord + 60, vector.zCoord);
-		
-		this.removeBlockByPlayer(world, player, par2, par3, par4);
     	return false;
     }
 }
