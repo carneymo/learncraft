@@ -67,10 +67,13 @@ public class Common {
 
     public static int LBlockChestID;
     public static LBlockChest lchest;
-
-
-
+    
+    public static int TeamChestID;
     public static TeamChest teamchest;
+
+
+
+    
     public static EntityPlayer[] playerlist = new EntityPlayer[100];
 
     public static int currentNumPlayers = 0;
@@ -88,9 +91,8 @@ public class Common {
 		BlockBorderID = config.getBlock("BorderBlock", 503).getInt();
 		DiggerID = config.getBlock("Dig", 504).getInt();
 		InvisibleBlockID = config.getBlock("InvisibleBlock", 505).getInt();
+		TeamChestID = config.getBlock("TeamChest", 506).getInt();
 		
-		System.out.println("Border Block: " + BlockBorderID);
-		System.out.println("Learning Chest: " + LBlockChestID);
 		
 		config.save();
     }
@@ -120,7 +122,7 @@ public class Common {
         GameRegistry.registerBlock(InvisibleBlock, "Invisible Block");
         
 
-        teamchest = (TeamChest) (new TeamChest(503,0)).setUnlocalizedName("teamchest");
+        teamchest = (TeamChest) (new TeamChest(TeamChestID,0)).setUnlocalizedName("teamchest");
         LanguageRegistry.addName(teamchest, "TeamChest");
         GameRegistry.registerBlock(teamchest, "teamchest");
         GameRegistry.registerTileEntity(TileEntityTeamChest.class, "TeamChest.chest");
