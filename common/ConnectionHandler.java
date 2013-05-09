@@ -1,8 +1,12 @@
 package mods.learncraft.common;
 
+<<<<<<< HEAD
 import java.sql.DriverManager;
 
 import net.minecraft.entity.player.EntityPlayerMP;
+=======
+import net.minecraft.entity.player.EntityPlayer;
+>>>>>>> Teams, SQL integration, Commands
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.NetLoginHandler;
 import net.minecraft.network.packet.NetHandler;
@@ -15,6 +19,7 @@ public class ConnectionHandler implements IConnectionHandler {
 
 	@Override
 	public void playerLoggedIn(Player player, NetHandler netHandler, INetworkManager manager) {
+<<<<<<< HEAD
 		
 		try
 		{
@@ -26,6 +31,30 @@ public class ConnectionHandler implements IConnectionHandler {
 		catch(NullPointerException e)
 		{
 			System.err.println("Connection to data base not found: " + e.getMessage());
+=======
+		EntityPlayer player1 = (EntityPlayer) player;
+		
+		if(null != Common.dbqueries){
+			Common.dbqueries.insertPlayerLoggedIn(player1.username);
+			/**
+			String teamcolor = Common.dbqueries.getPlayerTeam(player1);
+			if(teamcolor.matches("blue")) {
+				if(!Common.blueteam.hasPlayer(player1)) {
+					Common.blueteam.addPlayer(player1);
+					Common.teleportPlayerTo(player1,"blue_spawn");
+				}
+			} else if(teamcolor.matches("gold")) {
+				if(!Common.goldteam.hasPlayer(player1)) {
+					Common.goldteam.addPlayer(player1);
+					Common.teleportPlayerTo(player1,"gold_spawn");
+				}
+			} else {
+				// Player doesn't belong to a team
+			}
+			**/
+			Common.teleportPlayerTo(player1,"choose_team");
+			(new CheckServer()).start();
+>>>>>>> Teams, SQL integration, Commands
 		}
 	}
 

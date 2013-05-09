@@ -21,6 +21,7 @@ import java.util.Random;
 import mods.learncraft.common.Common;
 import mods.learncraft.common.MappableItemStackWrapper;
 import mods.learncraft.common.TileEntityLChest;
+import mods.learncraft.common.TileEntityTeamChest;
 import net.minecraft.block.Block;
 import net.minecraft.client.model.ModelChest;
 import net.minecraft.client.renderer.ItemRenderer;
@@ -79,6 +80,70 @@ public class TileEntityLChestRenderer extends TileEntitySpecialRenderer {
             }
         };
         itemRenderer.setRenderManager(RenderManager.instance);
+    }
+
+    public void render(TileEntityTeamChest tile, double x, double y, double z, float partialTick) {
+        if (tile == null) {
+            return;
+        }
+        int facing = 2;
+        if(null != tile) {
+        	facing = tile.getFacing();
+        }
+        bindTextureByName(tile.getModelTexture());
+        glPushMatrix();
+        glEnable(32826 /* GL_RESCALE_NORMAL_EXT */);
+        glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        glTranslatef((float) x, (float) y + 1.0F, (float) z + 1.0F);
+        glScalef(1.0F, -1F, -1F);
+        glTranslatef(0.5F, 0.5F, 0.5F);
+        int k = 0;
+        if (facing == 0) {
+            k = 180;
+        }
+        if (facing == 1) {
+            k = -90;
+        }
+        if (facing == 2) {
+            k = 0;
+        }
+        if (facing == 3) {
+            k = 90;
+        }
+        if (facing == 4) {
+            k = 180;
+        }
+        if (facing == 5) {
+            k = -90;
+        }
+        glRotatef(k, 0.0F, 1.0F, 0.0F);
+        glTranslatef(-0.5F, -0.5F, -0.5F);
+        float lidangle = tile.prevLidAngle + (tile.lidAngle - tile.prevLidAngle) * partialTick;
+        lidangle = 1.0F - lidangle;
+        lidangle = 1.0F - lidangle * lidangle * lidangle;
+        model.chestLid.rotateAngleX = -((lidangle * 3.141593F) / 2.0F);
+        // Render the chest itself
+        model.renderAll();
+        glDisable(32826 /* GL_RESCALE_NORMAL_EXT */);
+        glPopMatrix();
+        glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        if (tile.getDistanceFrom(this.tileEntityRenderer.playerX, this.tileEntityRenderer.playerY, this.tileEntityRenderer.playerZ) < 128d) {
+            random.setSeed(254L);
+            float shiftX;
+            float shiftY;
+            float shiftZ;
+            int shift = 0;
+            float blockScale = 0.70F;
+            float timeD = (float) (360.0 * (double) (System.currentTimeMillis() & 0x3FFFL) / (double) 0x3FFFL);
+            glPushMatrix();
+            glDisable(2896 /* GL_LIGHTING */);
+            glTranslatef((float) x, (float) y, (float) z);
+            EntityItem customitem = new EntityItem(tileEntityRenderer.worldObj);
+            customitem.hoverStart = 0f;
+            glEnable(2896 /* GL_LIGHTING */);
+            glPopMatrix();
+            glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        }
     }
 
     public void render(TileEntityLChest tile, double x, double y, double z, float partialTick) {
@@ -147,7 +212,11 @@ public class TileEntityLChestRenderer extends TileEntitySpecialRenderer {
 
     public void renderTileEntityAt(TileEntity tileentity, double x, double y, double z, float partialTick)
     {
-        render((TileEntityLChest) tileentity, x, y, z, partialTick);
+    	if(tileentity instanceof TileEntityLChest) {
+    		render((TileEntityLChest) tileentity, x, y, z, partialTick);
+    	} else if(tileentity instanceof TileEntityTeamChest) {
+    		render((TileEntityTeamChest) tileentity, x, y, z, partialTick);
+    	}
     }
 
     private ModelChest model;
