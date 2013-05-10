@@ -148,7 +148,7 @@ public class TileEntityTeamChest extends TileEntity implements IInventory
             
 	        for(int a=0; a < iinventory.getSizeInventory(); a++) {
 	        	ItemStack item = iinventory.getStackInSlot(a);
-	        	if(item != null && item.itemID == 89) {
+	        	if(item != null && item.itemID == 348) {
 	        		Team curteam = Common.getTeam(entityplayer);
 	        		if(curteam != null) {
 	        			curteam.addScore(item.stackSize);
@@ -326,22 +326,30 @@ public class TileEntityTeamChest extends TileEntity implements IInventory
 
             if (this.func_94044_a(this.xCoord - 1, this.yCoord, this.zCoord))
             {
-                this.adjacentChestXNeg = (TileEntityTeamChest)this.worldObj.getBlockTileEntity(this.xCoord - 1, this.yCoord, this.zCoord);
+            	if(this.worldObj.getBlockTileEntity(this.xCoord, this.yCoord, this.zCoord - 1) instanceof TileEntityTeamChest) {
+            		this.adjacentChestXNeg = (TileEntityTeamChest)this.worldObj.getBlockTileEntity(this.xCoord - 1, this.yCoord, this.zCoord);
+            	}
             }
 
             if (this.func_94044_a(this.xCoord + 1, this.yCoord, this.zCoord))
             {
-                this.adjacentChestXPos = (TileEntityTeamChest)this.worldObj.getBlockTileEntity(this.xCoord + 1, this.yCoord, this.zCoord);
+            	if(this.worldObj.getBlockTileEntity(this.xCoord, this.yCoord, this.zCoord - 1) instanceof TileEntityTeamChest) {
+            		this.adjacentChestXPos = (TileEntityTeamChest)this.worldObj.getBlockTileEntity(this.xCoord + 1, this.yCoord, this.zCoord);
+            	}
             }
 
             if (this.func_94044_a(this.xCoord, this.yCoord, this.zCoord - 1))
             {
-                this.adjacentChestZNeg = (TileEntityTeamChest)this.worldObj.getBlockTileEntity(this.xCoord, this.yCoord, this.zCoord - 1);
+            	if(this.worldObj.getBlockTileEntity(this.xCoord, this.yCoord, this.zCoord - 1) instanceof TileEntityTeamChest) {
+            		this.adjacentChestZNeg = (TileEntityTeamChest)this.worldObj.getBlockTileEntity(this.xCoord, this.yCoord, this.zCoord - 1);
+            	}
             }
 
             if (this.func_94044_a(this.xCoord, this.yCoord, this.zCoord + 1))
             {
-                this.adjacentChestZPosition = (TileEntityTeamChest)this.worldObj.getBlockTileEntity(this.xCoord, this.yCoord, this.zCoord + 1);
+            	if(this.worldObj.getBlockTileEntity(this.xCoord, this.yCoord, this.zCoord - 1) instanceof TileEntityTeamChest) {
+            		this.adjacentChestZPosition = (TileEntityTeamChest)this.worldObj.getBlockTileEntity(this.xCoord, this.yCoord, this.zCoord + 1);
+            	}
             }
 
         }
