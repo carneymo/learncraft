@@ -98,6 +98,11 @@ public class Common {
 		config.save();
     }
     
+    public static Block testBlock;
+    public static Block testBlock2;
+    public static Block testBlock3;
+    public static Block testBlock4;
+    
     @Init
     public void load(FMLInitializationEvent event) {
     	
@@ -126,6 +131,37 @@ public class Common {
         LanguageRegistry.addName(TeamChest, "TeamChest");
         GameRegistry.registerBlock(TeamChest, "teamchest");
         GameRegistry.registerTileEntity(TileEntityTeamChest.class, "TeamChest.chest");
+        
+        
+        NetworkRegistry.instance().registerConnectionHandler(new PlayerSpawnEvent());
+    	
+    	
+		testBlock = new BlockTestBlock(515, 
+				Material.rock).setUnlocalizedName("testblock");     														
+		GameRegistry.registerBlock(testBlock, "testblock");		
+		LanguageRegistry.addName(testBlock, "Oranage UP");
+
+
+		testBlock2 = new BlockTestBlock2(516, 
+				Material.rock).setUnlocalizedName("testblock2");     														
+		GameRegistry.registerBlock(testBlock2, "testblock2");		
+		LanguageRegistry.addName(testBlock2, "Blue Up");
+
+		
+		testBlock3 = new BlockTestBlock3(517, 
+				Material.rock).setUnlocalizedName("testblock3");     														
+		GameRegistry.registerBlock(testBlock3, "testblock3");		
+		LanguageRegistry.addName(testBlock3, "Orange Down");
+   	
+       	   	
+		testBlock4 = new BlockTestBlock4(518, 
+				Material.rock).setUnlocalizedName("testblock4");     														
+		GameRegistry.registerBlock(testBlock4, "testblock4");		
+		LanguageRegistry.addName(testBlock4, "Blue Down");
+        
+        
+        
+        
         
         proxy.registerTileEntitySpecialRenderer();
     	proxy.registerRenderThings();
