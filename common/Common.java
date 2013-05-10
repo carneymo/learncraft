@@ -1,6 +1,7 @@
 package mods.learncraft.common;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import mods.learncraft.commands.CommandTeamscore;
 import net.minecraft.block.Block;
@@ -35,6 +36,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.stats.Achievement;
 import net.minecraft.stats.AchievementList;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -76,6 +78,9 @@ public class Common {
     public static int currentNumPlayers = 0;
     public static Team blueteam = new Team("blue");
     public static Team goldteam = new Team("gold");
+    public static Team winningteam = null;
+    
+    public static boolean teleportOn = true;
     
     @PreInit
     public void preInit(FMLPreInitializationEvent event) {
@@ -134,9 +139,6 @@ public class Common {
 		
 		MinecraftForge.EVENT_BUS.register(new EventHookContainerClass());
 		NetworkRegistry.instance().registerConnectionHandler(new ConnectionHandler());
-		
-    	gameRegisters();
-    	languageRegisters();
     }
     
     @PostInit
@@ -154,14 +156,7 @@ public class Common {
 		serverCommand.registerCommand(new CommandTeamscore());
     }
     
-    private static void gameRegisters() {
-
-    }
     
-    private static void languageRegisters() {
-
-    }
-
     public void registerRenderInformation()
     {
 
@@ -183,28 +178,60 @@ public class Common {
 	}
 
 	public static void teleportPlayerTo(EntityPlayer player, String loc) {
-		// TODO Auto-generated method stub
-		if(loc.matches("choose_team")) {
-			player.setPositionAndRotation(58.47, 123, 598.58, 0, -90);
-		}
-		if(loc.matches("gold_spawn")) {
-			player.setPosition(207.96, 118, 698.06);
-		}
-		if(loc.matches("blue_spawn")) {
-			player.setPosition(211, 116.1F, 499);
-		}
-		if(loc.matches("gold_arena")) {
-			player.setPosition(117.17, 74, 548.35);
-		}
-		if(loc.matches("blue_arena")) {
-			player.setPosition(299.42, 74, 649.98);
-		}
-		if(loc.matches("blue_arena")) {
-			player.setPosition(117.17, 74, 548.35);
-		}
-		if(loc.matches("maze_spawn")) {
-			player.setPositionAndRotation(264.65, 4.1, 464.49, 88, 219);
+		if(teleportOn) {
+			float f = 1.0F;
+			double x = 0, y = 0, z = 0;
+			if(loc.matches("choose_team")) {
+				// z = 604 - 592
+				// x = 55.45 - 58.1
+				x = 56.81;
+				y = 123;
+				z = 598.58;
+			}
+			if(loc.matches("gold_spawn")) {
+				// z = 604 - 592
+				// x = 218 - 202
+				x = 207.96;
+				y = 118;
+				z = 698.06;
+			}
+			if(loc.matches("blue_spawn")) {
+				x = 211;
+				y = 116.1;
+				z = 499;
+			}
+			if(loc.matches("gold_arena")) {
+				x = 117.17;
+				y = 74;
+				z = 548.35;
+			}
+			if(loc.matches("blue_arena")) {
+				x = 299.42;
+				y = 74;
+				z = 649.95;
+			}
+			if(loc.matches("blue_arena")) {
+				x = 117.17;
+				y = 74;
+				z = 548.35;
+			}
+			if(loc.matches("maze_spawn")) {
+				x = 264.65;
+				y = 4.1;
+				z = 464.49;
+			}
+			player.setPosition(x, y, z);
 		}
 	}
 
+	public static void announce(String message) {
+		List plist = MinecraftServer.getServer().getConfigurationManager().playerEntityList;
+		for(int a=0; a < plist.size(); a++) {
+			((EntityPlayer) plist.get(a)).addChatMessage(message);
+		}
+	}
+
+	public static void setTeamWon(Team team) {
+		winningteam = team;
+	}
 }

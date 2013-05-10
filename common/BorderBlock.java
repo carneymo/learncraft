@@ -23,20 +23,6 @@ public class BorderBlock extends Block
 		this.setCreativeTab(CreativeTabs.tabBlock);
 		this.setBlockUnbreakable();
 	}
-	
-	/*
-	
-	public void onBlockAdded(World w, int x, int y, int z)
-	{
-		w.setBlock(x, y+1, z, 505);
-	}
-	
-	public void onBlockDestroyedByPlayer(World w, int x, int y, int z, int b)
-	{
-		w.setBlockToAir(x, y+1, z);
-	}
-	
-	*/
 
 	@Override
 	/**
@@ -62,9 +48,14 @@ public class BorderBlock extends Block
         return false;
     }
     
-    public void onEntityWalking(World par1World, int par2, int par3, int par4, EntityLiving par5Entity) 
+    public void velocityToAddToEntity(World world, int x, int y, int z, Entity entity, Vec3 vec) {
+    	
+    }
+    
+    @Override
+    public void onEntityWalking(World par1World, int par2, int par3, int par4, Entity par5Entity) 
     {
-    	System.out.println("\007");
+    	System.out.println("help");
     	
     	int xchg = 0, ychg = 0, zchg = 0;
     	if(par5Entity.posX > (float)par2)
@@ -82,6 +73,5 @@ public class BorderBlock extends Block
     	par5Entity.setPosition(par5Entity.posX + xchg, par5Entity.posY, par5Entity.posZ + zchg);
     	par5Entity.setVelocity((double)xchg, 0.0, (double)zchg);
     
-    	
     }
 }

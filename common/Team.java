@@ -22,7 +22,7 @@ public class Team {
 		this.roster[numroster] = player;
 		numroster++;
 		// Common.dbqueries.addPlayerToTeam(player,this);
-		System.out.println("Added "+player.username+" to the "+teamcolor+" team!");
+		Common.announce("Added "+player.username+" to the "+teamcolor+" team!");
 	}
 	
 	public boolean hasPlayer(EntityPlayer player) {
@@ -55,7 +55,6 @@ public class Team {
 	}
 
 	public boolean hasChestModel() {
-		// TODO Auto-generated method stub
 		if(teamChestModel != "") {
 			return true;
 		} else {
@@ -68,9 +67,21 @@ public class Team {
 	}
 
 	public void reportScore() {
-		List plist = MinecraftServer.getServer().getConfigurationManager().playerEntityList;
-		for(int a=0; a < plist.size(); a++) {
-			((EntityPlayer) plist.get(a)).addChatMessage(this.teamcolor.toUpperCase() + " Team has scored! Score: " + this.points);
+		Common.announce(this.teamcolor.toUpperCase() + " Team has scored! Score: " + this.points);
+	}
+
+	public void moveToSpawnAndFreeze() {
+		String spawnarea = "";
+		if(teamcolor == "blue") {
+			spawnarea = "blue_spawn";
+		} else {
+			spawnarea = "gold_spawn";
+		}
+		for(EntityPlayer rosterPlayer : roster) {
+			if(rosterPlayer != null) {
+				Common.teleportPlayerTo(rosterPlayer, spawnarea);
+				rosterPlayer.setVelocity(0, 0, 0);
+			}
 		}
 	}
 	

@@ -217,8 +217,8 @@ public class DBQueries extends Database {
 
 		PreparedStatement stmt = null;
 		String query = "SELECT teamname FROM team_roster WHERE username = ?;";
-		
-		String hostname = MinecraftServer.getServer().getHostname();
+
+		String hostname = MinecraftServer.getServer().getWorldName();
 		try {
 			stmt = conn.prepareStatement(query);
 			stmt.setString(1, player.username);
@@ -235,6 +235,132 @@ public class DBQueries extends Database {
 		}
 		
 		return "";
+	}
+	
+	public boolean hasServerStatus()
+	{
+		PreparedStatement stmt = null;
+		String query = "SELECT serverid FROM server_status WHERE servername = ?;";
+
+		String hostname = MinecraftServer.getServer().getWorldName();
+		try {
+			stmt = conn.prepareStatement(query);
+			stmt.setString(1, hostname);
+			
+			resultSet = stmt.executeQuery();
+			
+			if(resultSet.next()) {
+				return true;
+			} else {
+				return false;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return false;
+	}
+
+	public void updateServerOnline() {
+		String query = "";
+		PreparedStatement stmt = null;
+		
+		String hostname = MinecraftServer.getServer().getWorldName();
+		String motd = MinecraftServer.getServer().getMOTD();
+
+		SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date now = new Date();
+		String strDate = sdfDate.format(now);
+		
+		if(hasServerStatus()) {
+			query = "UPDATE server_status SET last_online = ?, motd = ? WHERE servername = ?;";
+			try {
+				stmt = conn.prepareStatement(query);
+				stmt.setString(1, strDate);
+				stmt.setString(2, motd);
+				stmt.setString(3, hostname);
+				stmt.executeUpdate();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				try {
+					if (stmt != null) {
+						stmt.close();
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		} else {
+			query = "INSERT INTO server_status (servername, motd, last_online, date_created) VALUES (?, ?, ?, ?);";
+			try {
+				stmt = conn.prepareStatement(query);
+				stmt.setString(1, hostname);
+				stmt.setString(2, motd);
+				stmt.setString(3, strDate);
+				stmt.setString(4, strDate);
+				stmt.executeUpdate();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				try {
+					if (stmt != null) {
+						stmt.close();
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
+
+		
+	}
+
+	public void addPlayerToServer(String username) {
+
+		PreparedStatement stmt = null;
+		String query = "INSERT INTO server_users VALUES ((SELECT serverid FROM server_status WHERE servername = ? LIMIT 1), ?);";
+
+		String hostname = MinecraftServer.getServer().getWorldName();
+		try {
+			stmt = conn.prepareStatement(query);
+			stmt.setString(1, hostname);
+			stmt.setString(2, username);
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (stmt != null) {
+					stmt.close();
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public void removeServerPlayers() {
+
+		String hostname = MinecraftServer.getServer().getWorldName();
+		PreparedStatement stmt = null;
+		String query = "DELETE FROM server_users WHERE serverid = (SELECT serverid FROM server_status WHERE servername = ? LIMIT 1);";
+
+		try {
+			stmt = conn.prepareStatement(query);
+			stmt.setString(1, hostname);
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (stmt != null) {
+					stmt.close();
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 }

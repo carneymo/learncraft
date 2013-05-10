@@ -37,7 +37,10 @@ public class ConnectionHandler implements IConnectionHandler {
 			}
 			**/
 			Common.teleportPlayerTo(player1,"choose_team");
+			// Pings every 5 seconds
 			(new CheckServer()).start();
+			// Pings every 0.5 seconds
+			(new CheckTeamStatus()).start();
 		}
 	}
 

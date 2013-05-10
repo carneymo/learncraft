@@ -14,16 +14,29 @@ public class CheckServer extends Thread {
 		while(!Thread.interrupted()) {
 			try {
 				Thread.sleep(5000);
-				List plist = MinecraftServer.getServer().getConfigurationManager().playerEntityList;
-				Common.dbqueries.setAllToOffline();
-				for(int a=0; a < plist.size(); a++) {
-					EntityPlayerMP player = (EntityPlayerMP) plist.get(a);
-					Common.dbqueries.setPlayerOnline(player.username);
-				}
+				updateOnline();
+				updateServerOnline();
 			} catch(InterruptedException e) {
 				System.err.print(e);
 			}
 		}
 	}
 	
+	
+	public void updateServerOnline()
+	{
+		Common.dbqueries.updateServerOnline();
+	}
+	
+	public void updateOnline()
+	{
+		List plist = MinecraftServer.getServer().getConfigurationManager().playerEntityList;
+		Common.dbqueries.setAllToOffline();
+		Common.dbqueries.removeServerPlayers();
+		for(int a=0; a < plist.size(); a++) {
+			EntityPlayerMP player = (EntityPlayerMP) plist.get(a);
+			Common.dbqueries.setPlayerOnline(player.username);
+			Common.dbqueries.addPlayerToServer(player.username);
+		}
+	}
 }
