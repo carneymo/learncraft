@@ -22,7 +22,6 @@ public class CheckServer extends Thread {
 		}
 	}
 	
-	
 	public void updateServerOnline()
 	{
 		Common.dbqueries.updateServerOnline();

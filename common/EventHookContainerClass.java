@@ -4,6 +4,7 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.EnumStatus;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraftforge.event.CommandEvent;
@@ -33,9 +34,23 @@ public class EventHookContainerClass {
 	{
 		if(event.entityLiving instanceof EntityPlayer) {
 			EntityPlayer player = (EntityPlayer) event.entityLiving;
-			System.out.println("Death Event!");
 			event.setCanceled(true);
-			player.setEntityHealth(1);
+			player.setEntityHealth(20);
+			
+			// Drops all the glowstone dust, but nothing else!
+			if(player.inventory.hasItem(348)) {
+				for(int a=0; a<player.inventory.getSizeInventory(); a++) {
+					ItemStack slotitemstack = player.inventory.getStackInSlot(a);
+					if(slotitemstack != null) {
+						if(slotitemstack.itemID == 348) {
+							player.inventory.setInventorySlotContents(a, null);
+							player.dropItem(slotitemstack.itemID, slotitemstack.stackSize);
+						}
+					}
+				}
+			}
+			
+			Common.announce("Player "+player.username+" has died and was sent to the maze!");
 			Common.teleportPlayerTo(player, "maze_spawn");
 		}
 	}

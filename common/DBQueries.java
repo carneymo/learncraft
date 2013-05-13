@@ -192,7 +192,7 @@ public class DBQueries extends Database {
 		PreparedStatement stmt = null;
 		String query = "INSERT INTO team_roster (username, teamname, hostname) VALUES (?, ?, ?);";
 
-		String hostname = MinecraftServer.getServer().getWorldName();
+		String hostname = "LearnCraft";
 		try {
 			stmt = conn.prepareStatement(query);
 			stmt.setString(1, player.username);
@@ -218,7 +218,7 @@ public class DBQueries extends Database {
 		PreparedStatement stmt = null;
 		String query = "SELECT teamname FROM team_roster WHERE username = ?;";
 
-		String hostname = MinecraftServer.getServer().getWorldName();
+		String hostname = "LearnCraft";
 		try {
 			stmt = conn.prepareStatement(query);
 			stmt.setString(1, player.username);
@@ -242,7 +242,7 @@ public class DBQueries extends Database {
 		PreparedStatement stmt = null;
 		String query = "SELECT serverid FROM server_status WHERE servername = ?;";
 
-		String hostname = MinecraftServer.getServer().getWorldName();
+		String hostname = "LearnCraft";
 		try {
 			stmt = conn.prepareStatement(query);
 			stmt.setString(1, hostname);
@@ -264,8 +264,8 @@ public class DBQueries extends Database {
 	public void updateServerOnline() {
 		String query = "";
 		PreparedStatement stmt = null;
-		
-		String hostname = MinecraftServer.getServer().getWorldName();
+
+		String hostname = "LearnCraft";
 		String motd = MinecraftServer.getServer().getMOTD();
 
 		SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -321,7 +321,7 @@ public class DBQueries extends Database {
 		PreparedStatement stmt = null;
 		String query = "INSERT INTO server_users VALUES ((SELECT serverid FROM server_status WHERE servername = ? LIMIT 1), ?);";
 
-		String hostname = MinecraftServer.getServer().getWorldName();
+		String hostname = "LearnCraft";
 		try {
 			stmt = conn.prepareStatement(query);
 			stmt.setString(1, hostname);
@@ -342,13 +342,11 @@ public class DBQueries extends Database {
 
 	public void removeServerPlayers() {
 
-		String hostname = MinecraftServer.getServer().getWorldName();
 		PreparedStatement stmt = null;
-		String query = "DELETE FROM server_users WHERE serverid = (SELECT serverid FROM server_status WHERE servername = ? LIMIT 1);";
+		String query = "DELETE FROM server_users;";
 
 		try {
 			stmt = conn.prepareStatement(query);
-			stmt.setString(1, hostname);
 			stmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();

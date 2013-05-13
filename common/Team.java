@@ -80,7 +80,6 @@ public class Team {
 		for(EntityPlayer rosterPlayer : roster) {
 			if(rosterPlayer != null) {
 				Common.teleportPlayerTo(rosterPlayer, spawnarea);
-				rosterPlayer.setVelocity(0, 0, 0);
 			}
 		}
 	}

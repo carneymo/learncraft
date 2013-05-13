@@ -1,6 +1,7 @@
 package mods.learncraft.common;
 
 import java.sql.SQLException;
+import java.util.LinkedList;
 import java.util.List;
 
 import mods.learncraft.commands.CommandTeamscore;
@@ -17,6 +18,7 @@ import cpw.mods.fml.common.Mod.Init;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.Mod.PostInit;
 import cpw.mods.fml.common.Mod.PreInit;
+import cpw.mods.fml.common.Mod.ServerStarted;
 import cpw.mods.fml.common.Mod.ServerStarting;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -40,7 +42,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.MinecraftForge;
 
-@Mod(modid="MC_LearnCraft", name="LearnCraft", version="0.1")
+@Mod(modid="MC_LearnCraft", name="LearnCraft", version="0.8")
 @NetworkMod(clientSideRequired=true, serverSideRequired=false)
 
 public class Common {
@@ -80,7 +82,12 @@ public class Common {
     public static Team goldteam = new Team("gold");
     public static Team winningteam = null;
     
+    public static LinkedList<String> notifications = new LinkedList<String>();
+    
     public static boolean teleportOn = true;
+    
+    // Use the state to iterate through the different phases of the arena game
+    public static String state = "";
     
     @PreInit
     public void preInit(FMLPreInitializationEvent event) {
@@ -220,9 +227,9 @@ public class Common {
 			if(loc.matches("choose_team")) {
 				// z = 604 - 592
 				// x = 55.45 - 58.1
-				x = 56.81;
+				x = 57.81;
 				y = 123;
-				z = 598.58;
+				z = 600.58;
 			}
 			if(loc.matches("gold_spawn")) {
 				// z = 604 - 592
@@ -246,11 +253,6 @@ public class Common {
 				y = 74;
 				z = 649.95;
 			}
-			if(loc.matches("blue_arena")) {
-				x = 117.17;
-				y = 74;
-				z = 548.35;
-			}
 			if(loc.matches("maze_spawn")) {
 				x = 264.65;
 				y = 4.1;
@@ -261,10 +263,7 @@ public class Common {
 	}
 
 	public static void announce(String message) {
-		List plist = MinecraftServer.getServer().getConfigurationManager().playerEntityList;
-		for(int a=0; a < plist.size(); a++) {
-			((EntityPlayer) plist.get(a)).addChatMessage(message);
-		}
+		Common.notifications.add(message);
 	}
 
 	public static void setTeamWon(Team team) {

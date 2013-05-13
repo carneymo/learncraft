@@ -1,5 +1,12 @@
 package mods.learncraft.common;
 
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.server.MinecraftServer;
+
 public class CheckTeamStatus extends Thread {
 
 	@Override
@@ -9,9 +16,23 @@ public class CheckTeamStatus extends Thread {
 			try {
 				Thread.sleep(500);
 				checkScores();
+				pushNotifications();
 			} catch(InterruptedException e) {
 				System.err.print(e);
 			}
+		}
+	}
+
+	public void pushNotifications()
+	{
+		Iterator<String> iterator = Common.notifications.iterator(); 
+		while (iterator.hasNext()){
+			String message = (String) iterator.next();
+			List plist = MinecraftServer.getServer().getConfigurationManager().playerEntityList;
+			for(int a=0; a < plist.size(); a++) {
+				((EntityPlayer) plist.get(a)).addChatMessage(message);
+			}
+			iterator.remove();
 		}
 	}
 	
