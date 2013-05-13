@@ -17,6 +17,8 @@ import net.minecraft.world.World;
 
 public class BorderBlock extends Block
 {
+	public int[] list = null;
+	
 	public BorderBlock(int par1, Material mat) 
 	{
 		super(par1, mat);
@@ -35,6 +37,48 @@ public class BorderBlock extends Block
 		this.blockIcon = reg.registerIcon("learncraft:BorderBlock");
 	}
 	
+	public int onBlockPlaced(World w, int x,int y,int z,int par5, float par6, float par7, float par8, int par9)
+	{
+		
+		list = new int[w.getActualHeight()];
+		
+		for(int i = 0; i < w.getActualHeight(); i++)
+		{
+			int ID = w.getBlockId(x, i, z);
+			if(!(i == y))
+			{
+				
+				if(ID == 0 | ID == 505)
+				{
+					w.setBlock(x, i, z, 505);
+				}
+				else
+				{
+					w.setBlock(x, i, z, 503);
+				}
+			}
+			list[i] = ID;
+			
+		}
+		
+		return par9;
+	}
+	
+	public void onBlockDestroyedByPlayer(World w,int x,int y,int z,int par5)
+	{
+		if(list != null)
+		{
+			for(int i = 0; i < w.getActualHeight(); i++)
+			{
+				int blk_ID = list[i];
+				if(blk_ID == 503 | blk_ID == 505)
+				{
+					blk_ID = 0;
+				}
+				w.setBlock(x, i, z, blk_ID);
+			}
+		}
+	}
 	/**
 	 * Returns the id of the block that is dropped from breaking
 	 */
@@ -51,7 +95,7 @@ public class BorderBlock extends Block
     public void velocityToAddToEntity(World world, int x, int y, int z, Entity entity, Vec3 vec) {
     	
     }
-    
+    /*
     @Override
     public void onEntityWalking(World par1World, int par2, int par3, int par4, Entity par5Entity) 
     {
@@ -74,4 +118,5 @@ public class BorderBlock extends Block
     	par5Entity.setVelocity((double)xchg, 0.0, (double)zchg);
     
     }
+    */
 }

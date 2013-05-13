@@ -1,6 +1,6 @@
 package mods.learncraft.common;
 
-import java.sql.SQLException;
+
 import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -34,6 +34,32 @@ public class BlockBorder extends Block
 		this.blockIcon = reg.registerIcon("learncraft:BorderBlock");
 	}
 	
+	@Override
+	public int onBlockPlaced(World w, int x,int y,int z,int par5, float par6, float par7, float par8, int par9)
+	{
+		System.out.println("Added Border Block");
+		System.out.println("World Height: " + w.getActualHeight());
+		for(int i = 0; i < w.getActualHeight(); i++)
+		{
+			int ID = w.getBlockId(x, i, z);
+			w.setBlock(x, i, z, 505);
+		}
+		return par9;
+	}
+	
+	
+	public void onBlockAdded(World w, int x,int y, int z)
+	{
+		System.out.println("Added Border Block");
+		System.out.println("World Height: " + w.getActualHeight());
+		for(int i = 0; i < w.getActualHeight(); i++)
+		{
+			System.out.println("For loop: " + i);
+			int ID = w.getBlockId(x, i, z);
+			w.setBlock(x, i, z, 505);
+		}
+	}
+	
 	/**
 	 * Returns the id of the block that is dropped from breaking
 	 */
@@ -47,6 +73,7 @@ public class BlockBorder extends Block
         return false;
     }
     
+    /*
     public void onEntityWalking(World par1World, int par2, int par3, int par4, EntityLiving par5Entity)
     {
     	
@@ -67,9 +94,7 @@ public class BlockBorder extends Block
     	
     	par5Entity.setPosition(par5Entity.posX + xchg, par5Entity.posY, par5Entity.posZ + zchg);
     	par5Entity.setVelocity((double)xchg, 0.0, (double)zchg);
-    	
-    	
-    	
-    	
     }
+    
+    */
 }

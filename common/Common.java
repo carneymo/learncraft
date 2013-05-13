@@ -130,7 +130,7 @@ public class Common {
         LanguageRegistry.addName(Dig, "Digger");
         GameRegistry.registerItem(Dig, "Digger");
         
-        InvisibleBlock = new InvisibleBlock(InvisibleBlockID, Material.air, false).setUnlocalizedName("invisBlock");
+        InvisibleBlock = new InvisibleBlock(InvisibleBlockID, Material.air).setUnlocalizedName("invisBlock");
         LanguageRegistry.addName(InvisibleBlock, "Invisible Block");
         GameRegistry.registerBlock(InvisibleBlock, "Invisible Block");
         
