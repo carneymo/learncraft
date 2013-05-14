@@ -1,9 +1,11 @@
 package mods.learncraft.common;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import mods.learncraft.commands.CommandReady;
 import mods.learncraft.commands.CommandTeamscore;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
@@ -75,15 +77,17 @@ public class Common {
     public static int TeamChestID;
     public static TeamChest TeamChest;
     
-    public static EntityPlayer[] playerlist = new EntityPlayer[100];
+    public static List<EntityPlayer> playerlist = new ArrayList<EntityPlayer>();
 
     public static int currentNumPlayers = 0;
+    public static int playersReady = 0;
     public static Team blueteam = new Team("blue");
     public static Team goldteam = new Team("gold");
     public static Team winningteam = null;
     
     public static LinkedList<String> notifications = new LinkedList<String>();
     
+    public static boolean inProgress = false;
     public static boolean teleportOn = true;
     
     // Use the state to iterate through the different phases of the arena game
@@ -109,6 +113,8 @@ public class Common {
     public static Block testBlock2;
     public static Block testBlock3;
     public static Block testBlock4;
+    public static Block blockDesignateGold;
+    public static Block blockDesignateBlue;
     
     @Init
     public void load(FMLInitializationEvent event) {
@@ -142,13 +148,12 @@ public class Common {
         
         NetworkRegistry.instance().registerConnectionHandler(new PlayerSpawnEvent());
     	
-    	
+		
 		testBlock = new BlockTestBlock(515, 
 				Material.rock).setUnlocalizedName("testblock");     														
-		GameRegistry.registerBlock(testBlock, "testblock");		
-		LanguageRegistry.addName(testBlock, "Oranage UP");
-
-
+		GameRegistry.registerBlock(testBlock, "testblock");	
+		LanguageRegistry.addName(testBlock, "Godl Up");
+		
 		testBlock2 = new BlockTestBlock2(516, 
 				Material.rock).setUnlocalizedName("testblock2");     														
 		GameRegistry.registerBlock(testBlock2, "testblock2");		
@@ -158,15 +163,23 @@ public class Common {
 		testBlock3 = new BlockTestBlock3(517, 
 				Material.rock).setUnlocalizedName("testblock3");     														
 		GameRegistry.registerBlock(testBlock3, "testblock3");		
-		LanguageRegistry.addName(testBlock3, "Orange Down");
+		LanguageRegistry.addName(testBlock3, "Gold Down");
    	
        	   	
 		testBlock4 = new BlockTestBlock4(518, 
 				Material.rock).setUnlocalizedName("testblock4");     														
 		GameRegistry.registerBlock(testBlock4, "testblock4");		
 		LanguageRegistry.addName(testBlock4, "Blue Down");
+		
+		blockDesignateGold = new BlockTeamDesignateGold(519, 
+				Material.rock).setUnlocalizedName("blockDesignateGold");     														
+		GameRegistry.registerBlock(blockDesignateGold, "blockDesignateGold");	
+		LanguageRegistry.addName(blockDesignateGold, "Gold Team Designation");
         
-        
+		blockDesignateBlue = new BlockTeamDesignateBlue(520, 
+				Material.rock).setUnlocalizedName("blockDesignateBlue");     														
+		GameRegistry.registerBlock(blockDesignateBlue, "blockDesignateBlue");	
+		LanguageRegistry.addName(blockDesignateBlue, "Blue Team Designation");
         
         
         
@@ -197,6 +210,7 @@ public class Common {
 		ServerCommandManager serverCommand = ((ServerCommandManager) command); //Turns it into another form to use
 		
 		serverCommand.registerCommand(new CommandTeamscore());
+		serverCommand.registerCommand(new CommandReady());
     }
     
     
@@ -269,4 +283,5 @@ public class Common {
 	public static void setTeamWon(Team team) {
 		winningteam = team;
 	}
+
 }

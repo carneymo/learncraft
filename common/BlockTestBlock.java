@@ -21,7 +21,7 @@ public class BlockTestBlock extends Block {
 	}
 
 	public void registerIcons(IconRegister reg) {
-		this.blockIcon = reg.registerIcon("learncraft:OrangeTeamBlock");
+		this.blockIcon = reg.registerIcon("learncraft:GoldTeamBlock");
 	}
 	
 	

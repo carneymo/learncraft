@@ -12,8 +12,14 @@ public class CommandTeamscore extends CommandBase {
 	{
 		return "teamscore";
 	}
-
+	
 	@Override
+	public boolean canCommandSenderUseCommand(ICommandSender par1ICommandSender)
+	{
+		return true;
+	}
+	@Override
+	
 	public void processCommand(ICommandSender icommandsender, String[] astring)
 	{
 		if(icommandsender instanceof EntityPlayer) {

@@ -17,7 +17,9 @@ public class ConnectionHandler implements IConnectionHandler {
 	@Override
 	public void playerLoggedIn(Player player, NetHandler netHandler, INetworkManager manager) {
 		EntityPlayer player1 = (EntityPlayer) player;
-		
+		Common.currentNumPlayers +=1;
+		Common.playerlist.add(player1);
+		player1.addChatMessage("Welcome.  Please choose a team by activating a block.  Then execute the /ready command.");
 		if(null != Common.dbqueries){
 			Common.dbqueries.insertPlayerLoggedIn(player1.username);
 			/**
@@ -42,6 +44,7 @@ public class ConnectionHandler implements IConnectionHandler {
 			// Pings every 0.5 seconds
 			(new CheckTeamStatus()).start();
 		}
+		else {Common.announce("The dbqueries is null.  Cannot start checkTeamStatus thread");}
 	}
 
 	@Override
