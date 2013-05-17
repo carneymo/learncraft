@@ -16,12 +16,11 @@ import net.minecraft.world.World;
 
 public class InvisibleBlock extends Block
 {
-	public int real_ID;
 	
     public InvisibleBlock(int par1, Material mat)
     {
     	super(par1, mat);
-    	this.setLightOpacity(100);
+    	this.setLightOpacity(0);
 		this.setBlockUnbreakable();
     }
     
