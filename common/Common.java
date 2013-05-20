@@ -205,6 +205,11 @@ public class Common {
     @ServerStarting
     public void serverStart(FMLServerStartingEvent event)
     {
+		// Pings every 5 seconds
+		(new CheckServer()).start();
+		// Pings every 0.5 seconds
+		(new CheckTeamStatus()).start();
+		
 		MinecraftServer server = MinecraftServer.getServer(); //Gets current server
 		ICommandManager command = server.getCommandManager(); //Gets the command manager to use for server
 		ServerCommandManager serverCommand = ((ServerCommandManager) command); //Turns it into another form to use
