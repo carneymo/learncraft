@@ -20,8 +20,10 @@ public class InvisibleBlock extends Block
     public InvisibleBlock(int par1, Material mat)
     {
     	super(par1, mat);
-    	this.setLightOpacity(0);
+    	this.setCreativeTab(CreativeTabs.tabBlock);
+    	//this.setLightOpacity(255);
 		this.setBlockUnbreakable();
+		
     }
     
     public void registerIcons(IconRegister reg) 
@@ -29,14 +31,9 @@ public class InvisibleBlock extends Block
 		this.blockIcon = reg.registerIcon("learncraft:InvisibleBlock");
 	}
 
-    /**
-     * Returns the quantity of items to drop on block destruction.
-     */
-   
-    
-    public int getRenderBlockPass()
+    public void onBlockDestroyedByPlayer(World w, int x, int y, int z, int par5)
     {
-        return 0;
+    	w.setBlock(x, y, z, this.blockID);
     }
     
 
@@ -51,10 +48,8 @@ public class InvisibleBlock extends Block
     }
     
     
-    public boolean isAirBlock(World world, int x, int y, int z)
+    public boolean renderAsNormalBlock()
     {
-        return true;
+    	return false;
     }
-    
-   
 }

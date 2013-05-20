@@ -74,7 +74,8 @@ public class EventHookContainerClass {
 			}
 			
 			// Teleport and transfer to the gold team
-			if(blockid==519) {
+			if(blockid==519 && event.action.compareTo(event.action.RIGHT_CLICK_BLOCK)==0) {
+
 				if(Common.blueteam.hasPlayer(player)) {
 					// Don't do anything, this player shouldn't be touching this block
 				} else if(Common.goldteam.hasPlayer(player)) {
@@ -87,7 +88,7 @@ public class EventHookContainerClass {
 			}
 			
 			// Teleport and transfer to the blue team
-			if(blockid==520) {
+			if(blockid==520 && event.action.compareTo(event.action.RIGHT_CLICK_BLOCK)==0) {
 				if(Common.goldteam.hasPlayer(player)) {
 					// Don't do anything, this player shouldn't be touching this block
 				} else if(Common.blueteam.hasPlayer(player)) {

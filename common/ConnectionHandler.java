@@ -20,7 +20,10 @@ public class ConnectionHandler implements IConnectionHandler {
 		Common.currentNumPlayers +=1;
 		Common.playerlist.add(player1);
 		player1.addChatMessage("Welcome.  Please choose a team by activating a block.  Then execute the /ready command.");
-		if(null != Common.dbqueries){
+
+		if(null == Common.dbqueries) {player1.addChatMessage("The dbqueries is null.  Cannot start checkTeamStatus thread");}
+		else{
+
 			Common.dbqueries.insertPlayerLoggedIn(player1.username);
 			/**
 			String teamcolor = Common.dbqueries.getPlayerTeam(player1);
@@ -40,7 +43,6 @@ public class ConnectionHandler implements IConnectionHandler {
 			**/
 			Common.teleportPlayerTo(player1,"choose_team");
 		}
-		else {Common.announce("The dbqueries is null.  Cannot start checkTeamStatus thread");}
 	}
 
 	@Override
