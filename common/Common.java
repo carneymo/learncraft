@@ -144,15 +144,12 @@ public class Common {
         LanguageRegistry.addName(TeamChest, "TeamChest");
         GameRegistry.registerBlock(TeamChest, "teamchest");
         GameRegistry.registerTileEntity(TileEntityTeamChest.class, "TeamChest.chest");
-        
-        
-        NetworkRegistry.instance().registerConnectionHandler(new PlayerSpawnEvent());
     	
 		
 		testBlock = new BlockTestBlock(515, 
 				Material.rock).setUnlocalizedName("testblock");     														
 		GameRegistry.registerBlock(testBlock, "testblock");	
-		LanguageRegistry.addName(testBlock, "Godl Up");
+		LanguageRegistry.addName(testBlock, "Gold Up");
 		
 		testBlock2 = new BlockTestBlock2(516, 
 				Material.rock).setUnlocalizedName("testblock2");     														

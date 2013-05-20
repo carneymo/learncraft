@@ -30,7 +30,6 @@ public class CommandReady extends CommandBase {
 	{
 		if(icommandsender instanceof EntityPlayer) {
 			EntityPlayer player = (EntityPlayer)icommandsender;
-			player.addChatMessage("current number of players: " + Common.currentNumPlayers);
 			//Iterate the playersReady variable to represent that the player is ready
 			Common.playersReady += 1;
 		}
