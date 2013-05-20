@@ -20,8 +20,10 @@ public class InvisibleBlock extends Block
     public InvisibleBlock(int par1, Material mat)
     {
     	super(par1, mat);
-    	this.setLightOpacity(0);
-		this.setBlockUnbreakable();
+    	this.setCreativeTab(CreativeTabs.tabBlock);
+    	//this.setLightOpacity(255);
+		//this.setBlockUnbreakable();
+		
     }
     
     public void registerIcons(IconRegister reg) 
@@ -33,11 +35,12 @@ public class InvisibleBlock extends Block
      * Returns the quantity of items to drop on block destruction.
      */
    
-    
+    /*
     public int getRenderBlockPass()
     {
         return 0;
     }
+    */
     
 
     /**
@@ -50,11 +53,19 @@ public class InvisibleBlock extends Block
         return false;
     }
     
-    
+    /*
     public boolean isAirBlock(World world, int x, int y, int z)
     {
         return true;
     }
+    
+    
+    public boolean renderAsNormalBlock()
+    {
+    	return false;
+    }
+    */
+    
     
    
 }
