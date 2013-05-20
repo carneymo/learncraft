@@ -149,7 +149,7 @@ public class Common {
 		testBlock = new BlockTestBlock(515, 
 				Material.rock).setUnlocalizedName("testblock");     														
 		GameRegistry.registerBlock(testBlock, "testblock");	
-		LanguageRegistry.addName(testBlock, "Godl Up");
+		LanguageRegistry.addName(testBlock, "Gold Up");
 		
 		testBlock2 = new BlockTestBlock2(516, 
 				Material.rock).setUnlocalizedName("testblock2");     														
