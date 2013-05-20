@@ -21,6 +21,7 @@ public class BorderBlock extends Block
 	
 	public BorderBlock(int par1, Material mat) 
 	{
+		// Calls super constructor and sets the block to unbreakable
 		super(par1, mat);
 		this.setCreativeTab(CreativeTabs.tabBlock);
 		this.setBlockUnbreakable();
@@ -37,26 +38,37 @@ public class BorderBlock extends Block
 		this.blockIcon = reg.registerIcon("learncraft:BorderBlock");
 	}
 	
+	/** 
+	 * When the block is placed, creates a list of blocks below and above it, then sets
+	 * air to an invisible block and all others to a border block
+	 */
 	public int onBlockPlaced(World w, int x,int y,int z,int par5, float par6, float par7, float par8, int par9)
 	{
-		
+		// Creates a list of blocks from the bottom of the world to the top
 		list = new int[w.getActualHeight()];
 		
+		// Loops through the height of the world 
 		for(int i = 0; i < w.getActualHeight(); i++)
 		{
+			// gets the block ID
 			int ID = w.getBlockId(x, i, z);
+			
+			// if the increment is not equal to placed border block
 			if(!(i == y))
 			{
-				
+				// If the block is air or an invisible block
 				if(ID == 0 | ID == 505)
 				{
+					// Set to invisible block
 					w.setBlock(x, i, z, 505);
 				}
 				else
 				{
+					// Set to border block
 					w.setBlock(x, i, z, 503);
 				}
 			}
+			// Adds the block to the list
 			list[i] = ID;
 			
 		}
@@ -64,17 +76,27 @@ public class BorderBlock extends Block
 		return par9;
 	}
 	
+	/**
+	 *  When the block is destroyed, the blocks above and below the border block are replaced from the list
+	 */
 	public void onBlockDestroyedByPlayer(World w,int x,int y,int z,int par5)
 	{
+		// If the original block is destroyed
 		if(list != null)
 		{
+			// for the height of the world
 			for(int i = 0; i < w.getActualHeight(); i++)
 			{
+				// get the block ID for that index
 				int blk_ID = list[i];
+				
+				// if air or border block
 				if(blk_ID == 503 | blk_ID == 505)
 				{
+					// set as air
 					blk_ID = 0;
 				}
+				// set block to block ID
 				w.setBlock(x, i, z, blk_ID);
 			}
 		}
@@ -91,32 +113,4 @@ public class BorderBlock extends Block
     {
         return false;
     }
-    
-    public void velocityToAddToEntity(World world, int x, int y, int z, Entity entity, Vec3 vec) {
-    	
-    }
-    /*
-    @Override
-    public void onEntityWalking(World par1World, int par2, int par3, int par4, Entity par5Entity) 
-    {
-    	System.out.println("help");
-    	
-    	int xchg = 0, ychg = 0, zchg = 0;
-    	if(par5Entity.posX > (float)par2)
-    		xchg = xchg + 2;
-    	else if((int)par5Entity.posX == (int)par2)
-    		xchg = xchg - 2;
-    	if(par5Entity.posZ > (float)par4)
-    		zchg = zchg + 2;
-    	else if((int)par5Entity.posZ == (int)par4)
-    		zchg = zchg - 2;
-    	
-    	System.out.println("X Block: " + par2 + ", X Player : " + par5Entity.posX);
-    	System.out.println("Z Block: " + par4 + ", Z Player : " + par5Entity.posZ);
-    	
-    	par5Entity.setPosition(par5Entity.posX + xchg, par5Entity.posY, par5Entity.posZ + zchg);
-    	par5Entity.setVelocity((double)xchg, 0.0, (double)zchg);
-    
-    }
-    */
 }
