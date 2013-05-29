@@ -77,6 +77,9 @@ public class Common {
     public static int TeamChestID;
     public static TeamChest TeamChest;
     
+    public static int LearningPickaxeID;
+    public static LearningPickaxe lPickaxe;
+    
     public static List<EntityPlayer> playerlist = new ArrayList<EntityPlayer>();
 
     public static int currentNumPlayers = 0;
@@ -105,6 +108,7 @@ public class Common {
 		DiggerID = config.getBlock("Dig", 504).getInt();
 		InvisibleBlockID = config.getBlock("InvisibleBlock", 505).getInt();
 		TeamChestID = config.getBlock("TeamChest", 506).getInt();
+		LearningPickaxeID = config.getItem("lpickaxe", 508).getInt();
 		
 		config.save();
     }
@@ -145,6 +149,10 @@ public class Common {
         GameRegistry.registerBlock(TeamChest, "teamchest");
         GameRegistry.registerTileEntity(TileEntityTeamChest.class, "TeamChest.chest");
     	
+        lPickaxe = (LearningPickaxe) (new LearningPickaxe(LearningPickaxeID, EnumToolMaterial.IRON)).setUnlocalizedName("lPickaxe");
+        LanguageRegistry.addName(lPickaxe, "Learning Pickaxe");
+        GameRegistry.registerItem(lPickaxe, "LearningPickaxe");
+   
 		
 		testBlock = new BlockTestBlock(515, 
 				Material.rock).setUnlocalizedName("testblock");     														
