@@ -80,6 +80,9 @@ public class Common {
     public static int LearningPickaxeID;
     public static LearningPickaxe lPickaxe;
     
+    public static int LearningSwordID;
+    public static LearningSword lSword;
+    
     public static List<EntityPlayer> playerlist = new ArrayList<EntityPlayer>();
 
     public static int currentNumPlayers = 0;
@@ -109,6 +112,7 @@ public class Common {
 		InvisibleBlockID = config.getBlock("InvisibleBlock", 505).getInt();
 		TeamChestID = config.getBlock("TeamChest", 506).getInt();
 		LearningPickaxeID = config.getItem("lpickaxe", 508).getInt();
+		LearningSwordID = config.getItem("lSword", 509).getInt();
 		
 		config.save();
     }
@@ -152,6 +156,10 @@ public class Common {
         lPickaxe = (LearningPickaxe) (new LearningPickaxe(LearningPickaxeID, EnumToolMaterial.IRON)).setUnlocalizedName("lPickaxe");
         LanguageRegistry.addName(lPickaxe, "Learning Pickaxe");
         GameRegistry.registerItem(lPickaxe, "LearningPickaxe");
+        
+        lSword = (LearningSword)(new LearningSword(LearningSwordID, EnumToolMaterial.IRON)).setUnlocalizedName("lSword");
+        LanguageRegistry.addName(lSword, "Learning Sword");
+        GameRegistry.registerItem(lSword, "learningsword");
    
 		
 		testBlock = new BlockTestBlock(515, 
