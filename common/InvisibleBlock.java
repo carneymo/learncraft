@@ -20,7 +20,7 @@ public class InvisibleBlock extends Block
     public InvisibleBlock(int par1, Material mat)
     {
     	super(par1, mat);
-    	this.setCreativeTab(CreativeTabs.tabBlock);
+    	//this.setCreativeTab(CreativeTabs.tabBlock);
     	//this.setLightOpacity(255);
 		this.setBlockUnbreakable();
 		
