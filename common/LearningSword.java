@@ -36,11 +36,7 @@ public class LearningSword extends ItemSword
 	
 	public boolean hitEntity(ItemStack par1, EntityLiving par2, EntityLiving par3)
 	{
-		par2.setFire(3);
+		par2.setFire(2);
 		return true;
 	}
-	
-	
-	
-	
 }
