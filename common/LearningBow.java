@@ -22,12 +22,13 @@ import net.minecraftforge.event.entity.player.ArrowNockEvent;
 public class LearningBow extends ItemBow
 {
     //public static final String[] bowPullIconNameArray = new String[] {"bow_pull_0", "bow_pull_1", "bow_pull_2"};
-    @SideOnly(Side.CLIENT)
+    //@SideOnly(Side.CLIENT)
     private Icon[] iconArray;
 
     public LearningBow(int par1)
     {
         super(par1);
+        this.iconArray = new Icon[3];
         this.maxStackSize = 1;
         this.setMaxDamage(384);
         this.setCreativeTab(CreativeTabs.tabCombat);
@@ -162,7 +163,7 @@ public class LearningBow extends ItemBow
     }
 
 
-    @SideOnly(Side.CLIENT)
+    //@SideOnly(Side.CLIENT)
 
     /**
      * used to cycle through icons based on their used duration, i.e. for the bow
@@ -172,9 +173,10 @@ public class LearningBow extends ItemBow
         return this.iconArray[par1];
     }
     
-    @SideOnly(Side.CLIENT)
+    //@SideOnly(Side.CLIENT)
 
-    private Icon[] Texture = new Icon[3];
+    //private Icon[] Texture = new Icon[3];
+    
     public void registerIcons(IconRegister iconRegister)
 
     {
@@ -182,7 +184,7 @@ public class LearningBow extends ItemBow
     			 itemIcon = iconRegister.registerIcon("learncraft:bowLearning");
     			 for (int N = 0; N < 3; N++)
     			 {
-    					 this.Texture[N] = iconRegister.registerIcon("learncraft:bow_pull" + "_" + N + "Learning");
+    					 this.iconArray[N] = iconRegister.registerIcon("learncraft:bow_pull" + "_" + N + "Learning");
 
     			 }
     }
@@ -192,13 +194,13 @@ public class LearningBow extends ItemBow
     			 int Pulling = stack.getMaxItemUseDuration() - useRemaining;
     			 if (Pulling > 17)
     			 {
-    					 return Texture[2];
+    					 return this.iconArray[2];
     			 }
     			 else if (Pulling > 0)
     			 {
-    					 return Texture[1];
+    					 return this.iconArray[1];
     			 }		
-    			 return Texture[0];
+    			 return this.iconArray[0];
     			 }
     }
 
