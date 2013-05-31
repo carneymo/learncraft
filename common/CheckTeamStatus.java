@@ -41,7 +41,7 @@ public class CheckTeamStatus extends Thread {
 	public void checkScores() 
 	{
 		if(Common.winningteam == null) {
-			if(Common.blueteam.points >= 20 || Common.goldteam.points >= 20) {
+			if(Common.blueteam.points >= 150 || Common.goldteam.points >= 150) {
 				if(Common.blueteam.points > Common.goldteam.points) {
 					Common.announce("Blue Team Wins!");
 					Common.announce("Blue Team: "+Common.blueteam.points+" points");
