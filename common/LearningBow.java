@@ -21,7 +21,7 @@ import net.minecraftforge.event.entity.player.ArrowNockEvent;
 
 public class LearningBow extends ItemBow
 {
-    public static final String[] bowPullIconNameArray = new String[] {"bow_pull_0", "bow_pull_1", "bow_pull_2"};
+    //public static final String[] bowPullIconNameArray = new String[] {"bow_pull_0", "bow_pull_1", "bow_pull_2"};
     @SideOnly(Side.CLIENT)
     private Icon[] iconArray;
 
@@ -174,13 +174,13 @@ public class LearningBow extends ItemBow
     
     @SideOnly(Side.CLIENT)
 
-    private Icon[] Texture = new Icon[4];
+    private Icon[] Texture = new Icon[3];
     public void registerIcons(IconRegister iconRegister)
 
     {
 
     			 itemIcon = iconRegister.registerIcon("learncraft:bowLearning");
-    			 for (int N = 0; N < 4; N++)
+    			 for (int N = 0; N < 3; N++)
     			 {
     					 this.Texture[N] = iconRegister.registerIcon("learncraft:bow_pull" + "_" + N + "Learning");
 
@@ -190,11 +190,7 @@ public class LearningBow extends ItemBow
     {
     			 if(player.getItemInUse() == null) return this.itemIcon;
     			 int Pulling = stack.getMaxItemUseDuration() - useRemaining;
-    			 if (Pulling >= 40)
-    			 {
-    					 return Texture[3];
-    			 }
-    			 else if (Pulling > 13)
+    			 if (Pulling > 17)
     			 {
     					 return Texture[2];
     			 }
