@@ -24,18 +24,4 @@ public class BlockTeamDesignateBlue extends Block {
 	public void registerIcons(IconRegister reg) {
 		this.blockIcon = reg.registerIcon("learncraft:BlueTeamBlock");
 	}
-	
-	
-	
-	@Override
-    /**
-     * Testing teleportation when right-clicking block
-     */
-    
-	
-	
-	public boolean onBlockActivated(World world, int par2, int par3, int par4, EntityPlayer player, int par6, float par7, float par8, float par9) {
-		Common.teleportPlayerTo(player, "blue_arena");
-    	return false;
-	}
 }

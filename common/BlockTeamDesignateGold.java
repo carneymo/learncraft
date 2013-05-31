@@ -25,17 +25,4 @@ public class BlockTeamDesignateGold extends Block {
 		this.blockIcon = reg.registerIcon("learncraft:GoldTeamBlock");
 	}
 	
-	
-	
-	@Override
-    /**
-     * Testing teleportation when right-clicking block
-     */
-    
-	
-	
-	public boolean onBlockActivated(World world, int par2, int par3, int par4, EntityPlayer player, int par6, float par7, float par8, float par9) {
-		Common.teleportPlayerTo(player, "gold_arena");
-    	return false;
-	}
 }
