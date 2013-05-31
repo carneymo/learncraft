@@ -77,6 +77,15 @@ public class Common {
     public static int TeamChestID;
     public static TeamChest TeamChest;
     
+    public static int LearningPickaxeID;
+    public static LearningPickaxe lPickaxe;
+    
+    public static int LearningSwordID;
+    public static LearningSword lSword;
+    
+    public static int LearningBowID;
+    public static LearningBow lBow;
+    
     public static List<EntityPlayer> playerlist = new ArrayList<EntityPlayer>();
 
     public static int currentNumPlayers = 0;
@@ -105,6 +114,9 @@ public class Common {
 		DiggerID = config.getBlock("Dig", 504).getInt();
 		InvisibleBlockID = config.getBlock("InvisibleBlock", 505).getInt();
 		TeamChestID = config.getBlock("TeamChest", 506).getInt();
+		LearningPickaxeID = config.getItem("lpickaxe", 508).getInt();
+		LearningSwordID = config.getItem("lSword", 509).getInt();
+		LearningBowID = config.getItem("lBow", 510).getInt();
 		
 		config.save();
     }
@@ -145,6 +157,18 @@ public class Common {
         GameRegistry.registerBlock(TeamChest, "teamchest");
         GameRegistry.registerTileEntity(TileEntityTeamChest.class, "TeamChest.chest");
     	
+        lPickaxe = (LearningPickaxe) (new LearningPickaxe(LearningPickaxeID, EnumToolMaterial.IRON)).setUnlocalizedName("lPickaxe");
+        LanguageRegistry.addName(lPickaxe, "Learning Pickaxe");
+        GameRegistry.registerItem(lPickaxe, "LearningPickaxe");
+        
+        lSword = (LearningSword)(new LearningSword(LearningSwordID, EnumToolMaterial.IRON)).setUnlocalizedName("lSword");
+        LanguageRegistry.addName(lSword, "Learning Sword");
+        GameRegistry.registerItem(lSword, "learningsword");
+        
+        lBow= (LearningBow)(new LearningBow(LearningBowID)).setUnlocalizedName("lBow");
+        LanguageRegistry.addName(lBow, "Learning Bow");
+        GameRegistry.registerItem(lBow, "learningbow");
+   
 		
 		testBlock = new BlockTestBlock(515, 
 				Material.rock).setUnlocalizedName("testblock");     														
