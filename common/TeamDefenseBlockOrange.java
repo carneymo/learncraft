@@ -33,10 +33,8 @@ public class TeamDefenseBlockOrange extends Block
 		this.blockIcon = reg.registerIcon("learncraft:TeamDefenseBlockOrange");
 	}
 	
-<<<<<<< HEAD
 	@Override
-=======
->>>>>>> ed948e88a4538b059ea9706132465785fb8aa08b
+
 	public int idDropped(int par1, Random random, int par2) 
 	{
 		return 524;

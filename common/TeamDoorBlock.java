@@ -47,14 +47,11 @@ public class TeamDoorBlock extends Block
         float f = 0.5F;
         float f1 = 1.0F;
         this.setBlockBounds(0.5F - f, 0.0F, 0.5F - f, 0.5F + f, f1, 0.5F + f);
-<<<<<<< HEAD
         this.setResistance(Block.obsidian.blockResistance);
         this.setBlockUnbreakable();
     }
     
-=======
-    }
->>>>>>> ed948e88a4538b059ea9706132465785fb8aa08b
+
 
     @SideOnly(Side.CLIENT)
 
@@ -308,16 +305,15 @@ public class TeamDoorBlock extends Block
     /**
      * Called when the block is clicked by a player. Args: x, y, z, entityPlayer
      */
-<<<<<<< HEAD
+
     public void onBlockClicked(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer) 
     {
     	if(doorMaterial == Material.wood && Common.goldteam.hasPlayer(par5EntityPlayer)) this.setHardness(0.1F);
     	else if(doorMaterial == Material.iron && Common.blueteam.hasPlayer(par5EntityPlayer)) this.setHardness(0.1F);
     	else this.setBlockUnbreakable();
     }
-=======
+
     public void onBlockClicked(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer) {}
->>>>>>> ed948e88a4538b059ea9706132465785fb8aa08b
 
     /**
      * Called upon block activation (right click on the block.)
@@ -447,11 +443,7 @@ public class TeamDoorBlock extends Block
      */
     public int idDropped(int par1, Random par2Random, int par3)
     {
-<<<<<<< HEAD
     	 return (par1 & 8) != 0 ? 0 : (this.blockMaterial == Material.iron ? Common.BlueTeamDoor.itemID : Common.OrangeTeamDoor.itemID);
-=======
-        return doorMaterial == Material.wood ? 528 : 529;
->>>>>>> ed948e88a4538b059ea9706132465785fb8aa08b
     }
 
     /**
@@ -505,14 +497,11 @@ public class TeamDoorBlock extends Block
         boolean flag1 = (j1 & 1) != 0;
         return i1 & 7 | (flag ? 8 : 0) | (flag1 ? 16 : 0);
     }
-<<<<<<< HEAD
     
     public int quantityDropped(Random random)
     {
     	return 1;
     }
-=======
->>>>>>> ed948e88a4538b059ea9706132465785fb8aa08b
 
     @SideOnly(Side.CLIENT)
 
@@ -521,11 +510,7 @@ public class TeamDoorBlock extends Block
      */
     public int idPicked(World par1World, int par2, int par3, int par4)
     {
-<<<<<<< HEAD
         return doorMaterial == Material.wood ? Common.OrangeTeamDoorID : Common.BlueTeamDoorID;
-=======
-        return doorMaterial == Material.wood ? 528 : 529;
->>>>>>> ed948e88a4538b059ea9706132465785fb8aa08b
     }
 
     /**
