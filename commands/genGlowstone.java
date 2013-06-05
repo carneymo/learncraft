@@ -54,11 +54,11 @@ public class genGlowstone extends CommandBase {
 			if(isOP)
 			{
 				World w = player.worldObj;
-				for(int x = 14; x <= 18; x++)
+				for(int x = 107; x <= 308; x++)
 				{
-					for(int y = 63; y <= 68; y++)
+					for(int y = 7; y <= 73; y++)
 					{
-						for(int z = -241; z <= -237; z++)
+						for(int z = 540; z <= 658; z++)
 						{
 							if(w.getBlockId(x, y, z) == 507)
 							{
