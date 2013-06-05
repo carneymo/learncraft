@@ -332,7 +332,7 @@ public class Common {
 				// z = 604 - 592
 				// x = 218 - 202
 				x = 207.96;
-				y = 118;
+				y = 140;
 				z = 698.06;
 			}
 			if(loc.matches("blue_spawn")) {
