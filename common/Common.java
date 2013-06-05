@@ -63,6 +63,9 @@ public class Common {
     public static int LCBlockID;
     public static Block LCBlock;
     
+    public static int StoneGlowReplaceableID;
+    public static Block StoneGlowReplaceable;
+    
     public static int BlockBorderID;
     public static Block BorderBlock;
     
@@ -141,6 +144,7 @@ public class Common {
 		BlueTeamDoorBlockID = config.getBlock("BlueTeamDoorBlock", 527).getInt();
 		OrangeTeamDoorID = config.getItem("OrangeTeamDoor", 528).getInt();
 		BlueTeamDoorID = config.getItem("BlueTeamDoor", 529).getInt();
+		StoneGlowReplaceableID = config.getBlock("StoneGlowReplaceable", 507).getInt();
 		
 		config.save();
     }
@@ -162,6 +166,10 @@ public class Common {
         BorderBlock = (new BorderBlock(BlockBorderID, Material.iron)).setUnlocalizedName("border_block");
         LanguageRegistry.addName(BorderBlock, "Border Block");
         GameRegistry.registerBlock(BorderBlock, "border_block");
+        
+        StoneGlowReplaceable = (new StoneGlowReplaceable(StoneGlowReplaceableID, Material.rock)).setUnlocalizedName("StoneGlowReplaceable");
+        LanguageRegistry.addName(StoneGlowReplaceable, "StoneGlowReplaceable");
+        GameRegistry.registerBlock(StoneGlowReplaceable, "StoneGlowReplaceable");
 
         lchest = (LBlockChest) (new LBlockChest(LBlockChestID, 0)).setUnlocalizedName("lc_chest");
         LanguageRegistry.addName(lchest, "Learning chest");
