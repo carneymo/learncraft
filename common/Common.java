@@ -7,6 +7,7 @@ import java.util.List;
 
 import mods.learncraft.commands.CommandReady;
 import mods.learncraft.commands.CommandTeamscore;
+import mods.learncraft.commands.genGlowstone;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
 import net.minecraft.block.material.Material;
@@ -292,6 +293,7 @@ public class Common {
 		
 		serverCommand.registerCommand(new CommandTeamscore());
 		serverCommand.registerCommand(new CommandReady());
+		serverCommand.registerCommand(new genGlowstone());
     }
     
     
