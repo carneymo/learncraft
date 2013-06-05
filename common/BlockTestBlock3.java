@@ -33,16 +33,11 @@ public class BlockTestBlock3 extends Block {
     
 	
 	public boolean onBlockActivated(World world, int par2, int par3, int par4, EntityPlayer player, int par6, float par7, float par8, float par9) {
-		//1 is orange; 2 is blue	
-		NBTTagCompound nbt = player.getEntityData();
-		if(nbt.hasKey("myTeam")){
-			int j = nbt.getInteger("myTeam");
-			if(j==1||j==3) {
-				ChunkCoordinates vector = player.getPlayerCoordinates();
-				player.setPositionAndUpdate(vector.posX, vector.posY - 60, vector.posZ);
-		
-    			this.removeBlockByPlayer(world, player, par2, par3, par4);
-    		}
+		//Check that the player is on the gold team
+		if(Common.getTeam(player) == Common.goldteam) {
+			ChunkCoordinates vector = player.getPlayerCoordinates();
+			player.setPositionAndUpdate(vector.posX, vector.posY - 60, vector.posZ);
+			this.removeBlockByPlayer(world, player, par2, par3, par4);
 		}
     	return false;
 	}

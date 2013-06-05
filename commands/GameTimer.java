@@ -15,9 +15,10 @@ public class GameTimer {
 	//One hour is three minecraft days
 	public GameTimer(World gameWorld) {
 		currentWorld = gameWorld;
+		int countdown = 15*60*1000; // Minutes * Seconds * Milliseconds
 		timer = new Timer();
 		timer.schedule(new countdown(), 500);
-		timer.schedule(new setBuzz(), 60*1000);  //test with only 1 minute
+		timer.schedule(new setBuzz(), countdown);
 	}
 	
 	//timerBuzzing is set to true when time is up on the game. 
@@ -28,7 +29,6 @@ public class GameTimer {
 			 Common.goldteam.moveToSpawnAndFreeze();
 			 Common.teleportOn = false;	
 			
-			 
 			timer.cancel(); //Terminate the timer thread
 		 }
 	 }
