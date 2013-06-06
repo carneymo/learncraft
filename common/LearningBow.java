@@ -67,11 +67,11 @@ public class LearningBow extends ItemBow
                 f = 1.0F;
             }
 
-            EntityArrow entityarrow = new EntityArrow(par2World, par3EntityPlayer, f * 2.5F);
+            EntityArrow entityarrow = new EntityArrow(par2World, par3EntityPlayer, f * 1.5F);
             
             if (f == 1.0F)
             {
-            	entityarrow.setFire(5);
+            	entityarrow.setFire(2);
                 entityarrow.setIsCritical(true);
             }
 

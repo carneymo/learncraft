@@ -7,6 +7,7 @@ import java.util.List;
 
 import mods.learncraft.commands.CommandReady;
 import mods.learncraft.commands.CommandTeamscore;
+import mods.learncraft.commands.genGlowstone;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
 import net.minecraft.block.material.Material;
@@ -63,6 +64,9 @@ public class Common {
     public static int LCBlockID;
     public static Block LCBlock;
     
+    public static int StoneGlowReplaceableID;
+    public static Block StoneGlowReplaceable;
+    
     public static int BlockBorderID;
     public static Block BorderBlock;
     
@@ -85,6 +89,24 @@ public class Common {
     
     public static int LearningBowID;
     public static LearningBow lBow;
+    
+    public static int TeamDefenseOrangeID;
+    public static TeamDefenseBlockOrange teamDefenseOrange;
+    
+    public static int TeamDefenseBlueID;
+    public static TeamDefenseBlockBlue teamDefenseBlue;
+    
+    public static int OrangeTeamDoorBlockID;
+    public static TeamDoorBlock OrangeTeamDoorBlock;
+    
+    public static int BlueTeamDoorBlockID;
+    public static TeamDoorBlock BlueTeamDoorBlock;
+    
+    public static int OrangeTeamDoorID;
+    public static TeamDoor OrangeTeamDoor;
+    
+    public static int BlueTeamDoorID;
+    public static TeamDoor BlueTeamDoor;
     
     public static List<EntityPlayer> playerlist = new ArrayList<EntityPlayer>();
 
@@ -117,6 +139,13 @@ public class Common {
 		LearningPickaxeID = config.getItem("lpickaxe", 508).getInt();
 		LearningSwordID = config.getItem("lSword", 509).getInt();
 		LearningBowID = config.getItem("lBow", 510).getInt();
+		TeamDefenseOrangeID = config.getBlock("teamDefenseOrange", 524).getInt();
+		TeamDefenseBlueID = config.getBlock("teamDefenseBlue", 525).getInt();
+		OrangeTeamDoorBlockID = config.getBlock("OrangeTeamDoorBlock", 526).getInt();
+		BlueTeamDoorBlockID = config.getBlock("BlueTeamDoorBlock", 527).getInt();
+		OrangeTeamDoorID = config.getItem("OrangeTeamDoor", 528).getInt();
+		BlueTeamDoorID = config.getItem("BlueTeamDoor", 529).getInt();
+		StoneGlowReplaceableID = config.getBlock("StoneGlowReplaceable", 507).getInt();
 		
 		config.save();
     }
@@ -127,7 +156,7 @@ public class Common {
     public static Block testBlock4;
     public static Block blockDesignateGold;
     public static Block blockDesignateBlue;
-    
+ 
     @Init
     public void load(FMLInitializationEvent event) {
     	
@@ -138,6 +167,10 @@ public class Common {
         BorderBlock = (new BorderBlock(BlockBorderID, Material.iron)).setUnlocalizedName("border_block");
         LanguageRegistry.addName(BorderBlock, "Border Block");
         GameRegistry.registerBlock(BorderBlock, "border_block");
+        
+        StoneGlowReplaceable = (new StoneGlowReplaceable(StoneGlowReplaceableID, Material.rock)).setUnlocalizedName("StoneGlowReplaceable");
+        LanguageRegistry.addName(StoneGlowReplaceable, "StoneGlowReplaceable");
+        GameRegistry.registerBlock(StoneGlowReplaceable, "StoneGlowReplaceable");
 
         lchest = (LBlockChest) (new LBlockChest(LBlockChestID, 0)).setUnlocalizedName("lc_chest");
         LanguageRegistry.addName(lchest, "Learning chest");
@@ -168,7 +201,24 @@ public class Common {
         lBow= (LearningBow)(new LearningBow(LearningBowID)).setUnlocalizedName("lBow");
         LanguageRegistry.addName(lBow, "Learning Bow");
         GameRegistry.registerItem(lBow, "learningbow");
+        
+        teamDefenseOrange = (TeamDefenseBlockOrange) new TeamDefenseBlockOrange(TeamDefenseOrangeID, Material.ground)
+        				    .setUnlocalizedName("teamDefenseOrange");
+		GameRegistry.registerBlock(teamDefenseOrange, "teamDefenseOrange");
+		LanguageRegistry.addName(teamDefenseOrange, "Orange Team Defense Block");
+		
+		teamDefenseBlue = (TeamDefenseBlockBlue) new TeamDefenseBlockBlue(TeamDefenseBlueID, Material.ground)
+						  .setUnlocalizedName("teamDefenseBlue");
+		GameRegistry.registerBlock(teamDefenseBlue, "teamDefenseBlue");
+		LanguageRegistry.addName(teamDefenseBlue, "Blue Team Defense Block");
    
+		OrangeTeamDoorBlock = (TeamDoorBlock) new TeamDoorBlock(OrangeTeamDoorBlockID, Material.wood).setUnlocalizedName("OrangeTeamDoorBlock");
+		GameRegistry.registerBlock(OrangeTeamDoorBlock, "OrangeTeamDoorBlock");
+		LanguageRegistry.addName(OrangeTeamDoorBlock, "Team Door");
+		
+		BlueTeamDoorBlock = (TeamDoorBlock) new TeamDoorBlock(BlueTeamDoorBlockID, Material.iron).setUnlocalizedName("BlueTeamDoorBlock");
+		GameRegistry.registerBlock(BlueTeamDoorBlock, "BlueTeamDoorBlock");
+		LanguageRegistry.addName(BlueTeamDoorBlock, "Team Door 2");
 		
 		testBlock = new BlockTestBlock(515, 
 				Material.rock).setUnlocalizedName("testblock");     														
@@ -179,31 +229,37 @@ public class Common {
 				Material.rock).setUnlocalizedName("testblock2");     														
 		GameRegistry.registerBlock(testBlock2, "testblock2");		
 		LanguageRegistry.addName(testBlock2, "Blue Up");
-
-		
+	
 		testBlock3 = new BlockTestBlock3(517, 
 				Material.rock).setUnlocalizedName("testblock3");     														
 		GameRegistry.registerBlock(testBlock3, "testblock3");		
 		LanguageRegistry.addName(testBlock3, "Gold Down");
-   	
-       	   	
+   	 	
 		testBlock4 = new BlockTestBlock4(518, 
 				Material.rock).setUnlocalizedName("testblock4");     														
 		GameRegistry.registerBlock(testBlock4, "testblock4");		
 		LanguageRegistry.addName(testBlock4, "Blue Down");
 		
 		blockDesignateGold = new BlockTeamDesignateGold(519, 
-				Material.rock).setUnlocalizedName("blockDesignateGold");     														
+				Material.iron).setUnlocalizedName("blockDesignateGold");     														
 		GameRegistry.registerBlock(blockDesignateGold, "blockDesignateGold");	
 		LanguageRegistry.addName(blockDesignateGold, "Gold Team Designation");
         
 		blockDesignateBlue = new BlockTeamDesignateBlue(520, 
-				Material.rock).setUnlocalizedName("blockDesignateBlue");     														
+				Material.iron).setUnlocalizedName("blockDesignateBlue");     														
 		GameRegistry.registerBlock(blockDesignateBlue, "blockDesignateBlue");	
 		LanguageRegistry.addName(blockDesignateBlue, "Blue Team Designation");
-        
-        
-        
+		
+	    OrangeTeamDoor = (TeamDoor) new TeamDoor(OrangeTeamDoorID, Material.wood).setUnlocalizedName("OrangeTeamDoor");
+		GameRegistry.registerItem(OrangeTeamDoor, "OrangeTeamDoor");
+		LanguageRegistry.addName(OrangeTeamDoor, "Orange Team Door");
+		
+		BlueTeamDoor = (TeamDoor) new TeamDoor(BlueTeamDoorID, Material.iron).setUnlocalizedName("BlueTeamDoor");
+		GameRegistry.registerItem(BlueTeamDoor, "BlueTeamDoor");
+		LanguageRegistry.addName(BlueTeamDoor, "Blue Team Door");
+		
+		
+
         proxy.registerTileEntitySpecialRenderer();
     	proxy.registerRenderThings();
     	
@@ -237,6 +293,7 @@ public class Common {
 		
 		serverCommand.registerCommand(new CommandTeamscore());
 		serverCommand.registerCommand(new CommandReady());
+		serverCommand.registerCommand(new genGlowstone());
     }
     
     
