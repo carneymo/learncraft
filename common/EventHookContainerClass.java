@@ -36,6 +36,10 @@ public class EventHookContainerClass {
 			EntityPlayer player = (EntityPlayer) event.entityLiving;
 			event.setCanceled(true);
 			player.setEntityHealth(20);
+			int BlueDoorID = Common.BlueTeamDoor.itemID;
+			int OrangeDoorID = Common.OrangeTeamDoor.itemID;
+			int BlueDefenseID = 525;
+			int OrangeDefenseID = 524;
 			
 			// Drops all the glowstone dust, but nothing else!
 			if(player.inventory.hasItem(348)) {
@@ -50,6 +54,20 @@ public class EventHookContainerClass {
 				}
 			}
 			
+			
+			for(int i = 0; i < player.inventory.getSizeInventory(); i++)
+			{
+				ItemStack stack = player.inventory.getStackInSlot(i);
+				if(stack != null)
+				{
+					if(stack.itemID == BlueDoorID    || stack.itemID == OrangeDoorID ||
+					   stack.itemID == BlueDefenseID || stack.itemID == OrangeDefenseID)
+						player.inventory.setInventorySlotContents(i, null);
+				}	
+			
+			}
+			
+			
 			Common.announce("Player "+player.username+" has died and was sent to the maze!");
 			Common.teleportPlayerTo(player, "maze_spawn");
 		}
@@ -57,7 +75,7 @@ public class EventHookContainerClass {
 	
 	@ForgeSubscribe
 	public void playerInteractEvent(PlayerInteractEvent event) {
-
+		
 		if(event.entityLiving instanceof EntityPlayer) {
 			
 			EntityPlayer player = (EntityPlayer) event.entityLiving;
@@ -119,7 +137,8 @@ public class EventHookContainerClass {
 	@ForgeSubscribe
 	public void entityJoinWorldEvent(EntityJoinWorldEvent event)
 	{
-		if(event.entity instanceof EntityPlayer) {
+		if(event.entity instanceof EntityPlayer) 
+		{
 			//System.out.println("Join World Event!");
 		}
 	}
