@@ -54,7 +54,7 @@ public class genGlowstone extends CommandBase {
 			if(isOP)
 			{
 				World w = player.worldObj;
-				for(int x = 107; x <= 308; x++)
+				for(int x = 107; x <= 308; x++) // replaces stoneGlowReplaceable with glowstone
 				{
 					for(int y = 7; y <= 73; y++)
 					{
@@ -67,7 +67,23 @@ public class genGlowstone extends CommandBase {
 						}
 					}
 				}
+				for(int x = 107; x <= 308; x++) // replaces remaining stoneGlowReplaceable with stone
+				{
+					for(int y = 7; y <= 73; y++)
+					{
+						for(int z = 540; z <= 658; z++)
+						{
+							if(w.getBlockId(x, y, z) == 507)
+							{
+								w.setBlock(x,  y , z, Block.stone.blockID);
+							}
+						}
+					}
+				}
+				player.addChatMessage("Glowstone Generated");
 			}
+			else
+				player.addChatMessage("You are not OP");
 		}
 	}
 	public void replaceStone(int x, int y, int z, World w)
