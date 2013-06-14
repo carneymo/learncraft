@@ -24,7 +24,10 @@ public class TeamDefenseBlockBlue extends Block
 	@Override
 	public void onBlockClicked(World w, int x, int y, int z, EntityPlayer player)
 	{
-		if(Common.blueteam.hasPlayer(player)) this.setHardness(0.1F);
+		Team team = Common.getTeam(player);
+		if(team != null && team.teamcolor == "blue") {
+			this.setHardness(0.1F);
+		}
 		else this.setBlockUnbreakable();
 	}
 

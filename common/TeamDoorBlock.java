@@ -306,23 +306,34 @@ public class TeamDoorBlock extends Block
      * Called when the block is clicked by a player. Args: x, y, z, entityPlayer
      */
 
-    public void onBlockClicked(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer) 
+    public void onBlockClicked(World par1World, int par2, int par3, int par4, EntityPlayer player) 
     {
-    	if(doorMaterial == Material.wood && Common.goldteam.hasPlayer(par5EntityPlayer)) this.setHardness(0.1F);
-    	else if(doorMaterial == Material.iron && Common.blueteam.hasPlayer(par5EntityPlayer)) this.setHardness(0.1F);
-    	else this.setBlockUnbreakable();
+    	Team team = Common.getTeam(player);
+    	if(team.teamcolor == "orange" && doorMaterial == Material.wood) {
+    		this.setHardness(0.1F);
+    	}
+    	else if(team.teamcolor == "blue" && doorMaterial == Material.iron) {
+    		this.setHardness(0.1F);
+    	}
+    	else {
+    		this.setBlockUnbreakable();
+    	}
     }
 
     /**
      * Called upon block activation (right click on the block.)
      */
-    public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9)
+    public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer player, int par6, float par7, float par8, float par9)
     {
-        if (this.blockMaterial == Material.wood && !Common.goldteam.hasPlayer(par5EntityPlayer))
+    	Team team = Common.getTeam(player);
+    	if(team == null) {
+    		return true;
+    	}
+        if (team.teamcolor != "orange" && doorMaterial == Material.wood)
         {
             return false; //Allow items to interact with the door
         }
-        else if(this.blockMaterial == Material.iron && !Common.blueteam.hasPlayer(par5EntityPlayer))
+        else if(team.teamcolor != "blue" && doorMaterial == Material.iron)
         {
         	return false;
         }
@@ -343,7 +354,7 @@ public class TeamDoorBlock extends Block
                 par1World.markBlockRangeForRenderUpdate(par2, par3 - 1, par4, par2, par3, par4);
             }
 
-            par1World.playAuxSFXAtEntity(par5EntityPlayer, 1003, par2, par3, par4, 0);
+            par1World.playAuxSFXAtEntity(player, 1003, par2, par3, par4, 0);
             return true;
         }
     }

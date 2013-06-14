@@ -12,11 +12,11 @@ import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
-public class BlockTeamDesignateBlue extends Block {
+public class BlockTeamDesignateOrange extends Block {
 
-	public String color = "blue";
+	public static final String color = "orange";
 	
-	public BlockTeamDesignateBlue(int id, Material par2Material)
+	public BlockTeamDesignateOrange(int id, Material par2Material)
 	{
 	       super(id, par2Material);
 	       this.setCreativeTab(CreativeTabs.tabBlock);
@@ -25,7 +25,7 @@ public class BlockTeamDesignateBlue extends Block {
 	}
 
 	public void registerIcons(IconRegister reg) {
-		this.blockIcon = reg.registerIcon("learncraft:BlueTeamBlock");
+		this.blockIcon = reg.registerIcon("learncraft:OrangeTeamBlock");
 	}
 
     public boolean onBlockActivated(World world, int par2, int par3, int par4, EntityPlayer player, int par6, float par7, float par8, float par9) {

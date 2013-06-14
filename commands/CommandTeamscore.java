@@ -1,6 +1,7 @@
 package mods.learncraft.commands;
 
 import mods.learncraft.common.Common;
+import mods.learncraft.common.Team;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
@@ -26,37 +27,29 @@ public class CommandTeamscore extends CommandBase {
 			EntityPlayer player = (EntityPlayer)icommandsender;
 			if(Common.winningteam == null) {
 				if(astring.length == 0) {
-					if(Common.blueteam.hasPlayer(player)) {
-						player.addChatMessage("Blue Team has "+Common.blueteam.points+" points");
-					} else if(Common.goldteam.hasPlayer(player)) {
-						player.addChatMessage("Gold Team has "+Common.goldteam.points+" points");
-					} else {
+					Team team = Common.getTeam(player);
+					if(team == null) {
 						player.addChatMessage("You are not on a team");
+					} else {
+						team.reportScoreToPlayer(player);
 					}
 				} else if(astring.length == 1) {
-					if(astring[0].trim().matches("blue")) {
-						player.addChatMessage("Blue Team has "+Common.blueteam.points+" points");
+					if(astring[0].trim().matches("all")) {
+						for(int a=0;a<Common.teams.length;a++) {
+							Common.teams[a].reportPoints();
+						}
 					}
-					else if(astring[0].trim().matches("gold")) {
-						player.addChatMessage("Gold Team has "+Common.goldteam.points+" points");
-					}
-					else if(astring[0].trim().matches("all")) {
-						player.addChatMessage("Blue Team has "+Common.blueteam.points+" points");
-						player.addChatMessage("Gold Team has "+Common.goldteam.points+" points");
+					if(Common.hasTeam(astring[0])) {
+						Common.getTeam(astring[0]).reportPoints();
 					}
 					else {
 						player.addChatMessage("Unknown team: "+astring[0]);
 					}
 				}
 			} else {
-				if(Common.blueteam.points > Common.goldteam.points) {
-					Common.announce("Blue Team Won!");
-					Common.announce("Blue Team: "+Common.blueteam.points+" points");
-					Common.announce("Gold Team: "+Common.goldteam.points+" points");
-				} else if(Common.blueteam.points < Common.goldteam.points) {
-					Common.announce("Gold Team Won!");
-					Common.announce("Gold Team: "+Common.goldteam.points+" points");
-					Common.announce("Blue Team: "+Common.blueteam.points+" points");
+				Common.announce(Common.winningteam.teamcolor.toUpperCase()+" Team has Won!");
+				for(int a=0;a<Common.teams.length;a++) {
+					Common.teams[a].reportPoints();
 				}
 			}
 		}

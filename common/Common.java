@@ -6,8 +6,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 import mods.learncraft.commands.CommandReady;
+import mods.learncraft.commands.CommandTeam;
 import mods.learncraft.commands.CommandTeamscore;
-import mods.learncraft.commands.genGlowstone;
+import mods.learncraft.commands.CommandGenGlowstone;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
 import net.minecraft.block.material.Material;
@@ -112,8 +113,7 @@ public class Common {
 
     public static int currentNumPlayers = 0;
     public static int playersReady = 0;
-    public static Team blueteam = new Team("blue");
-    public static Team goldteam = new Team("gold");
+    public static Team[] teams = new Team[0];
     public static Team winningteam = null;
     
     public static LinkedList<String> notifications = new LinkedList<String>();
@@ -121,15 +121,23 @@ public class Common {
     public static boolean inProgress = false;
     public static boolean teleportOn = true;
     
+    public static Coordinates coordinates = new Coordinates();
+    public static Settings settings = new Settings();
+    
     // Use the state to iterate through the different phases of the arena game
     public static String state = "";
     
+    // Team Block
+    public static Block TeamBlock;
+    public static Block blockDesignateOrange;
+    public static Block blockDesignateBlue;
+    
     @PreInit
     public void preInit(FMLPreInitializationEvent event) {
+
 		Configuration config = new Configuration(event.getSuggestedConfigurationFile());
-		
+
 		config.load();
-		System.out.println(config.toString());
 		LCBlockID = config.getBlock("LCBlock", 501).getInt();
 		LBlockChestID = config.getBlock("lchest", 502).getInt();
 		BlockBorderID = config.getBlock("BorderBlock", 503).getInt();
@@ -146,16 +154,9 @@ public class Common {
 		OrangeTeamDoorID = config.getItem("OrangeTeamDoor", 528).getInt();
 		BlueTeamDoorID = config.getItem("BlueTeamDoor", 529).getInt();
 		StoneGlowReplaceableID = config.getBlock("StoneGlowReplaceable", 507).getInt();
-		
+
 		config.save();
     }
-    
-    public static Block testBlock;
-    public static Block testBlock2;
-    public static Block testBlock3;
-    public static Block testBlock4;
-    public static Block blockDesignateGold;
-    public static Block blockDesignateBlue;
  
     @Init
     public void load(FMLInitializationEvent event) {
@@ -220,36 +221,6 @@ public class Common {
 		GameRegistry.registerBlock(BlueTeamDoorBlock, "BlueTeamDoorBlock");
 		LanguageRegistry.addName(BlueTeamDoorBlock, "Team Door 2");
 		
-		testBlock = new BlockTestBlock(515, 
-				Material.rock).setUnlocalizedName("testblock");     														
-		GameRegistry.registerBlock(testBlock, "testblock");	
-		LanguageRegistry.addName(testBlock, "Gold Up");
-		
-		testBlock2 = new BlockTestBlock2(516, 
-				Material.rock).setUnlocalizedName("testblock2");     														
-		GameRegistry.registerBlock(testBlock2, "testblock2");		
-		LanguageRegistry.addName(testBlock2, "Blue Up");
-	
-		testBlock3 = new BlockTestBlock3(517, 
-				Material.rock).setUnlocalizedName("testblock3");     														
-		GameRegistry.registerBlock(testBlock3, "testblock3");		
-		LanguageRegistry.addName(testBlock3, "Gold Down");
-   	 	
-		testBlock4 = new BlockTestBlock4(518, 
-				Material.rock).setUnlocalizedName("testblock4");     														
-		GameRegistry.registerBlock(testBlock4, "testblock4");		
-		LanguageRegistry.addName(testBlock4, "Blue Down");
-		
-		blockDesignateGold = new BlockTeamDesignateGold(519, 
-				Material.iron).setUnlocalizedName("blockDesignateGold");     														
-		GameRegistry.registerBlock(blockDesignateGold, "blockDesignateGold");	
-		LanguageRegistry.addName(blockDesignateGold, "Gold Team Designation");
-        
-		blockDesignateBlue = new BlockTeamDesignateBlue(520, 
-				Material.iron).setUnlocalizedName("blockDesignateBlue");     														
-		GameRegistry.registerBlock(blockDesignateBlue, "blockDesignateBlue");	
-		LanguageRegistry.addName(blockDesignateBlue, "Blue Team Designation");
-		
 	    OrangeTeamDoor = (TeamDoor) new TeamDoor(OrangeTeamDoorID, Material.wood).setUnlocalizedName("OrangeTeamDoor");
 		GameRegistry.registerItem(OrangeTeamDoor, "OrangeTeamDoor");
 		LanguageRegistry.addName(OrangeTeamDoor, "Orange Team Door");
@@ -257,9 +228,21 @@ public class Common {
 		BlueTeamDoor = (TeamDoor) new TeamDoor(BlueTeamDoorID, Material.iron).setUnlocalizedName("BlueTeamDoor");
 		GameRegistry.registerItem(BlueTeamDoor, "BlueTeamDoor");
 		LanguageRegistry.addName(BlueTeamDoor, "Blue Team Door");
-		
-		
 
+        
+		blockDesignateBlue = new BlockTeamDesignateBlue(520, 
+				Material.iron).setUnlocalizedName("blockDesignateBlue");     														
+		GameRegistry.registerBlock(blockDesignateBlue, "blockDesignateBlue");	
+		LanguageRegistry.addName(blockDesignateBlue, "Blue Team Designation");
+		
+		blockDesignateOrange = new BlockTeamDesignateOrange(519, 
+				Material.iron).setUnlocalizedName("blockDesignateOrange");     														
+		GameRegistry.registerBlock(blockDesignateOrange, "blockDesignateOrange");	
+		LanguageRegistry.addName(blockDesignateOrange, "Orange Team Designation");
+		
+		// Add new teams
+		
+		// Call special functions in the proxy's
         proxy.registerTileEntitySpecialRenderer();
     	proxy.registerRenderThings();
     	
@@ -282,6 +265,7 @@ public class Common {
     @ServerStarting
     public void serverStart(FMLServerStartingEvent event)
     {
+    	Common.teleportOn = false;
 		// Pings every 5 seconds
 		(new CheckServer()).start();
 		// Pings every 0.5 seconds
@@ -290,10 +274,11 @@ public class Common {
 		MinecraftServer server = MinecraftServer.getServer(); //Gets current server
 		ICommandManager command = server.getCommandManager(); //Gets the command manager to use for server
 		ServerCommandManager serverCommand = ((ServerCommandManager) command); //Turns it into another form to use
-		
+
+		serverCommand.registerCommand(new CommandTeam());
 		serverCommand.registerCommand(new CommandTeamscore());
 		serverCommand.registerCommand(new CommandReady());
-		serverCommand.registerCommand(new genGlowstone());
+		serverCommand.registerCommand(new CommandGenGlowstone());
     }
     
     
@@ -306,21 +291,17 @@ public class Common {
     {
 
     }
-
-	public static Team getTeam(EntityPlayer player) {
-		// TODO Auto-generated method stub
-		if(Common.blueteam.hasPlayer(player)) {
-			return Common.blueteam;
-		} else if(Common.goldteam.hasPlayer(player)) {
-			return Common.goldteam;
-		}
-		return null;
+	
+	public static void teleportPlayerTo(EntityPlayer player, String loc) {
+		Common.teleportPlayerTo(player, loc, false);
 	}
 
-	public static void teleportPlayerTo(EntityPlayer player, String loc) {
-		if(teleportOn) {
-			float f = 1.0F;
-			double x = 0, y = 0, z = 0;
+	public static void teleportPlayerTo(EntityPlayer player, String loc, Boolean override) {
+		if(teleportOn || override) {
+
+			Common.coordinates.TeleportPlayer(player, loc);
+			
+			/*
 			if(loc.matches("choose_team")) {
 				// z = 604 - 592
 				// x = 55.45 - 58.1
@@ -355,16 +336,69 @@ public class Common {
 				y = 4.1;
 				z = 464.49;
 			}
-			player.setPosition(x, y, z);
+			*/
+			// player.setPosition(x, y, z);
+		} else {
+			player.addChatMessage("Teleport is currently off.");
 		}
 	}
 
 	public static void announce(String message) {
 		Common.notifications.add(message);
 	}
+    
+    public static void addTeam(Team team) {
+    	Team[] teams = new Team[Common.teams.length+1];
+    	for(int a=0; a<Common.teams.length;a++) {
+    		teams[a] = Common.teams[a];
+    	}
+    	if(!Common.hasTeam(team.teamcolor)) {
+    		teams[teams.length-1] = team;
+    	}
+    	Common.teams = teams;
+    }
+    
+    public static Boolean hasTeam(String teamcolor) {
+    	if(Common.teams == null || Common.teams.length == 0) {
+    		return false;
+    	}
+    	for(int a=0;a<Common.teams.length;a++) {
+    		if(Common.teams[a] != null) {
+    			System.out.println(Common.teams[a].teamcolor);
+    		}
+    		if(Common.teams[a] != null && Common.teams[a].teamcolor.compareTo(teamcolor)==0) {
+    			return true;
+    		}
+    	}
+    	return false;
+    }
 
+	public static Team getTeam(EntityPlayer player) {
+    	if(Common.teams == null || Common.teams.length == 0) {
+    		return null;
+    	}
+    	for(int a=0;a<Common.teams.length;a++) {
+    		if(Common.teams[a] != null && Common.teams[a].hasPlayer(player)) {
+    			return Common.teams[a];
+    		}
+    	}
+		return null;
+	}
+	
+	public static Team getTeam(String teamname) {
+    	if(Common.teams == null || Common.teams.length == 0) {
+    		return null;
+    	}
+    	for(int a=0;a<Common.teams.length;a++) {
+    		if(Common.teams[a] != null && Common.teams[a].teamcolor.compareTo(teamname)==0) {
+    			return Common.teams[a];
+    		}
+    	}
+		return null;
+	}
+	
 	public static void setTeamWon(Team team) {
 		winningteam = team;
 	}
-
+	
 }

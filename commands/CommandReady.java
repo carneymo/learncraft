@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Timer;
 
 import mods.learncraft.common.Common;
+import mods.learncraft.common.Team;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
@@ -30,8 +31,14 @@ public class CommandReady extends CommandBase {
 	{
 		if(icommandsender instanceof EntityPlayer) {
 			EntityPlayer player = (EntityPlayer)icommandsender;
-			//Iterate the playersReady variable to represent that the player is ready
-			Common.playersReady += 1;
+			Team team = Common.getTeam(player);
+			if(team == null) {
+				player.addChatMessage("You must be on a team before you can ready-up.");
+			} else {
+				//Iterate the playersReady variable to represent that the player is ready
+				Common.playersReady += 1;
+				player.addChatMessage("You are ready!");
+			}
 		}
 	}
 }

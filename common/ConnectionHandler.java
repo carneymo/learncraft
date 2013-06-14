@@ -25,23 +25,7 @@ public class ConnectionHandler implements IConnectionHandler {
 		else{
 
 			Common.dbqueries.insertPlayerLoggedIn(player1.username);
-			/**
-			String teamcolor = Common.dbqueries.getPlayerTeam(player1);
-			if(teamcolor.matches("blue")) {
-				if(!Common.blueteam.hasPlayer(player1)) {
-					Common.blueteam.addPlayer(player1);
-					Common.teleportPlayerTo(player1,"blue_spawn");
-				}
-			} else if(teamcolor.matches("gold")) {
-				if(!Common.goldteam.hasPlayer(player1)) {
-					Common.goldteam.addPlayer(player1);
-					Common.teleportPlayerTo(player1,"gold_spawn");
-				}
-			} else {
-				// Player doesn't belong to a team
-			}
-			**/
-			Common.teleportPlayerTo(player1,"choose_team");
+			Common.teleportPlayerTo(player1,"choose_team",true);
 		}
 	}
 

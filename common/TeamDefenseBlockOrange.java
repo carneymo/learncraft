@@ -24,7 +24,10 @@ public class TeamDefenseBlockOrange extends Block
 	@Override
 	public void onBlockClicked(World w, int x, int y, int z, EntityPlayer player)
 	{
-		if(Common.goldteam.hasPlayer(player)) this.setHardness(0.1F);
+		Team team = Common.getTeam(player);
+		if(team != null && team.teamcolor == "orange") {
+			this.setHardness(0.1F);
+		}
 		else this.setBlockUnbreakable();
 	}
 	

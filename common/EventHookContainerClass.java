@@ -84,44 +84,11 @@ public class EventHookContainerClass {
 			
 			// Teleport to appropriate team area if touch mob head
 			if(blockid==144 && event.action.compareTo(event.action.RIGHT_CLICK_BLOCK)==0) {
-				if(Common.blueteam.hasPlayer(player)) {
-					Common.teleportPlayerTo(player, "blue_arena");
-					//event.setCanceled(true);
-				} else if(Common.goldteam.hasPlayer(player)) {
-					Common.teleportPlayerTo(player, "gold_arena");
-					//event.setCanceled(true);
-				}
-	
-			}
-			
-			// Teleport and transfer to the gold team
-			if(blockid==519 && event.action.compareTo(event.action.RIGHT_CLICK_BLOCK)==0) {
-
-				if(Common.blueteam.hasPlayer(player)) {
-					// Don't do anything, this player shouldn't be touching this block
-				} else if(Common.goldteam.hasPlayer(player)) {
-					// Don't transfer to team, but just teleport to gold team
-					Common.teleportPlayerTo(player, "gold_spawn");
-					//event.setCanceled(true);
+				Team team = Common.getTeam(player);
+				if(team == null) {
+					// Don't do anything
 				} else {
-					Common.goldteam.addPlayer(player);
-					Common.teleportPlayerTo(player, "gold_spawn");
-					//event.setCanceled(true);
-				}
-			}
-			
-			// Teleport and transfer to the blue team
-			if(blockid==520 && event.action.compareTo(event.action.RIGHT_CLICK_BLOCK)==0) {
-				if(Common.goldteam.hasPlayer(player)) {
-					// Don't do anything, this player shouldn't be touching this block
-				} else if(Common.blueteam.hasPlayer(player)) {
-					// Don't transfer to team, but just teleport to blue team
-					Common.teleportPlayerTo(player, "blue_spawn");
-					//event.setCanceled(true);
-				} else {
-					Common.blueteam.addPlayer(player);
-					Common.teleportPlayerTo(player, "blue_spawn");
-					//event.setCanceled(true);
+					Common.teleportPlayerTo(player, team.teamcolor+"_arena");
 				}
 			}
 		}

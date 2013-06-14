@@ -66,22 +66,39 @@ public class Team {
 		this.points = this.points + addpoints;
 	}
 
+	public void reportScoreToPlayer(EntityPlayer player) {
+		player.addChatMessage(this.teamcolor.toUpperCase() + " has " + this.points + " points.");
+	}
+	
 	public void reportScore() {
 		Common.announce(this.teamcolor.toUpperCase() + " Team has scored! Score: " + this.points);
 	}
+	
+	public void reportPoints() {
+		Common.announce(this.teamcolor.toUpperCase() + " Team has " + this.points + " points.");
+	}
 
 	public void moveToSpawnAndFreeze() {
-		String spawnarea = "";
-		if(teamcolor == "blue") {
-			spawnarea = "blue_spawn";
-		} else {
-			spawnarea = "gold_spawn";
-		}
+		String spawnarea = this.teamcolor+"_spawn";
 		for(EntityPlayer rosterPlayer : roster) {
 			if(rosterPlayer != null) {
 				Common.teleportPlayerTo(rosterPlayer, spawnarea);
 			}
 		}
+	}
+
+	public void moveToArena() {
+		String arena = this.teamcolor+"_arena";
+		for(EntityPlayer rosterPlayer : roster) {
+			if(rosterPlayer != null) {
+				Common.teleportPlayerTo(rosterPlayer, arena);
+			}
+		}
+		
+	}
+	
+	public String getLocation(String loc) {
+		return this.teamcolor + "_" + loc;
 	}
 	
 }
