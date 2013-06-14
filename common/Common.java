@@ -255,6 +255,7 @@ public class Common {
 		
 		MinecraftForge.EVENT_BUS.register(new EventHookContainerClass());
 		NetworkRegistry.instance().registerConnectionHandler(new ConnectionHandler());
+		
     }
     
     @PostInit

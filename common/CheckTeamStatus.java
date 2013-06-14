@@ -13,6 +13,7 @@ public class CheckTeamStatus extends Thread {
 
 	@Override
 	public void run() {
+		System.out.println("in thread run()");
 		// TODO Auto-generated method stub
 		while(!Thread.interrupted()) {
 			try {
@@ -40,7 +41,7 @@ public class CheckTeamStatus extends Thread {
 	
 	public void checkScores() 
 	{		
-		if(Common.winningteam == null) {
+		if(Common.teams == null && Common.winningteam == null) {
 			Team[] teams = new Team[100];
 			for(int a=0;a<Common.teams.length;a++) {
 				if(Common.teams[a].points >= Integer.parseInt(Common.settings.getSetting("winningpoints"))) {
@@ -82,10 +83,8 @@ public class CheckTeamStatus extends Thread {
 				List<EntityPlayer> players = gameWorld.playerEntities;	
 				
 				GameTimer gameTimer = new GameTimer(gameWorld);
-			} else {
-				Common.announce("Players ready: "+Common.playersReady);
-				Common.announce("Players connected: "+Common.currentNumPlayers);
 			}
+			
 		} else {
 			// Game in progress
 		}
