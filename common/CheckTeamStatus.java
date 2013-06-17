@@ -75,10 +75,11 @@ public class CheckTeamStatus extends Thread {
 		//Check if the game has started yet.  If not, check if all players have entered the ready command
 		if(Common.inProgress == false && Common.currentNumPlayers != 0) {
 			if(Common.playersReady == Common.currentNumPlayers) {
+				Common.inProgress = true;
 				World gameWorld = Common.playerlist.get(0).worldObj; 
 				
 				//Set world time to zero and start timer.  
-				Common.announce("Eveyone is on a team and ready to play!");
+				//Common.announce("Eveyone is on a team and ready to play!");
 				gameWorld.setWorldTime(0);
 				List<EntityPlayer> players = gameWorld.playerEntities;	
 				

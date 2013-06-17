@@ -47,7 +47,6 @@ public class GameTimer {
 				}
 			}
 			Common.announce("Game Start!");
-			Common.inProgress = true;
 			Common.teleportOn = true;
 			for(int a=0;a<Common.teams.length;a++) {
 				Common.teams[a].moveToArena();
