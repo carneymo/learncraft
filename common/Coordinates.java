@@ -54,30 +54,6 @@ public class Coordinates {
 	}
 	
 	public Double[] getCoordinates(String loc) {
-		// First change the location codewords into a string of the actual coordinates
-		String loc_coord;
-		if(loc.matches("choose_team")) {
-			// z = 604 - 592
-			// x = 55.45 - 58.1
-			loc_coord = "57.81, 123, 600.58";
-		}
-		if(loc.matches("gold_spawn")) {
-			// z = 604 - 592
-			// x = 218 - 202
-			loc_coord = "207.96, 140, 698.06";
-		}
-		if(loc.matches("blue_spawn")) {
-			loc_coord = "211, 116.1, 499";
-		}
-		if(loc.matches("gold_arena")) {
-			loc_coord = "117.17, 74, 548.35";
-		}
-		if(loc.matches("blue_arena")) {
-			loc_coord = "299.42, 74, 649.95";
-		}
-		if(loc.matches("maze_spawn")) {
-			loc_coord = "264.65, 4.1, 464.49";
-		}
 		if(coordinates.containsKey(loc)) {
 			Double[] returncoord = new Double[3];
 			String[] coords = coordinates.get(loc).split(",",3);
