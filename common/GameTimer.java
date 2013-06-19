@@ -16,7 +16,7 @@ public class GameTimer {
 	// One hour is three minecraft days
 	public GameTimer(World gameWorld) {
 		currentWorld = gameWorld;
-		int countdown = 1 * 60 * 1000; // Minutes * Seconds * Milliseconds
+		int countdown = 15 * 60 * 1000; // Minutes * Seconds * Milliseconds
 		timer = new Timer();
 		timer.schedule(new countdown(), 500);
 		timer.schedule(new setBuzz(), countdown);
