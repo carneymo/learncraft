@@ -35,9 +35,9 @@ public class CommandReady extends CommandBase {
 			if(team == null) {
 				player.addChatMessage("You must be on a team before you can ready-up.");
 			} else {
-				//Iterate the playersReady variable to represent that the player is ready
-				Common.playersReady += 1;
+				Common.currentPlayers.setReady(player);
 				player.addChatMessage("You are ready!");
+				Common.announce(Common.currentPlayers.getNumReady() + "/" +  Common.currentPlayers.getLength() + " players are ready.");
 			}
 		}
 	}
