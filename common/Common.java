@@ -2,10 +2,8 @@ package mods.learncraft.common;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 import mods.learncraft.commands.CommandReady;
 import mods.learncraft.commands.CommandTeam;
@@ -113,7 +111,8 @@ public class Common {
     
     public static List<EntityPlayer> playerlist = new ArrayList<EntityPlayer>();
 
-    public static PlayerMap currentPlayers = new PlayerMap();
+    public static int currentNumPlayers = 0;
+    public static int playersReady = 0;
     public static Team[] teams = new Team[0];
     public static Team winningteam = null;
     

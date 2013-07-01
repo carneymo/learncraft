@@ -17,7 +17,7 @@ public class ConnectionHandler implements IConnectionHandler {
 	@Override
 	public void playerLoggedIn(Player player, NetHandler netHandler, INetworkManager manager) {
 		EntityPlayer player1 = (EntityPlayer) player;
-		Common.currentPlayers.addPlayer(player1);
+		Common.currentNumPlayers +=1;
 		Common.playerlist.add(player1);
 		player1.addChatMessage("Welcome.  Please choose a team by activating a block.  Then execute the /ready command.");
 

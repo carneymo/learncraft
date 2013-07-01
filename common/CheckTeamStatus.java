@@ -73,8 +73,8 @@ public class CheckTeamStatus extends Thread {
 		}
 		
 		//Check if the game has started yet.  If not, check if all players have entered the ready command
-		if(Common.inProgress == false && Common.currentPlayers.getLength() != 0) {
-			if(Common.currentPlayers.allReady()) {
+		if(Common.inProgress == false && Common.currentNumPlayers != 0) {
+			if(Common.playersReady == Common.currentNumPlayers) {
 				Common.inProgress = true;
 				World gameWorld = Common.playerlist.get(0).worldObj; 
 				
