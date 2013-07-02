@@ -4,6 +4,9 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
@@ -11,6 +14,8 @@ import net.minecraft.world.World;
 
 public class CheckTeamStatus extends Thread {
 
+	private boolean balanced = true;
+	
 	@Override
 	public void run() {
 		System.out.println("in thread run()");
@@ -18,6 +23,7 @@ public class CheckTeamStatus extends Thread {
 		while(!Thread.interrupted()) {
 			try {
 				Thread.sleep(500);
+				autoBalance();
 				checkScores();
 				pushNotifications();
 			} catch(InterruptedException e) {
@@ -25,8 +31,90 @@ public class CheckTeamStatus extends Thread {
 			}
 		}
 	}
+	
+	public void autoBalance()
+	{
+	    int orangeTeamSize = Common.getTeam("orange").getOnline();
+		int blueTeamSize = Common.getTeam("blue").getOnline();
+		
+		if(balanced)
+		{
+			if((orangeTeamSize - blueTeamSize) >= 2)
+			{
+				balanced = false;
+				Common.announce("Blue team is at a disadvantage, teams will be autobalanced in 30 seconds.");
+			}
+			
+			if((blueTeamSize - orangeTeamSize) >= 2)
+			{
+				balanced = false;
+				Common.announce("Orange team is at a disadvantage, teams will be autobalanced in 30 seconds.");
+			}
+		}
+		
+		if(!balanced)
+		{
+			Timer timer = new Timer();
+			final Random random = new Random();
+			timer.schedule(new TimerTask()
+			{
+				@Override
+				public void run() 
+				{
+					 int orangeTeamSize = Common.getTeam("orange").getOnline();
+					 int blueTeamSize = Common.getTeam("blue").getOnline(); 
+					 int total = orangeTeamSize + blueTeamSize;
+					 int take = 0;
+					 Team largerTeam, smallerTeam;
+					 
+					 if(orangeTeamSize > blueTeamSize)
+					 {
+						 largerTeam = Common.getTeam("orange");
+						 smallerTeam = Common.getTeam("blue");
+						 take = orangeTeamSize - total/2;
+						 
+						 for(int i = 0; i < take; i++)
+						 {
+							 int index = random.nextInt(orangeTeamSize + 1);
+							 EntityPlayer player = largerTeam.roster[index];
+							 
+							 if(player != null)
+							 {
+								 largerTeam.removePlayer(player);
+								 smallerTeam.addPlayer(player);
+								 Common.teleportPlayerTo(player, "blue_spawn");
+								 player.addChatMessage("You have been changed to blue team.");
+							 }
+						 }
+					 }
+					 if(blueTeamSize > orangeTeamSize)
+					 {
+						 largerTeam = Common.getTeam("blue");
+						 smallerTeam = Common.getTeam("orange");
+						 take = blueTeamSize - total/2;
+						 
+						 for(int i = 0; i < take; i++)
+						 {
+							 int index = random.nextInt(blueTeamSize + 1);
+							 EntityPlayer player = largerTeam.roster[index];
+							 
+							 if(player != null)
+							 {
+								 largerTeam.removePlayer(player);
+								 smallerTeam.addPlayer(player);
+								 Common.teleportPlayerTo(player, "orange_spawn");
+								 player.addChatMessage("You have been changed to orange team.");
+							 }
+						 }
+					 } 
+				}
+				
+			}, 30 * 1000); //after 30 seconds
+		}
+		
+	}
 
-	public void pushNotifications()
+	public synchronized void pushNotifications()
 	{
 		Iterator<String> iterator = Common.notifications.iterator(); 
 		while (iterator.hasNext()){
@@ -82,7 +170,6 @@ public class CheckTeamStatus extends Thread {
 				//Common.announce("Eveyone is on a team and ready to play!");
 				gameWorld.setWorldTime(0);
 				List<EntityPlayer> players = gameWorld.playerEntities;	
-				
 				GameTimer gameTimer = new GameTimer(gameWorld);
 			}
 			

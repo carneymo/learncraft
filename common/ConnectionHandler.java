@@ -17,13 +17,16 @@ public class ConnectionHandler implements IConnectionHandler {
 	@Override
 	public void playerLoggedIn(Player player, NetHandler netHandler, INetworkManager manager) {
 		EntityPlayer player1 = (EntityPlayer) player;
-		Common.currentPlayers.addPlayer(player1);
+		Common.currentPlayers.addPlayer(player1);		
 		Common.playerlist.add(player1);
 		player1.addChatMessage("Welcome.  Please choose a team by activating a block.  Then execute the /ready command.");
 
-		if(null == Common.dbqueries) {player1.addChatMessage("The dbqueries is null.  Cannot start checkTeamStatus thread");}
-		else{
-
+		if(null == Common.dbqueries) 
+		{
+			player1.addChatMessage("The dbqueries is null.  Cannot start checkTeamStatus thread");
+	    }
+		else
+		{
 			Common.dbqueries.insertPlayerLoggedIn(player1.username);
 			Common.teleportPlayerTo(player1,"choose_team",true);
 		}

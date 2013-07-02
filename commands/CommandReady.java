@@ -8,6 +8,7 @@ import mods.learncraft.common.Team;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
 
 public class CommandReady extends CommandBase {
@@ -36,7 +37,7 @@ public class CommandReady extends CommandBase {
 				player.addChatMessage("You must be on a team before you can ready-up.");
 			} else {
 				Common.currentPlayers.setReady(player);
-				player.addChatMessage("You are ready!");
+				System.out.println(Common.currentPlayers);
 				Common.announce(Common.currentPlayers.getNumReady() + "/" +  Common.currentPlayers.getLength() + " players are ready.");
 			}
 		}

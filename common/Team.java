@@ -18,6 +18,34 @@ public class Team {
 		teamcolor = newteamcolor;
 	}
 	
+	public boolean isOnline(EntityPlayer player)
+	{
+		for(int i = 0; i < roster.length; i++)
+		{
+			if(roster[i] != null && player != null)
+			{
+				if(roster[i].username == player.username)
+				{
+					if(MinecraftServer.getServer().getConfigurationManager().getPlayerListAsString().contains(player.username)) return true;
+				}
+			}
+		}
+		
+		return false;
+	}
+	
+	public int getOnline()
+	{
+		int numOnline = 0;
+		
+		for(EntityPlayer p : roster)
+		{
+			if(isOnline(p)) numOnline++;
+		}
+		
+		return numOnline;
+	}
+	
 	public void addPlayer(EntityPlayer player) {
 		this.roster[numroster] = player;
 		numroster++;

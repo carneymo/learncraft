@@ -2,15 +2,13 @@ package mods.learncraft.common;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-
 import mods.learncraft.commands.CommandReady;
 import mods.learncraft.commands.CommandTeam;
 import mods.learncraft.commands.CommandTeamscore;
 import mods.learncraft.commands.CommandGenGlowstone;
+import mods.learncraft.common.PlayerMap;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
 import net.minecraft.block.material.Material;
@@ -268,8 +266,7 @@ public class Common {
     public void serverStart(FMLServerStartingEvent event)
     {
     	Common.teleportOn = false;
-		// Pings every 5 seconds
-		(new CheckServer()).start();
+    	
 		// Pings every 0.5 seconds
 		(new CheckTeamStatus()).start();
 		

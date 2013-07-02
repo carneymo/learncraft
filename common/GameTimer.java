@@ -18,7 +18,7 @@ public class GameTimer {
 		currentWorld = gameWorld;
 		int countdown = 15 * 60 * 1000; // Minutes * Seconds * Milliseconds
 		timer = new Timer();
-		timer.schedule(new countdown(), 500);
+		timer.schedule(new countdown(), 1000);
 		timer.schedule(new setBuzz(), countdown);
 	}
 

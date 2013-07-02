@@ -2,6 +2,7 @@ package mods.learncraft.common;
 
 import java.util.ArrayList;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 
 public class PlayerMap 
@@ -15,7 +16,19 @@ public class PlayerMap
 	
 	public void addPlayer(EntityPlayer player)
 	{
-		playerList.add(new PlayerMapItem(player, false));
+		if(!playerList.contains(player))
+			playerList.add(new PlayerMapItem(player, false));
+	}
+	
+	public boolean contains(EntityPlayer player)
+	{
+		for(PlayerMapItem item : playerList)
+		{
+			if(item.getPlayer().getEntityName().equals(player.getEntityName()))
+				return true;
+		}
+		
+		return false;
 	}
 	
 	public void setReady(EntityPlayer player)
@@ -57,6 +70,16 @@ public class PlayerMap
 	public int getLength()
 	{
 		return playerList.size();
+	}
+	
+	public String toString()
+	{
+		for(PlayerMapItem item : playerList)
+		{
+			System.out.println(item.getPlayer().getEntityName() + ": " + item.getReady());
+		}
+		
+		return null;
 	}
 	
 	private class PlayerMapItem
