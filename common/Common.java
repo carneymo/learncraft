@@ -267,8 +267,6 @@ public class Common {
     public void serverStart(FMLServerStartingEvent event)
     {
     	Common.teleportOn = false;
-		// Pings every 5 seconds
-		(new CheckServer()).start();
 		// Pings every 0.5 seconds
 		(new CheckTeamStatus()).start();
 		
