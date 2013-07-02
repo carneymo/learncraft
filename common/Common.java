@@ -266,8 +266,6 @@ public class Common {
     public void serverStart(FMLServerStartingEvent event)
     {
     	Common.teleportOn = false;
-    	
-		// Pings every 0.5 seconds
 		(new CheckTeamStatus()).start();
 		
 		MinecraftServer server = MinecraftServer.getServer(); //Gets current server
