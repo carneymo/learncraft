@@ -36,15 +36,10 @@ public class CommandReady extends CommandBase {
 			if(team == null) {
 				player.addChatMessage("You must be on a team before you can ready-up.");
 			} else {
-<<<<<<< HEAD
 				Common.currentPlayers.setReady(player);
 				System.out.println(Common.currentPlayers);
 				Common.announce(Common.currentPlayers.getNumReady() + "/" +  Common.currentPlayers.getLength() + " players are ready.");
-=======
-				//Iterate the playersReady variable to represent that the player is ready
-				Common.playersReady += 1;
-				player.addChatMessage("You are ready!");
->>>>>>> f9c1feacf722273d1ebb7d496f0f12f862c4f58e
+
 			}
 		}
 	}
