@@ -119,6 +119,7 @@ public class Common {
     
     public static boolean inProgress = false;
     public static boolean teleportOn = true;
+    public static boolean disableTeamSwitch = false;
     
     public static Coordinates coordinates = new Coordinates();
     public static Settings settings = new Settings();

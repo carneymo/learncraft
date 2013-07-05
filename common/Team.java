@@ -1,5 +1,6 @@
 package mods.learncraft.common;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -9,41 +10,13 @@ import net.minecraft.world.World;
 public class Team {
 
 	public String teamcolor = "";
-	public EntityPlayer[] roster = new EntityPlayer[100];
+	public EntityPlayer[] roster = new EntityPlayer[500];
 	public int numroster = 0;
 	public int points = 0;
 	private String teamChestModel = "";
 	
 	public Team(String newteamcolor) {
 		teamcolor = newteamcolor;
-	}
-	
-	public boolean isOnline(EntityPlayer player)
-	{
-		for(int i = 0; i < roster.length; i++)
-		{
-			if(roster[i] != null && player != null)
-			{
-				if(roster[i].username == player.username)
-				{
-					if(MinecraftServer.getServer().getConfigurationManager().getPlayerListAsString().contains(player.username)) return true;
-				}
-			}
-		}
-		
-		return false;
-	}
-	
-	public int getOnline()
-	{
-		int numOnline = 0;
-		
-		for(EntityPlayer p : roster)
-		{
-			if(isOnline(p)) numOnline++;
-		}
-		
-		return numOnline;
 	}
 	
 	public void addPlayer(EntityPlayer player) {
@@ -69,16 +42,16 @@ public class Team {
 	}
 	
 	public void removePlayer(EntityPlayer player) {
-		if(this.hasPlayer(player)) {
-			int count = 0;
-			for(EntityPlayer rosterPlayer : roster) {
+		int count = 0;
+		for(EntityPlayer rosterPlayer : roster) {
+			if(rosterPlayer != null && player != null)
+			{
 				if(rosterPlayer.username == player.username) {
 					roster[count] = null;
 					break;
 				}
-				count++;
 			}
-			
+			count++;
 		}
 	}
 
@@ -127,6 +100,52 @@ public class Team {
 	
 	public String getLocation(String loc) {
 		return this.teamcolor + "_" + loc;
+	}
+	
+	
+	public String getTeamColor()
+	{
+		return teamcolor;
+	}
+	
+	public ArrayList<Integer> getCurrentIndices()
+	{
+		ArrayList<Integer> indices = new ArrayList();
+		
+		for(int i = 0; i < roster.length; i++)
+		{
+			if(roster[i] != null) indices.add(i);
+		}
+		
+		return indices;
+	}
+	
+	public boolean isOnline(EntityPlayer player)
+	{
+		for(int i = 0; i < roster.length; i++)
+		{
+			if(roster[i] != null && player != null)
+			{
+				if(roster[i].username == player.username)
+				{
+					return true;
+				}
+			}
+		}
+		
+		return false;
+	}
+	
+	public int getOnline()
+	{
+		int numOnline = 0;
+		
+		for(EntityPlayer p : roster)
+		{
+			if(isOnline(p)) numOnline++;
+		}
+		
+		return numOnline;
 	}
 	
 }
