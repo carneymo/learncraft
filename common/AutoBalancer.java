@@ -4,9 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Random;
-
 import javax.swing.Timer;
-
 import net.minecraft.entity.player.EntityPlayer;
 
 public class AutoBalancer
@@ -103,6 +101,7 @@ public class AutoBalancer
 		
 		runner.start();
 	}
+	
 	
 	public void autoBalance()
 	{

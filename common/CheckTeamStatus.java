@@ -2,14 +2,9 @@ package mods.learncraft.common;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.Random;
-
-import javax.swing.Timer;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
@@ -17,10 +12,6 @@ import net.minecraft.world.World;
 
 public class CheckTeamStatus extends Thread {
 
-	private boolean balanced = true, test = true;
-	private Timer timer;
-	private Random random;
-	
 	@Override
 	public void run() {
 		System.out.println("in thread run()");
