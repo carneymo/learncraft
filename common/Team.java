@@ -10,7 +10,7 @@ import net.minecraft.world.World;
 public class Team {
 
 	public String teamcolor = "";
-	public EntityPlayer[] roster = new EntityPlayer[500];
+	public TeamRoster roster = new TeamRoster();
 	public int numroster = 0;
 	public int points = 0;
 	private String teamChestModel = "";
@@ -20,39 +20,26 @@ public class Team {
 	}
 	
 	public void addPlayer(EntityPlayer player) {
-		this.roster[numroster] = player;
+		
+		roster.addPlayer(player, numroster);
 		numroster++;
-		// Common.dbqueries.addPlayerToTeam(player,this);
+		
 		Common.announce("Added "+player.username+" to the "+teamcolor+" team!");
 	}
 	
 	public boolean hasPlayer(EntityPlayer player) {
-		if(numroster==0) {
+		if(numroster == 0 || player == null) {
 			return false;
 		}
-		for(int a=0;a<roster.length;a++) {
-			if(roster[a]==null) {
-				return false;
-			}
-			if(roster[a].username == player.username) {
-				return true;
-			}
-		}
+		
+		if(roster.contains(player)) 
+			return true;
+		
 		return false;
 	}
 	
 	public void removePlayer(EntityPlayer player) {
-		int count = 0;
-		for(EntityPlayer rosterPlayer : roster) {
-			if(rosterPlayer != null && player != null)
-			{
-				if(rosterPlayer.username == player.username) {
-					roster[count] = null;
-					break;
-				}
-			}
-			count++;
-		}
+		roster.removePlayer(player);
 	}
 
 	public boolean hasChestModel() {
@@ -81,7 +68,7 @@ public class Team {
 
 	public void moveToSpawnAndFreeze() {
 		String spawnarea = this.teamcolor+"_spawn";
-		for(EntityPlayer rosterPlayer : roster) {
+		for(EntityPlayer rosterPlayer : roster.getPlayers()) {
 			if(rosterPlayer != null) {
 				Common.teleportPlayerTo(rosterPlayer, spawnarea);
 			}
@@ -90,7 +77,7 @@ public class Team {
 
 	public void moveToArena() {
 		String arena = this.teamcolor+"_arena";
-		for(EntityPlayer rosterPlayer : roster) {
+		for(EntityPlayer rosterPlayer : roster.getPlayers()) {
 			if(rosterPlayer != null) {
 				Common.teleportPlayerTo(rosterPlayer, arena);
 			}
@@ -108,44 +95,19 @@ public class Team {
 		return teamcolor;
 	}
 	
-	public ArrayList<Integer> getCurrentIndices()
+	public int getNumPlayers()
 	{
-		ArrayList<Integer> indices = new ArrayList();
-		
-		for(int i = 0; i < roster.length; i++)
-		{
-			if(roster[i] != null) indices.add(i);
-		}
-		
-		return indices;
+		return roster.getNumPlayers();
 	}
 	
-	public boolean isOnline(EntityPlayer player)
+	public ArrayList<EntityPlayer> getPlayers()
 	{
-		for(int i = 0; i < roster.length; i++)
-		{
-			if(roster[i] != null && player != null)
-			{
-				if(roster[i].username == player.username)
-				{
-					return true;
-				}
-			}
-		}
-		
-		return false;
+		return roster.getPlayers();
 	}
 	
-	public int getOnline()
+	public void printRoster()
 	{
-		int numOnline = 0;
-		
-		for(EntityPlayer p : roster)
-		{
-			if(isOnline(p)) numOnline++;
-		}
-		
-		return numOnline;
+		System.out.println(this.teamcolor + " team's roster:");
+		roster.printRoster();
 	}
-	
 }

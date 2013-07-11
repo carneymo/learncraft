@@ -23,8 +23,8 @@ public class AutoBalancer
 			@Override
 			public void actionPerformed(ActionEvent arg0) 
 			{
-				 orangeTeamSize = Common.getTeam("orange").getOnline();
-				 blueTeamSize = Common.getTeam("blue").getOnline(); 
+				 orangeTeamSize = Common.getTeam("orange").getNumPlayers();
+				 blueTeamSize = Common.getTeam("blue").getNumPlayers(); 
 				 total = orangeTeamSize + blueTeamSize;
 				 take = 0; //the amount of players taken from the larger team
 				 largerTeam = null;
@@ -62,9 +62,9 @@ public class AutoBalancer
 				 {
 					 //Due to the way the roster works, players are added at the spot of whatever the current numroster
 					 //happens to be. This returns a list of all those indices, and one of them is randomly chosen.
-					 ArrayList<Integer> indices = largerTeam.getCurrentIndices(); 
-					 int index = random.nextInt(indices.size());
-					 EntityPlayer player = largerTeam.roster[indices.get(index)];
+					 ArrayList<EntityPlayer> players = largerTeam.getPlayers(); 
+					 int index = random.nextInt(players.size());
+					 EntityPlayer player = players.get(index);
 					 
 					 if(player != null)
 					 {
@@ -75,7 +75,8 @@ public class AutoBalancer
 						 }
 						 
 						 largerTeam.removePlayer(player); //remove from larger team
-						 smallerTeam.addPlayer(player); //add to smaller team	
+						 smallerTeam.addPlayer(player); //add to smaller team
+						 
 						 Common.teleportPlayerTo(player, teleportLocation); //teleport to the right team's base
 						 player.addChatMessage(message); //Notify the player they were switched
 					 }
@@ -105,8 +106,8 @@ public class AutoBalancer
 	
 	public void autoBalance()
 	{
-	    orangeTeamSize = Common.getTeam("orange").getOnline();
-		blueTeamSize = Common.getTeam("blue").getOnline();
+	    orangeTeamSize = Common.getTeam("orange").getNumPlayers();
+		blueTeamSize = Common.getTeam("blue").getNumPlayers();
 		
 		if(balanced)
 		{

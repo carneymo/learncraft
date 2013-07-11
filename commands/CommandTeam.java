@@ -39,8 +39,14 @@ public class CommandTeam extends CommandBase {
 				return;
 			}
 			
+			if(Common.getTeam(astring[0].toLowerCase()).hasPlayer(player))
+			{
+				player.addChatMessage("You are already on that team!");
+				return;
+			}
+			
 			Team team = Common.getTeam(player);
-			if(team == null && astring.length==1) {
+			if(team == null && astring.length == 1) {
 				if(Common.hasTeam(astring[0])) {
 					Team newteam = Common.getTeam(astring[0]);
 					newteam.addPlayer(player);
@@ -48,7 +54,7 @@ public class CommandTeam extends CommandBase {
 					Common.teleportPlayerTo(player, newteam.teamcolor+"_spawn", true);
 				}
 			} else {
-				if(Common.inProgress == false && !Common.getTeam(astring[0]).hasPlayer(player)) {
+				if(Common.inProgress == false) {
 					if(astring.length == 1 && Common.hasTeam(astring[0]) && team != null && astring[0].compareTo(team.teamcolor)!=0) {
 						team.removePlayer(player);
 						Team newteam = Common.getTeam(astring[0]);

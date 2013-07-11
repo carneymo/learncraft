@@ -110,9 +110,8 @@ public class Common {
     public static TeamDoor BlueTeamDoor;
     
     public static List<EntityPlayer> playerlist = new ArrayList<EntityPlayer>();
-
     public static PlayerMap currentPlayers = new PlayerMap();
-    public static Team[] teams = new Team[0];
+    public static Team[] teams = new Team[2];
     public static Team winningteam = null;
     
     public static LinkedList<String> notifications = new LinkedList<String>();
@@ -241,6 +240,8 @@ public class Common {
 		LanguageRegistry.addName(blockDesignateOrange, "Orange Team Designation");
 		
 		// Add new teams
+		teams[0] = new Team("blue");
+		teams[1] = new Team("orange");
 		
 		// Call special functions in the proxy's
         proxy.registerTileEntitySpecialRenderer();
@@ -295,7 +296,7 @@ public class Common {
 	}
 
 	public static void teleportPlayerTo(EntityPlayer player, String loc, Boolean override) {
-		if(teleportOn || override) {
+		if(teleportOn == true || override == true) {
 
 			Common.coordinates.TeleportPlayer(player, loc);
 			
