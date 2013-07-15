@@ -1,7 +1,5 @@
 package mods.learncraft.common;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.Enchantment;
@@ -37,7 +35,8 @@ public class LearningBow extends ItemBow
     /**
      * called when the player releases the use item button. Args: itemstack, world, entityplayer, itemInUseCount
      */
-    public void onPlayerStoppedUsing(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer, int par4)
+    @Override
+	public void onPlayerStoppedUsing(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer, int par4)
     {
         int j = this.getMaxItemUseDuration(par1ItemStack) - par4;
 
@@ -54,10 +53,10 @@ public class LearningBow extends ItemBow
         if (flag || par3EntityPlayer.inventory.hasItem(Item.arrow.itemID))
         {
         	
-            float f = (float)j / 20.0F;
+            float f = j / 20.0F;
             f = (f * f + f * 2.0F) / 3.0F;
 
-            if ((double)f < 0.1D)
+            if (f < 0.1D)
             {
                 return;
             }
@@ -79,7 +78,7 @@ public class LearningBow extends ItemBow
 
             if (k > 0)
             {
-                entityarrow.setDamage(entityarrow.getDamage() + (double)k * 0.5D + 0.5D);
+                entityarrow.setDamage(entityarrow.getDamage() + k * 0.5D + 0.5D);
             }
 
             int l = EnchantmentHelper.getEnchantmentLevel(Enchantment.punch.effectId, par1ItemStack);
@@ -113,7 +112,8 @@ public class LearningBow extends ItemBow
         }
     }
 
-    public ItemStack onEaten(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
+    @Override
+	public ItemStack onEaten(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
     {
         return par1ItemStack;
     }
@@ -121,7 +121,8 @@ public class LearningBow extends ItemBow
     /**
      * How long it takes to use or consume an item
      */
-    public int getMaxItemUseDuration(ItemStack par1ItemStack)
+    @Override
+	public int getMaxItemUseDuration(ItemStack par1ItemStack)
     {
         return 72000;
     }
@@ -129,7 +130,8 @@ public class LearningBow extends ItemBow
     /**
      * returns the action that specifies what animation to play when the items is being used
      */
-    public EnumAction getItemUseAction(ItemStack par1ItemStack)
+    @Override
+	public EnumAction getItemUseAction(ItemStack par1ItemStack)
     {
         return EnumAction.bow;
     }
@@ -137,7 +139,8 @@ public class LearningBow extends ItemBow
     /**
      * Called whenever this item is equipped and the right mouse button is pressed. Args: itemStack, world, entityPlayer
      */
-    public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
+    @Override
+	public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
     {
         ArrowNockEvent event = new ArrowNockEvent(par3EntityPlayer, par1ItemStack);
         MinecraftForge.EVENT_BUS.post(event);
@@ -157,7 +160,8 @@ public class LearningBow extends ItemBow
     /**
      * Return the enchantability factor of the item, most of the time is based on material.
      */
-    public int getItemEnchantability()
+    @Override
+	public int getItemEnchantability()
     {
         return 1;
     }
@@ -168,7 +172,8 @@ public class LearningBow extends ItemBow
     /**
      * used to cycle through icons based on their used duration, i.e. for the bow
      */
-    public Icon getItemIconForUseDuration(int par1)
+    @Override
+	public Icon getItemIconForUseDuration(int par1)
     {
         return this.iconArray[par1];
     }
@@ -177,7 +182,8 @@ public class LearningBow extends ItemBow
 
     //private Icon[] Texture = new Icon[3];
     
-    public void registerIcons(IconRegister iconRegister)
+    @Override
+	public void registerIcons(IconRegister iconRegister)
 
     {
 
@@ -188,7 +194,8 @@ public class LearningBow extends ItemBow
 
     			 }
     }
-    public Icon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining)
+    @Override
+	public Icon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining)
     {
     			 if(player.getItemInUse() == null) return this.itemIcon;
     			 int Pulling = stack.getMaxItemUseDuration() - useRemaining;

@@ -1,19 +1,15 @@
 package mods.learncraft.common;
 
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.EnumStatus;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.DamageSource;
-import net.minecraftforge.event.CommandEvent;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 
 public class EventHookContainerClass {
@@ -83,7 +79,7 @@ public class EventHookContainerClass {
 			int metadata = player.worldObj.getBlockMetadata(event.x, event.y, event.z);
 			
 			// Teleport to appropriate team area if touch mob head
-			if(blockid==144 && event.action.compareTo(event.action.RIGHT_CLICK_BLOCK)==0) {
+			if(blockid==144 && event.action.compareTo(Action.RIGHT_CLICK_BLOCK)==0) {
 				Team team = Common.getTeam(player);
 				if(team == null) {
 					// Don't do anything

@@ -1,12 +1,8 @@
 package mods.learncraft.common;
 
-import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
 
 public class GameTimer {
@@ -24,6 +20,7 @@ public class GameTimer {
 
 	// timerBuzzing is set to true when time is up on the game.
 	class setBuzz extends TimerTask {
+		@Override
 		public void run() {
 			Common.announce("Game is over!");
 			for(int a=0;a<Common.teams.length;a++) {
@@ -36,6 +33,7 @@ public class GameTimer {
 	}
 
 	class countdown extends TimerTask {
+		@Override
 		public void run() {
 			for (int i = 5; i > 0; i--) {
 					Common.announce("Game Starting in " + i + "...");

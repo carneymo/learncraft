@@ -4,25 +4,22 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+
 import mods.learncraft.commands.CommandReady;
+import mods.learncraft.commands.CommandResetAll;
 import mods.learncraft.commands.CommandTeam;
 import mods.learncraft.commands.CommandTeamscore;
 import mods.learncraft.commands.CommandGenGlowstone;
 import mods.learncraft.common.PlayerMap;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockChest;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.EnumToolMaterial;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemPickaxe;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.FurnaceRecipes;
 import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Init;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.Mod.PostInit;
 import cpw.mods.fml.common.Mod.PreInit;
-import cpw.mods.fml.common.Mod.ServerStarted;
 import cpw.mods.fml.common.Mod.ServerStarting;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -33,20 +30,14 @@ import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
-import net.minecraft.client.gui.achievement.*;
 import net.minecraft.command.ICommandManager;
 import net.minecraft.command.ServerCommandManager;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.stats.Achievement;
-import net.minecraft.stats.AchievementList;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.MinecraftForge;
 
-@Mod(modid="MC_LearnCraft", name="LearnCraft", version="0.8")
+@Mod(modid="MC_LearnCraft", name="LearnCraft", version="1.0")
 @NetworkMod(clientSideRequired=true, serverSideRequired=false)
 
 public class Common {
@@ -131,12 +122,13 @@ public class Common {
     public static Block blockDesignateOrange;
     public static Block blockDesignateBlue;
     
-    @PreInit
+    @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
 
 		Configuration config = new Configuration(event.getSuggestedConfigurationFile());
 
 		config.load();
+		
 		LCBlockID = config.getBlock("LCBlock", 501).getInt();
 		LBlockChestID = config.getBlock("lchest", 502).getInt();
 		BlockBorderID = config.getBlock("BorderBlock", 503).getInt();
@@ -157,11 +149,11 @@ public class Common {
 		config.save();
     }
  
-    @Init
+    @EventHandler
     public void load(FMLInitializationEvent event) {
     	
     	LCBlock = (new LBlock(LCBlockID, Material.iron)).setUnlocalizedName("lcblock");
-        LanguageRegistry.addName(LCBlock, "Learning block");
+        LanguageRegistry.addName(LCBlock, "Learning Block");
         GameRegistry.registerBlock(LCBlock, "lcblock");
         
         BorderBlock = (new BorderBlock(BlockBorderID, Material.iron)).setUnlocalizedName("border_block");
@@ -173,7 +165,7 @@ public class Common {
         GameRegistry.registerBlock(StoneGlowReplaceable, "StoneGlowReplaceable");
 
         lchest = (LBlockChest) (new LBlockChest(LBlockChestID, 0)).setUnlocalizedName("lc_chest");
-        LanguageRegistry.addName(lchest, "Learning chest");
+        LanguageRegistry.addName(lchest, "Learning Chest");
         GameRegistry.registerBlock(lchest, "lc_chest");
         GameRegistry.registerTileEntity(TileEntityLChest.class, "LChest.chest");
         
@@ -186,7 +178,7 @@ public class Common {
         GameRegistry.registerBlock(InvisibleBlock, "Invisible Block");
         
         TeamChest = (TeamChest) (new TeamChest(TeamChestID, 0)).setUnlocalizedName("teamchest");
-        LanguageRegistry.addName(TeamChest, "TeamChest");
+        LanguageRegistry.addName(TeamChest, "Team Chest");
         GameRegistry.registerBlock(TeamChest, "teamchest");
         GameRegistry.registerTileEntity(TileEntityTeamChest.class, "TeamChest.chest");
     	
@@ -246,6 +238,7 @@ public class Common {
 		// Call special functions in the proxy's
         proxy.registerTileEntitySpecialRenderer();
     	proxy.registerRenderThings();
+    	proxy.registerSounds();
     	
     	// Add DBQueries to the Common handler
 		try {
@@ -259,12 +252,12 @@ public class Common {
 		
     }
     
-    @PostInit
+    @EventHandler
     public void postInit(FMLPostInitializationEvent event) {
 
     }
     
-    @ServerStarting
+    @EventHandler
     public void serverStart(FMLServerStartingEvent event)
     {
     	Common.teleportOn = false;
@@ -278,6 +271,7 @@ public class Common {
 		serverCommand.registerCommand(new CommandTeamscore());
 		serverCommand.registerCommand(new CommandReady());
 		serverCommand.registerCommand(new CommandGenGlowstone());
+		serverCommand.registerCommand(new CommandResetAll());
     }
     
     

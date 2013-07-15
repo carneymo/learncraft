@@ -1,11 +1,7 @@
 package mods.learncraft.common;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
@@ -32,7 +28,7 @@ public class CheckTeamStatus extends Thread {
 	{
 		Iterator<String> iterator = Common.notifications.iterator(); 
 		while (iterator.hasNext()){
-			String message = (String) iterator.next();
+			String message = iterator.next();
 			List plist = MinecraftServer.getServer().getConfigurationManager().playerEntityList;
 			for(int a=0; a < plist.size(); a++) {
 				((EntityPlayer) plist.get(a)).addChatMessage(message);

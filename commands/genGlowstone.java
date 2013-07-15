@@ -1,13 +1,7 @@
 package mods.learncraft.commands;
 
-import java.util.List;
 import java.util.Set;
-import java.util.Iterator;
-import java.math.*;
-
-import mods.learncraft.common.Common;
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
@@ -105,5 +99,11 @@ public class genGlowstone extends CommandBase {
 				}
 			}
 		}
+	}
+
+	@Override
+	public String getCommandUsage(ICommandSender icommandsender) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

@@ -5,14 +5,9 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item.*;
 import net.minecraft.item.EnumToolMaterial;
 import net.minecraft.item.ItemPickaxe;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Vec3;
-import net.minecraft.world.World;
 
 public class LearningPickaxe extends ItemPickaxe
 {
@@ -28,11 +23,13 @@ public class LearningPickaxe extends ItemPickaxe
 		return 508;
 	}
 	
+	@Override
 	public void registerIcons(IconRegister iconRegister)
 	{
 	     itemIcon = iconRegister.registerIcon("learncraft:pickaxePurple");
 	}
 	
+	@Override
 	public float getStrVsBlock(ItemStack par1, Block par2)
 	{
 		return 3;

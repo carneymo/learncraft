@@ -1,223 +1,356 @@
 package mods.learncraft.client;
 
-import static org.lwjgl.opengl.GL11.GL_COMPILE_AND_EXECUTE;
-import static org.lwjgl.opengl.GL11.glCallList;
-import static org.lwjgl.opengl.GL11.glColor4f;
-import static org.lwjgl.opengl.GL11.glDisable;
-import static org.lwjgl.opengl.GL11.glEnable;
-import static org.lwjgl.opengl.GL11.glEndList;
-import static org.lwjgl.opengl.GL11.glGenLists;
-import static org.lwjgl.opengl.GL11.glNewList;
-import static org.lwjgl.opengl.GL11.glPopMatrix;
-import static org.lwjgl.opengl.GL11.glPushMatrix;
-import static org.lwjgl.opengl.GL11.glRotatef;
-import static org.lwjgl.opengl.GL11.glScalef;
-import static org.lwjgl.opengl.GL11.glTranslatef;
+import cpw.mods.fml.common.FMLLog;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import mods.learncraft.common.*;
+import java.util.Calendar;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
-
-import mods.learncraft.common.Common;
-import mods.learncraft.common.MappableItemStackWrapper;
-import mods.learncraft.common.TileEntityLChest;
-import mods.learncraft.common.TileEntityTeamChest;
 import net.minecraft.block.Block;
 import net.minecraft.client.model.ModelChest;
-import net.minecraft.client.renderer.ItemRenderer;
-import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.entity.RenderItem;
-import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.model.ModelLargeChest;
+import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.client.IItemRenderer;
-import net.minecraftforge.client.MinecraftForgeClient;
+import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
 
-import com.google.common.primitives.SignedBytes;
+@SideOnly(Side.CLIENT)
+public class TileEntityLChestRenderer extends TileEntitySpecialRenderer
+{
+    private static final ResourceLocation field_110635_a = new ResourceLocation("textures/entity/chest/trapped_double.png");
+    private static final ResourceLocation field_110634_c = new ResourceLocation("textures/entity/chest/christmas_double.png");
+    private static final ResourceLocation field_110632_d = new ResourceLocation("textures/entity/chest/normal_double.png");
+    private static final ResourceLocation field_110633_e = new ResourceLocation("textures/entity/chest/trapped.png");
+    private static final ResourceLocation field_110630_f = new ResourceLocation("textures/entity/chest/christmas.png");
+    private static final ResourceLocation teamChestPath = new ResourceLocation("learncraft", "textures/model/ironchest.png");
+    private static final ResourceLocation learningChestPath = new ResourceLocation("learncraft", "textures/model/copperchest.png");
 
-import cpw.mods.fml.client.FMLClientHandler;
+    /** The normal small chest model. */
+    private ModelChest chestModel = new ModelChest();
 
-public class TileEntityLChestRenderer extends TileEntitySpecialRenderer {
-    private static Map<MappableItemStackWrapper, Integer> renderList = new HashMap<MappableItemStackWrapper, Integer>();
+    /** The large double chest model. */
+    private ModelChest largeChestModel = new ModelLargeChest();
 
-    private Random random;
-
-    private RenderBlocks renderBlocks;
-
-    private RenderItem itemRenderer;
-
-    private static float[][] shifts = { { 0.3F, 0.45F, 0.3F }, { 0.7F, 0.45F, 0.3F }, { 0.3F, 0.45F, 0.7F }, { 0.7F, 0.45F, 0.7F }, { 0.3F, 0.1F, 0.3F },
-            { 0.7F, 0.1F, 0.3F }, { 0.3F, 0.1F, 0.7F }, { 0.7F, 0.1F, 0.7F }, { 0.5F, 0.32F, 0.5F }, };
+    /** If true, chests will be rendered with the Christmas present textures. */
+    private boolean isChristmas;
 
     public TileEntityLChestRenderer()
     {
-        model = new ModelChest();
-        random = new Random();
-        renderBlocks = new RenderBlocks();
-        itemRenderer = new RenderItem() {
-            @Override
-            public byte getMiniBlockCount(ItemStack stack) {
-                return SignedBytes.saturatedCast(Math.min(stack.stackSize / 32, 15) + 1);
-            }
-            @Override
-            public byte getMiniItemCount(ItemStack stack) {
-                return SignedBytes.saturatedCast(Math.min(stack.stackSize / 32, 7) + 1);
-            }
-            @Override
-            public boolean shouldBob() {
-                return false;
-            }
-            @Override
-            public boolean shouldSpreadItems() {
-                return false;
-            }
-        };
-        itemRenderer.setRenderManager(RenderManager.instance);
-    }
+        Calendar calendar = Calendar.getInstance();
 
-    public void render(TileEntityTeamChest tile, double x, double y, double z, float partialTick) {
-        if (tile == null) {
-            return;
-        }
-        int facing = 2;
-        if(null != tile) {
-        	facing = tile.getFacing();
-        }
-        bindTextureByName(tile.getModelTexture());
-        glPushMatrix();
-        glEnable(32826 /* GL_RESCALE_NORMAL_EXT */);
-        glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        glTranslatef((float) x, (float) y + 1.0F, (float) z + 1.0F);
-        glScalef(1.0F, -1F, -1F);
-        glTranslatef(0.5F, 0.5F, 0.5F);
-        int k = 0;
-        if (facing == 0) {
-            k = 180;
-        }
-        if (facing == 1) {
-            k = -90;
-        }
-        if (facing == 2) {
-            k = 0;
-        }
-        if (facing == 3) {
-            k = 90;
-        }
-        if (facing == 4) {
-            k = 180;
-        }
-        if (facing == 5) {
-            k = -90;
-        }
-        glRotatef(k, 0.0F, 1.0F, 0.0F);
-        glTranslatef(-0.5F, -0.5F, -0.5F);
-        float lidangle = tile.prevLidAngle + (tile.lidAngle - tile.prevLidAngle) * partialTick;
-        lidangle = 1.0F - lidangle;
-        lidangle = 1.0F - lidangle * lidangle * lidangle;
-        model.chestLid.rotateAngleX = -((lidangle * 3.141593F) / 2.0F);
-        // Render the chest itself
-        model.renderAll();
-        glDisable(32826 /* GL_RESCALE_NORMAL_EXT */);
-        glPopMatrix();
-        glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        if (tile.getDistanceFrom(this.tileEntityRenderer.playerX, this.tileEntityRenderer.playerY, this.tileEntityRenderer.playerZ) < 128d) {
-            random.setSeed(254L);
-            float shiftX;
-            float shiftY;
-            float shiftZ;
-            int shift = 0;
-            float blockScale = 0.70F;
-            float timeD = (float) (360.0 * (double) (System.currentTimeMillis() & 0x3FFFL) / (double) 0x3FFFL);
-            glPushMatrix();
-            glDisable(2896 /* GL_LIGHTING */);
-            glTranslatef((float) x, (float) y, (float) z);
-            EntityItem customitem = new EntityItem(tileEntityRenderer.worldObj);
-            customitem.hoverStart = 0f;
-            glEnable(2896 /* GL_LIGHTING */);
-            glPopMatrix();
-            glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        if (calendar.get(2) + 1 == 12 && calendar.get(5) >= 24 && calendar.get(5) <= 26)
+        {
+            this.isChristmas = true;
         }
     }
-
-    public void render(TileEntityLChest tile, double x, double y, double z, float partialTick) {
-        if (tile == null) {
-            return;
-        }
-        int facing = 2;
-        if(null != tile) {
-        	facing = tile.getFacing();
-        }
-        bindTextureByName(tile.getModelTexture());
-        glPushMatrix();
-        glEnable(32826 /* GL_RESCALE_NORMAL_EXT */);
-        glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        glTranslatef((float) x, (float) y + 1.0F, (float) z + 1.0F);
-        glScalef(1.0F, -1F, -1F);
-        glTranslatef(0.5F, 0.5F, 0.5F);
-        int k = 0;
-        if (facing == 0) {
-            k = 180;
-        }
-        if (facing == 1) {
-            k = -90;
-        }
-        if (facing == 2) {
-            k = 0;
-        }
-        if (facing == 3) {
-            k = 90;
-        }
-        if (facing == 4) {
-            k = 180;
-        }
-        if (facing == 5) {
-            k = -90;
-        }
-        glRotatef(k, 0.0F, 1.0F, 0.0F);
-        glTranslatef(-0.5F, -0.5F, -0.5F);
-        float lidangle = tile.prevLidAngle + (tile.lidAngle - tile.prevLidAngle) * partialTick;
-        lidangle = 1.0F - lidangle;
-        lidangle = 1.0F - lidangle * lidangle * lidangle;
-        model.chestLid.rotateAngleX = -((lidangle * 3.141593F) / 2.0F);
-        // Render the chest itself
-        model.renderAll();
-        glDisable(32826 /* GL_RESCALE_NORMAL_EXT */);
-        glPopMatrix();
-        glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        if (tile.getDistanceFrom(this.tileEntityRenderer.playerX, this.tileEntityRenderer.playerY, this.tileEntityRenderer.playerZ) < 128d) {
-            random.setSeed(254L);
-            float shiftX;
-            float shiftY;
-            float shiftZ;
-            int shift = 0;
-            float blockScale = 0.70F;
-            float timeD = (float) (360.0 * (double) (System.currentTimeMillis() & 0x3FFFL) / (double) 0x3FFFL);
-            glPushMatrix();
-            glDisable(2896 /* GL_LIGHTING */);
-            glTranslatef((float) x, (float) y, (float) z);
-            EntityItem customitem = new EntityItem(tileEntityRenderer.worldObj);
-            customitem.hoverStart = 0f;
-            glEnable(2896 /* GL_LIGHTING */);
-            glPopMatrix();
-            glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        }
-    }
-
-    public void renderTileEntityAt(TileEntity tileentity, double x, double y, double z, float partialTick)
+    
+    @Override
+	protected void func_110628_a(ResourceLocation par1ResourceLocation)
     {
-    	if(tileentity instanceof TileEntityLChest) {
-    		render((TileEntityLChest) tileentity, x, y, z, partialTick);
-    	} else if(tileentity instanceof TileEntityTeamChest) {
-    		render((TileEntityTeamChest) tileentity, x, y, z, partialTick);
-    	}
+        TextureManager texturemanager = this.tileEntityRenderer.renderEngine;
+
+        if (texturemanager != null)
+        {
+            texturemanager.func_110577_a(par1ResourceLocation);
+        }
     }
 
-    private ModelChest model;
+    /**
+     * Renders the TileEntity for the chest at a position.
+     */
+    public void renderTileEntityChestAt(TileEntityLChest par1TileEntityChest, double par2, double par4, double par6, float par8)
+    {
+        int i;
+
+        if (!par1TileEntityChest.hasWorldObj())
+        {
+            i = 0;
+        }
+        else
+        {
+            Block block = par1TileEntityChest.getBlockType();
+            i = par1TileEntityChest.getBlockMetadata();
+
+            if (block instanceof LBlockChest && i == 0)
+            {
+                try
+                {
+                    ((LBlockChest)block).unifyAdjacentChests(par1TileEntityChest.getWorldObj(), par1TileEntityChest.xCoord, par1TileEntityChest.yCoord, par1TileEntityChest.zCoord);
+                }
+                catch (ClassCastException e)
+                {
+                    FMLLog.severe("Attempted to render a chest at %d,  %d, %d that was not a chest",
+                            par1TileEntityChest.xCoord, par1TileEntityChest.yCoord, par1TileEntityChest.zCoord);
+                }
+                i = par1TileEntityChest.getBlockMetadata();
+            }
+
+            par1TileEntityChest.checkForAdjacentChests();
+        }
+
+        if (par1TileEntityChest.adjacentChestZNeg == null && par1TileEntityChest.adjacentChestXNeg == null)
+        {
+            ModelChest modelchest;
+
+            if (par1TileEntityChest.adjacentChestXPos == null && par1TileEntityChest.adjacentChestZPosition == null)
+            {
+                modelchest = this.chestModel;
+
+                if (par1TileEntityChest.func_98041_l() == 1)
+                {
+                    this.func_110628_a(field_110633_e);
+                }
+                else if (this.isChristmas)
+                {
+                    this.func_110628_a(field_110630_f);
+                }
+                else
+                {
+                    this.func_110628_a(learningChestPath);
+                }
+            }
+            else
+            {
+                modelchest = this.largeChestModel;
+
+                if (par1TileEntityChest.func_98041_l() == 1)
+                {
+                    this.func_110628_a(field_110635_a);
+                }
+                else if (this.isChristmas)
+                {
+                    this.func_110628_a(field_110634_c);
+                }
+                else
+                {
+                    this.func_110628_a(field_110632_d);
+                }
+            }
+
+            GL11.glPushMatrix();
+            GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+            GL11.glTranslatef((float)par2, (float)par4 + 1.0F, (float)par6 + 1.0F);
+            GL11.glScalef(1.0F, -1.0F, -1.0F);
+            GL11.glTranslatef(0.5F, 0.5F, 0.5F);
+            short short1 = 0;
+
+            if (i == 2)
+            {
+                short1 = 180;
+            }
+
+            if (i == 3)
+            {
+                short1 = 0;
+            }
+
+            if (i == 4)
+            {
+                short1 = 90;
+            }
+
+            if (i == 5)
+            {
+                short1 = -90;
+            }
+
+            if (i == 2 && par1TileEntityChest.adjacentChestXPos != null)
+            {
+                GL11.glTranslatef(1.0F, 0.0F, 0.0F);
+            }
+
+            if (i == 5 && par1TileEntityChest.adjacentChestZPosition != null)
+            {
+                GL11.glTranslatef(0.0F, 0.0F, -1.0F);
+            }
+
+            GL11.glRotatef(short1, 0.0F, 1.0F, 0.0F);
+            GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
+            float f1 = par1TileEntityChest.prevLidAngle + (par1TileEntityChest.lidAngle - par1TileEntityChest.prevLidAngle) * par8;
+            float f2;
+
+            if (par1TileEntityChest.adjacentChestZNeg != null)
+            {
+                f2 = par1TileEntityChest.adjacentChestZNeg.prevLidAngle + (par1TileEntityChest.adjacentChestZNeg.lidAngle - par1TileEntityChest.adjacentChestZNeg.prevLidAngle) * par8;
+
+                if (f2 > f1)
+                {
+                    f1 = f2;
+                }
+            }
+
+            if (par1TileEntityChest.adjacentChestXNeg != null)
+            {
+                f2 = par1TileEntityChest.adjacentChestXNeg.prevLidAngle + (par1TileEntityChest.adjacentChestXNeg.lidAngle - par1TileEntityChest.adjacentChestXNeg.prevLidAngle) * par8;
+
+                if (f2 > f1)
+                {
+                    f1 = f2;
+                }
+            }
+
+            f1 = 1.0F - f1;
+            f1 = 1.0F - f1 * f1 * f1;
+            modelchest.chestLid.rotateAngleX = -(f1 * (float)Math.PI / 2.0F);
+            modelchest.renderAll();
+            GL11.glDisable(GL12.GL_RESCALE_NORMAL);
+            GL11.glPopMatrix();
+            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        }
+    }
+    
+    public void renderTileEntityChestAt(TileEntityTeamChest par1TileEntityChest, double par2, double par4, double par6, float par8)
+    {
+        int i;
+
+        if (!par1TileEntityChest.hasWorldObj())
+        {
+            i = 0;
+        }
+        else
+        {
+            Block block = par1TileEntityChest.getBlockType();
+            i = par1TileEntityChest.getBlockMetadata();
+
+            if (block instanceof LBlockChest && i == 0)
+            {
+                try
+                {
+                    ((LBlockChest)block).unifyAdjacentChests(par1TileEntityChest.getWorldObj(), par1TileEntityChest.xCoord, par1TileEntityChest.yCoord, par1TileEntityChest.zCoord);
+                }
+                catch (ClassCastException e)
+                {
+                    FMLLog.severe("Attempted to render a chest at %d,  %d, %d that was not a chest",
+                            par1TileEntityChest.xCoord, par1TileEntityChest.yCoord, par1TileEntityChest.zCoord);
+                }
+                i = par1TileEntityChest.getBlockMetadata();
+            }
+
+            par1TileEntityChest.checkForAdjacentChests();
+        }
+
+        if (par1TileEntityChest.adjacentChestZNeg == null && par1TileEntityChest.adjacentChestXNeg == null)
+        {
+            ModelChest modelchest;
+
+            if (par1TileEntityChest.adjacentChestXPos == null && par1TileEntityChest.adjacentChestZPosition == null)
+            {
+                modelchest = this.chestModel;
+
+                if (par1TileEntityChest.func_98041_l() == 1)
+                {
+                    this.func_110628_a(field_110633_e);
+                }
+                else if (this.isChristmas)
+                {
+                    this.func_110628_a(field_110630_f);
+                }
+                else
+                {
+                    this.func_110628_a(teamChestPath);
+                }
+            }
+            else
+            {
+                modelchest = this.largeChestModel;
+
+                if (par1TileEntityChest.func_98041_l() == 1)
+                {
+                    this.func_110628_a(field_110635_a);
+                }
+                else if (this.isChristmas)
+                {
+                    this.func_110628_a(field_110634_c);
+                }
+                else
+                {
+                    this.func_110628_a(field_110632_d);
+                }
+            }
+
+            GL11.glPushMatrix();
+            GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+            GL11.glTranslatef((float)par2, (float)par4 + 1.0F, (float)par6 + 1.0F);
+            GL11.glScalef(1.0F, -1.0F, -1.0F);
+            GL11.glTranslatef(0.5F, 0.5F, 0.5F);
+            short short1 = 0;
+
+            if (i == 2)
+            {
+                short1 = 180;
+            }
+
+            if (i == 3)
+            {
+                short1 = 0;
+            }
+
+            if (i == 4)
+            {
+                short1 = 90;
+            }
+
+            if (i == 5)
+            {
+                short1 = -90;
+            }
+
+            if (i == 2 && par1TileEntityChest.adjacentChestXPos != null)
+            {
+                GL11.glTranslatef(1.0F, 0.0F, 0.0F);
+            }
+
+            if (i == 5 && par1TileEntityChest.adjacentChestZPosition != null)
+            {
+                GL11.glTranslatef(0.0F, 0.0F, -1.0F);
+            }
+
+            GL11.glRotatef(short1, 0.0F, 1.0F, 0.0F);
+            GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
+            float f1 = par1TileEntityChest.prevLidAngle + (par1TileEntityChest.lidAngle - par1TileEntityChest.prevLidAngle) * par8;
+            float f2;
+
+            if (par1TileEntityChest.adjacentChestZNeg != null)
+            {
+                f2 = par1TileEntityChest.adjacentChestZNeg.prevLidAngle + (par1TileEntityChest.adjacentChestZNeg.lidAngle - par1TileEntityChest.adjacentChestZNeg.prevLidAngle) * par8;
+
+                if (f2 > f1)
+                {
+                    f1 = f2;
+                }
+            }
+
+            if (par1TileEntityChest.adjacentChestXNeg != null)
+            {
+                f2 = par1TileEntityChest.adjacentChestXNeg.prevLidAngle + (par1TileEntityChest.adjacentChestXNeg.lidAngle - par1TileEntityChest.adjacentChestXNeg.prevLidAngle) * par8;
+
+                if (f2 > f1)
+                {
+                    f1 = f2;
+                }
+            }
+
+            f1 = 1.0F - f1;
+            f1 = 1.0F - f1 * f1 * f1;
+            modelchest.chestLid.rotateAngleX = -(f1 * (float)Math.PI / 2.0F);
+            modelchest.renderAll();
+            GL11.glDisable(GL12.GL_RESCALE_NORMAL);
+            GL11.glPopMatrix();
+            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        }
+    }
+
+    @Override
+	public void renderTileEntityAt(TileEntity par1TileEntity, double par2, double par4, double par6, float par8)
+    {
+    	if(par1TileEntity instanceof TileEntityLChest)
+        this.renderTileEntityChestAt((TileEntityLChest) par1TileEntity, par2, par4, par6, par8);
+    	else if(par1TileEntity instanceof TileEntityTeamChest)
+        this.renderTileEntityChestAt((TileEntityTeamChest) par1TileEntity, par2, par4, par6, par8);
+    }
 }

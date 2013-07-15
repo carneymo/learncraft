@@ -12,6 +12,11 @@ public class TeamRoster
 		teamRoster = new ArrayList();
 	}
 	
+	public void clear()
+	{
+		teamRoster.clear();
+	}
+	
 	public void addPlayer(EntityPlayer player, int index)
 	{
 		if(!teamRoster.contains(player))

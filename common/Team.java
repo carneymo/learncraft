@@ -1,11 +1,7 @@
 package mods.learncraft.common;
 
 import java.util.ArrayList;
-import java.util.List;
-
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.world.World;
 
 public class Team {
 
@@ -105,9 +101,14 @@ public class Team {
 		return roster.getPlayers();
 	}
 	
+	public void clear()
+	{
+		roster.clear();
+	}
+	
 	public void printRoster()
 	{
-		System.out.println(this.teamcolor + " team's roster:");
+		System.out.println(this.teamcolor.toUpperCase() + " team's roster:");
 		roster.printRoster();
 	}
 }

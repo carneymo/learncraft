@@ -3,10 +3,7 @@ package mods.learncraft.common;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntityChest;
-import net.minecraft.tileentity.TileEntityEnderChest;
 
 public class InventoryLChest extends InventoryBasic
 {
@@ -25,12 +22,14 @@ public class InventoryLChest extends InventoryBasic
     /**
      * Do not make give this method the name canInteractWith because it clashes with Container
      */
-    public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
+    @Override
+	public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
     {
         return this.associatedChest != null && !this.associatedChest.isUseableByPlayer(par1EntityPlayer) ? false : super.isUseableByPlayer(par1EntityPlayer);
     }
 
-    public void openChest()
+    @Override
+	public void openChest()
     {
         if (this.associatedChest != null)
         {
@@ -40,7 +39,8 @@ public class InventoryLChest extends InventoryBasic
         super.openChest();
     }
 
-    public void closeChest()
+    @Override
+	public void closeChest()
     {
         if (this.associatedChest != null)
         {

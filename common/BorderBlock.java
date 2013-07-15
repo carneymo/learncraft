@@ -1,16 +1,10 @@
 package mods.learncraft.common;
 
-import java.io.Console;
-import java.sql.SQLException;
 import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.Vec3;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 
@@ -42,6 +36,7 @@ public class BorderBlock extends Block
 	 * When the block is placed, creates a list of blocks below and above it, then sets
 	 * air to an invisible block and all others to a border block
 	 */
+	@Override
 	public int onBlockPlaced(World w, int x,int y,int z,int par5, float par6, float par7, float par8, int par9)
 	{
 		// Creates a list of blocks from the bottom of the world to the top
@@ -79,6 +74,7 @@ public class BorderBlock extends Block
 	/**
 	 *  When the block is destroyed, the blocks above and below the border block are replaced from the list
 	 */
+	@Override
 	public void onBlockDestroyedByPlayer(World w,int x,int y,int z,int par5)
 	{
 		// If the original block is destroyed
@@ -104,12 +100,14 @@ public class BorderBlock extends Block
 	/**
 	 * Returns the id of the block that is dropped from breaking
 	 */
+	@Override
 	public int idDropped(int par1, Random random, int par2) 
 	{
 		return 503;
 	}
 
-    public boolean canDropFromExplosion(Explosion par1Explosion)
+    @Override
+	public boolean canDropFromExplosion(Explosion par1Explosion)
     {
         return false;
     }

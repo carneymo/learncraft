@@ -1,14 +1,10 @@
 package mods.learncraft.commands;
 
-import java.util.List;
-import java.util.Timer;
-
 import mods.learncraft.common.Common;
 import mods.learncraft.common.Team;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.world.World;
 
 public class CommandTeam extends CommandBase {
 
@@ -76,6 +72,13 @@ public class CommandTeam extends CommandBase {
 				}
 			}
 		}
+	}
+
+
+	@Override
+	public String getCommandUsage(ICommandSender icommandsender) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
 

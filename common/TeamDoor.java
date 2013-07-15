@@ -22,7 +22,8 @@ public class TeamDoor extends Item
         this.setCreativeTab(CreativeTabs.tabMisc);
     }
     
-    public void registerIcons(IconRegister reg)
+    @Override
+	public void registerIcons(IconRegister reg)
     {
     	if(doorMaterial == Material.wood) itemIcon = reg.registerIcon("learncraft:orangeDoorUpper");
     	else itemIcon = reg.registerIcon("learncraft:blueDoorUpper");
@@ -32,7 +33,8 @@ public class TeamDoor extends Item
      * Callback for item usage. If the item does something special on right clicking, he will have one of those. Return
      * True if something happen and false if it don't. This is for ITEMS, not BLOCKS
      */
-    public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4, int par5, int par6, int par7, float par8, float par9, float par10)
+    @Override
+	public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4, int par5, int par6, int par7, float par8, float par9, float par10)
     {
         if (par7 != 1)
         {
@@ -60,7 +62,7 @@ public class TeamDoor extends Item
                 }
                 else
                 {
-                    int i1 = MathHelper.floor_double((double)((par2EntityPlayer.rotationYaw + 180.0F) * 4.0F / 360.0F) - 0.5D) & 3;
+                    int i1 = MathHelper.floor_double((par2EntityPlayer.rotationYaw + 180.0F) * 4.0F / 360.0F - 0.5D) & 3;
                     placeDoorBlock(par3World, par4, par5, par6, i1, block);
                     --par1ItemStack.stackSize;
                     return true;

@@ -2,7 +2,6 @@ package mods.learncraft.common;
 
 import java.util.ArrayList;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 
 public class PlayerMap 
@@ -72,14 +71,17 @@ public class PlayerMap
 		return playerList.size();
 	}
 	
-	public String toString()
+	public void printMap()
 	{
 		for(PlayerMapItem item : playerList)
 		{
 			System.out.println(item.getPlayer().getEntityName() + ": " + item.getReady());
 		}
-		
-		return null;
+	}
+
+	public void clear()
+	{
+		playerList.clear();
 	}
 	
 	private class PlayerMapItem
@@ -108,5 +110,6 @@ public class PlayerMap
 			this.ready = ready;
 		}
 	}
+
 	
 }

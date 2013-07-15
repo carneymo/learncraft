@@ -2,10 +2,8 @@ package mods.learncraft.common;
 
 import java.util.Random;
 
-import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -27,11 +25,13 @@ public class Digger extends Item
 		return 504;
 	}
 	
+	@Override
 	public void registerIcons(IconRegister iconRegister)
 	{
 	     itemIcon = iconRegister.registerIcon("learncraft:pickaxePurple");
 	}
 	
+	@Override
 	public boolean onItemUse(ItemStack is, EntityPlayer player, World w, int x, int y, int z, int l, float f, float f1, float f3)
 	{
 		Vec3 lookVector = player.getLookVec();

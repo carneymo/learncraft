@@ -1,9 +1,12 @@
 package mods.learncraft.common;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 import java.util.Iterator;
 import java.util.List;
+
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockChest;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ContainerChest;
 import net.minecraft.inventory.IInventory;
@@ -13,14 +16,13 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraftforge.common.ForgeDirection;
 
 public class TileEntityLChest extends TileEntity implements IInventory
 {
     private ItemStack[] chestContents = new ItemStack[36];
 
     /** Determines if the check for adjacent chests has taken place. */
-    public boolean adjacentChestChecked = false;
+    public boolean adjacentChestChecked;
 
     /** Contains the chest tile located adjacent to this one (if any) */
     public TileEntityLChest adjacentChestZNeg;
@@ -45,23 +47,25 @@ public class TileEntityLChest extends TileEntity implements IInventory
 
     /** Server sync counter (once per 20 ticks) */
     private int ticksSinceSync;
-    private int field_94046_i = -1;
+    private int field_94046_i;
     private String field_94045_s;
 
-	private String modelTexture;
+    public TileEntityLChest()
+    {
+        this.field_94046_i = -1;
+    }
 
-	private int facing;
+    @SideOnly(Side.CLIENT)
+    public TileEntityLChest(int par1)
+    {
+        this.field_94046_i = par1;
+    }
 
-	public TileEntityLChest()
-	{
-		super();
-		this.modelTexture = "/mods/learncraft/textures/model/ironchest.png";
-	}
-	
     /**
      * Returns the number of slots in the inventory.
      */
-    public int getSizeInventory()
+    @Override
+	public int getSizeInventory()
     {
         return 27;
     }
@@ -69,7 +73,8 @@ public class TileEntityLChest extends TileEntity implements IInventory
     /**
      * Returns the stack in slot i
      */
-    public ItemStack getStackInSlot(int par1)
+    @Override
+	public ItemStack getStackInSlot(int par1)
     {
         return this.chestContents[par1];
     }
@@ -78,7 +83,8 @@ public class TileEntityLChest extends TileEntity implements IInventory
      * Removes from an inventory slot (first arg) up to a specified number (second arg) of items and returns them in a
      * new stack.
      */
-    public ItemStack decrStackSize(int par1, int par2)
+    @Override
+	public ItemStack decrStackSize(int par1, int par2)
     {
         if (this.chestContents[par1] != null)
         {
@@ -114,7 +120,8 @@ public class TileEntityLChest extends TileEntity implements IInventory
      * When some containers are closed they call this on each slot, then drop whatever it returns as an EntityItem -
      * like when you close a workbench GUI.
      */
-    public ItemStack getStackInSlotOnClosing(int par1)
+    @Override
+	public ItemStack getStackInSlotOnClosing(int par1)
     {
         if (this.chestContents[par1] != null)
         {
@@ -131,7 +138,8 @@ public class TileEntityLChest extends TileEntity implements IInventory
     /**
      * Sets the given item stack to the specified slot in the inventory (can be crafting or armor sections).
      */
-    public void setInventorySlotContents(int par1, ItemStack par2ItemStack)
+    @Override
+	public void setInventorySlotContents(int par1, ItemStack par2ItemStack)
     {
         this.chestContents[par1] = par2ItemStack;
 
@@ -146,7 +154,8 @@ public class TileEntityLChest extends TileEntity implements IInventory
     /**
      * Returns the name of the inventory.
      */
-    public String getInvName()
+    @Override
+	public String getInvName()
     {
         return this.isInvNameLocalized() ? this.field_94045_s : "container.chest";
     }
@@ -155,12 +164,16 @@ public class TileEntityLChest extends TileEntity implements IInventory
      * If this returns false, the inventory name will be used as an unlocalized name, and translated into the player's
      * language. Otherwise it will be used directly.
      */
-    public boolean isInvNameLocalized()
+    @Override
+	public boolean isInvNameLocalized()
     {
         return this.field_94045_s != null && this.field_94045_s.length() > 0;
     }
 
-    public void func_94043_a(String par1Str)
+    /**
+     * Sets the custom display name to use when opening a GUI for this specific TileEntityChest.
+     */
+    public void setChestGuiName(String par1Str)
     {
         this.field_94045_s = par1Str;
     }
@@ -168,7 +181,8 @@ public class TileEntityLChest extends TileEntity implements IInventory
     /**
      * Reads a tile entity from NBT.
      */
-    public void readFromNBT(NBTTagCompound par1NBTTagCompound)
+    @Override
+	public void readFromNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.readFromNBT(par1NBTTagCompound);
         NBTTagList nbttaglist = par1NBTTagCompound.getTagList("Items");
@@ -189,13 +203,13 @@ public class TileEntityLChest extends TileEntity implements IInventory
                 this.chestContents[j] = ItemStack.loadItemStackFromNBT(nbttagcompound1);
             }
         }
-        facing = par1NBTTagCompound.getByte("facing");
     }
 
     /**
      * Writes a tile entity to NBT.
      */
-    public void writeToNBT(NBTTagCompound par1NBTTagCompound)
+    @Override
+	public void writeToNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.writeToNBT(par1NBTTagCompound);
         NBTTagList nbttaglist = new NBTTagList();
@@ -223,7 +237,8 @@ public class TileEntityLChest extends TileEntity implements IInventory
      * Returns the maximum stack size for a inventory slot. Seems to always be 64, possibly will be extended. *Isn't
      * this more of a set than a get?*
      */
-    public int getInventoryStackLimit()
+    @Override
+	public int getInventoryStackLimit()
     {
         return 64;
     }
@@ -231,16 +246,18 @@ public class TileEntityLChest extends TileEntity implements IInventory
     /**
      * Do not make give this method the name canInteractWith because it clashes with Container
      */
-    public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
+    @Override
+	public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
     {
-        return this.worldObj.getBlockTileEntity(this.xCoord, this.yCoord, this.zCoord) != this ? false : par1EntityPlayer.getDistanceSq((double)this.xCoord + 0.5D, (double)this.yCoord + 0.5D, (double)this.zCoord + 0.5D) <= 64.0D;
+        return this.worldObj.getBlockTileEntity(this.xCoord, this.yCoord, this.zCoord) != this ? false : par1EntityPlayer.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <= 64.0D;
     }
 
     /**
      * Causes the TileEntity to reset all it's cached values for it's container block, blockID, metaData and in the case
      * of chests, the adjcacent chest check
      */
-    public void updateContainingBlockInfo()
+    @Override
+	public void updateContainingBlockInfo()
     {
         super.updateContainingBlockInfo();
         this.adjacentChestChecked = false;
@@ -344,14 +361,15 @@ public class TileEntityLChest extends TileEntity implements IInventory
     private boolean func_94044_a(int par1, int par2, int par3)
     {
         Block block = Block.blocksList[this.worldObj.getBlockId(par1, par2, par3)];
-        return block != null && block instanceof LBlockChest ? ((LBlockChest)block).field_94443_a == this.func_98041_l() : false;
+        return block != null && block instanceof LBlockChest ? ((LBlockChest)block).isTrapped == this.func_98041_l() : false;
     }
 
     /**
      * Allows the entity to update its state. Overridden in most subclasses, e.g. the mob spawner uses this to count
      * ticks and creates a new spawn inside its implementation.
      */
-    public void updateEntity()
+    @Override
+	public void updateEntity()
     {
         super.updateEntity();
         this.checkForAdjacentChests();
@@ -362,7 +380,7 @@ public class TileEntityLChest extends TileEntity implements IInventory
         {
             this.numUsingPlayers = 0;
             f = 5.0F;
-            List list = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getAABBPool().getAABB((double)((float)this.xCoord - f), (double)((float)this.yCoord - f), (double)((float)this.zCoord - f), (double)((float)(this.xCoord + 1) + f), (double)((float)(this.yCoord + 1) + f), (double)((float)(this.zCoord + 1) + f)));
+            List list = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getAABBPool().getAABB(this.xCoord - f, this.yCoord - f, this.zCoord - f, this.xCoord + 1 + f, this.yCoord + 1 + f, this.zCoord + 1 + f));
             Iterator iterator = list.iterator();
 
             while (iterator.hasNext())
@@ -387,8 +405,8 @@ public class TileEntityLChest extends TileEntity implements IInventory
 
         if (this.numUsingPlayers > 0 && this.lidAngle == 0.0F && this.adjacentChestZNeg == null && this.adjacentChestXNeg == null)
         {
-            double d1 = (double)this.xCoord + 0.5D;
-            d0 = (double)this.zCoord + 0.5D;
+            double d1 = this.xCoord + 0.5D;
+            d0 = this.zCoord + 0.5D;
 
             if (this.adjacentChestZPosition != null)
             {
@@ -400,7 +418,7 @@ public class TileEntityLChest extends TileEntity implements IInventory
                 d1 += 0.5D;
             }
 
-            this.worldObj.playSoundEffect(d1, (double)this.yCoord + 0.5D, d0, "random.chestopen", 0.5F, this.worldObj.rand.nextFloat() * 0.1F + 0.9F);
+            this.worldObj.playSoundEffect(d1, this.yCoord + 0.5D, d0, "random.chestopen", 0.5F, this.worldObj.rand.nextFloat() * 0.1F + 0.9F);
         }
 
         if (this.numUsingPlayers == 0 && this.lidAngle > 0.0F || this.numUsingPlayers > 0 && this.lidAngle < 1.0F)
@@ -425,8 +443,8 @@ public class TileEntityLChest extends TileEntity implements IInventory
 
             if (this.lidAngle < f2 && f1 >= f2 && this.adjacentChestZNeg == null && this.adjacentChestXNeg == null)
             {
-                d0 = (double)this.xCoord + 0.5D;
-                double d2 = (double)this.zCoord + 0.5D;
+                d0 = this.xCoord + 0.5D;
+                double d2 = this.zCoord + 0.5D;
 
                 if (this.adjacentChestZPosition != null)
                 {
@@ -438,7 +456,7 @@ public class TileEntityLChest extends TileEntity implements IInventory
                     d0 += 0.5D;
                 }
 
-                this.worldObj.playSoundEffect(d0, (double)this.yCoord + 0.5D, d2, "random.chestclosed", 0.5F, this.worldObj.rand.nextFloat() * 0.1F + 0.9F);
+                this.worldObj.playSoundEffect(d0, this.yCoord + 0.5D, d2, "random.chestclosed", 0.5F, this.worldObj.rand.nextFloat() * 0.1F + 0.9F);
             }
 
             if (this.lidAngle < 0.0F)
@@ -451,29 +469,22 @@ public class TileEntityLChest extends TileEntity implements IInventory
     /**
      * Called when a client event is received with the event number and argument, see World.sendClientEvent
      */
-    public boolean receiveClientEvent(int i, int j)
+    @Override
+	public boolean receiveClientEvent(int par1, int par2)
     {
-        if (i == 1)
+        if (par1 == 1)
         {
-            numUsingPlayers = j;
-        }
-        else if (i == 2)
-        {
-            facing = (byte) j;
-        }
-        else if (i == 3)
-        {
-            facing = (byte) (j & 0x7);
-            numUsingPlayers = (j & 0xF8) >> 3;
+            this.numUsingPlayers = par2;
+            return true;
         }
         else
         {
-            return super.receiveClientEvent(i, j);
+            return super.receiveClientEvent(par1, par2);
         }
-        return true;
     }
 
-    public void openChest()
+    @Override
+	public void openChest()
     {
         if (this.numUsingPlayers < 0)
         {
@@ -486,18 +497,23 @@ public class TileEntityLChest extends TileEntity implements IInventory
         this.worldObj.notifyBlocksOfNeighborChange(this.xCoord, this.yCoord - 1, this.zCoord, this.getBlockType().blockID);
     }
 
-    public void closeChest()
+    @Override
+	public void closeChest()
     {
-        --this.numUsingPlayers;
-        this.worldObj.addBlockEvent(this.xCoord, this.yCoord, this.zCoord, this.getBlockType().blockID, 1, this.numUsingPlayers);
-        this.worldObj.notifyBlocksOfNeighborChange(this.xCoord, this.yCoord, this.zCoord, this.getBlockType().blockID);
-        this.worldObj.notifyBlocksOfNeighborChange(this.xCoord, this.yCoord - 1, this.zCoord, this.getBlockType().blockID);
+        if (this.getBlockType() != null && this.getBlockType() instanceof LBlockChest)
+        {
+            --this.numUsingPlayers;
+            this.worldObj.addBlockEvent(this.xCoord, this.yCoord, this.zCoord, this.getBlockType().blockID, 1, this.numUsingPlayers);
+            this.worldObj.notifyBlocksOfNeighborChange(this.xCoord, this.yCoord, this.zCoord, this.getBlockType().blockID);
+            this.worldObj.notifyBlocksOfNeighborChange(this.xCoord, this.yCoord - 1, this.zCoord, this.getBlockType().blockID);
+        }
     }
 
     /**
      * Returns true if automation is allowed to insert the given stack (ignoring stack size) into the given slot.
      */
-    public boolean isStackValidForSlot(int par1, ItemStack par2ItemStack)
+    @Override
+	public boolean isItemValidForSlot(int par1, ItemStack par2ItemStack)
     {
         return true;
     }
@@ -505,7 +521,8 @@ public class TileEntityLChest extends TileEntity implements IInventory
     /**
      * invalidates a tile entity
      */
-    public void invalidate()
+    @Override
+	public void invalidate()
     {
         super.invalidate();
         this.updateContainingBlockInfo();
@@ -521,25 +538,9 @@ public class TileEntityLChest extends TileEntity implements IInventory
                 return 0;
             }
 
-            this.field_94046_i = ((LBlockChest)this.getBlockType()).field_94443_a;
+            this.field_94046_i = ((LBlockChest)this.getBlockType()).isTrapped;
         }
 
         return this.field_94046_i;
     }
-
-	public String getModelTexture() {
-		return this.modelTexture;
-	}
-
-
-    public void setFacing(int facing2)
-    {
-        this.facing = facing2;
-    }
-    
-    public int getFacing()
-    {
-        return this.facing;
-    }
-
 }
