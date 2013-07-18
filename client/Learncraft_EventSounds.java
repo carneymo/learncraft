@@ -12,6 +12,7 @@ public class Learncraft_EventSounds
 		try
 		{
 			event.manager.addSound("learncraft:greeting.ogg");
+			event.manager.addSound("learncraft:starting.ogg");
 		} catch (Exception e)
 		{
 			e.printStackTrace();

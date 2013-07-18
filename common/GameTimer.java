@@ -6,16 +6,21 @@ import java.util.TimerTask;
 import net.minecraft.world.World;
 
 public class GameTimer {
-	World currentWorld;
 	Timer timer;
-
-	// One hour is three minecraft days
-	public GameTimer(World gameWorld) {
-		currentWorld = gameWorld;
+	
+	public void start()
+	{
+		System.out.println("Starting timer ------- \n\n");
 		int countdown = 15 * 60 * 1000; // Minutes * Seconds * Milliseconds
 		timer = new Timer();
 		timer.schedule(new countdown(), 1000);
 		timer.schedule(new setBuzz(), countdown);
+	}
+	
+	public void stop()
+	{
+		System.out.println("Cancelling timer ------ \n\n");
+		timer.cancel();
 	}
 
 	// timerBuzzing is set to true when time is up on the game.

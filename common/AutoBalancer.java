@@ -60,8 +60,6 @@ public class AutoBalancer
 				 
 				 for(int i = 0; i < take; i++)
 				 {
-					 //Due to the way the roster works, players are added at the spot of whatever the current numroster
-					 //happens to be. This returns a list of all those indices, and one of them is randomly chosen.
 					 ArrayList<EntityPlayer> players = largerTeam.getPlayers(); 
 					 int index = random.nextInt(players.size());
 					 EntityPlayer player = players.get(index);

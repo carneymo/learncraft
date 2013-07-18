@@ -62,7 +62,7 @@ public class LBlock extends Block
 		player.addPotionEffect(new PotionEffect(8, 1250, 4));
 		player.setSprinting(true);
 		//System.out.println("Playing sound.");
-		//player.playSound("learncraft:greeting", 1.0F, 1.0F);
+		player.playSound("learncraft:starting", 1.0F, 1.0F);
 		return true;
 	}
 }

@@ -2,6 +2,7 @@ package mods.learncraft.commands;
 
 import java.util.Set;
 
+import mods.learncraft.common.CheckTeamStatus;
 import mods.learncraft.common.Common;
 import mods.learncraft.common.Team;
 import net.minecraft.command.CommandBase;
@@ -43,33 +44,15 @@ public class CommandResetAll extends CommandBase
 			
 			if(true)
 			{
-				System.out.println("Current Players Before -----");
-				Common.currentPlayers.printMap();
-				
-				System.out.println("Blue Team Before ------");
-				Common.teams[0].printRoster();
-				
-				System.out.println("Orange Team Before ------");
-				Common.teams[1].printRoster();
-				
-				
 				System.out.println("Player is OP, resetting.");
 				Common.teams[0].clear();
 				Common.teams[1].clear();
 				Common.currentPlayers.clear();
 				Common.playerlist.clear();
-				System.out.println("Cleared all teams and lists.");
+				CheckTeamStatus.gameTimer.stop();
 				
+				Common.inProgress = false;
 				
-				System.out.println("Current Players After -----");
-				Common.currentPlayers.printMap();
-				
-				System.out.println("Blue Team After ------");
-				Common.teams[0].printRoster();
-				
-				System.out.println("Orange Team After ------");
-				Common.teams[1].printRoster();
-		
 				String phrase = MinecraftServer.getServer().getConfigurationManager().getPlayerListAsString();
 				String delims = "[,]+";
 				String[] tokens = phrase.split(delims);
@@ -81,11 +64,7 @@ public class CommandResetAll extends CommandBase
 					Common.playerlist.add(player1);
 					Common.teleportPlayerTo(player1, "choose_team", true);
 				}
-				
-				System.out.println("Current Players After Re-init ------ \n");
-				Common.currentPlayers.printMap();
 			}
-			
 		}
 	}
 
