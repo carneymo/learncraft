@@ -5,6 +5,7 @@ import mods.learncraft.common.Team;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.common.MinecraftForge;
 
 public class CommandReady extends CommandBase {
 

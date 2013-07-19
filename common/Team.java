@@ -104,6 +104,8 @@ public class Team {
 	public void clear()
 	{
 		roster.clear();
+		points = 0;
+		numroster = 0;
 	}
 	
 	public void printRoster()

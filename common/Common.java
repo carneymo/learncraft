@@ -30,6 +30,7 @@ import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
+import net.minecraft.client.Minecraft;
 import net.minecraft.command.ICommandManager;
 import net.minecraft.command.ServerCommandManager;
 import net.minecraft.entity.player.EntityPlayer;
@@ -37,7 +38,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.MinecraftForge;
 
-@Mod(modid="MC_LearnCraft", name="LearnCraft", version="1.0")
+@Mod(modid="MC_LearnCraft", name="LearnCraft", version="1.1.1")
 @NetworkMod(clientSideRequired=true, serverSideRequired=false)
 
 public class Common {
@@ -239,6 +240,7 @@ public class Common {
         proxy.registerTileEntitySpecialRenderer();
     	proxy.registerRenderThings();
     	proxy.registerSounds();
+    	proxy.registerGui();
     	
     	// Add DBQueries to the Common handler
 		try {
@@ -248,13 +250,14 @@ public class Common {
 		}
 		
 		MinecraftForge.EVENT_BUS.register(new EventHookContainerClass());
+    	MinecraftForge.EVENT_BUS.register(new TeamScoreDisplay(Minecraft.getMinecraft()));
 		NetworkRegistry.instance().registerConnectionHandler(new ConnectionHandler());
 		
     }
     
     @EventHandler
-    public void postInit(FMLPostInitializationEvent event) {
-
+    public void postInit(FMLPostInitializationEvent event) 
+    {
     }
     
     @EventHandler
@@ -272,6 +275,12 @@ public class Common {
 		serverCommand.registerCommand(new CommandReady());
 		serverCommand.registerCommand(new CommandGenGlowstone());
 		serverCommand.registerCommand(new CommandResetAll());
+		
+		//Server commands for setting up the scoreboard
+		server.executeCommand("scoreboard objectives add teamscore dummy \"Team Score\"");
+		server.executeCommand("scoreboard teams add blue \"Blue Team\"");
+		server.executeCommand("scoreboard teams add orange \"Orange Team\"");
+		server.executeCommand("scoreboard objectives setdisplay sidebar teamscore");
     }
     
     

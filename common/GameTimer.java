@@ -8,6 +8,11 @@ import net.minecraft.world.World;
 public class GameTimer {
 	Timer timer;
 	
+	public GameTimer()
+	{
+		timer = new Timer();
+	}
+	
 	public void start()
 	{
 		System.out.println("Starting timer ------- \n\n");
@@ -20,7 +25,7 @@ public class GameTimer {
 	public void stop()
 	{
 		System.out.println("Cancelling timer ------ \n\n");
-		timer.cancel();
+		if(timer != null) timer.cancel();
 	}
 
 	// timerBuzzing is set to true when time is up on the game.

@@ -142,6 +142,30 @@ public class TileEntityTeamChest extends TileEntity implements IInventory
 	public void setInventorySlotContents(int par1, ItemStack par2ItemStack)
     {
         this.chestContents[par1] = par2ItemStack;
+        
+        // Ryan CM
+        float f = 5.0F;
+        List list = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getAABBPool().getAABB((double)((float)this.xCoord - f), (double)((float)this.yCoord - f), (double)((float)this.zCoord - f), (double)((float)(this.xCoord + 1) + f), (double)((float)(this.yCoord + 1) + f), (double)((float)(this.zCoord + 1) + f)));
+        Iterator iterator = list.iterator();
+
+        while (iterator.hasNext())
+        {
+            EntityPlayer entityplayer = (EntityPlayer)iterator.next();
+            IInventory iinventory = ((ContainerChest)entityplayer.openContainer).getLowerChestInventory();
+            
+	        for(int a=0; a < iinventory.getSizeInventory(); a++) {
+	        	ItemStack item = iinventory.getStackInSlot(a);
+	        	if(item != null && item.itemID == 348) {
+	        		Team curteam = Common.getTeam(entityplayer);
+	        		if(curteam != null) {
+	        			curteam.addScore(item.stackSize);
+	        			curteam.reportScore();
+	        			((ContainerChest)entityplayer.openContainer).getLowerChestInventory().setInventorySlotContents(a, null);
+	        		}
+	        	}
+	        }
+        }
+        // End
 
         if (par2ItemStack != null && par2ItemStack.stackSize > this.getInventoryStackLimit())
         {

@@ -14,7 +14,6 @@ public class CheckTeamStatus extends Thread {
 	
 	@Override
 	public void run() {
-		System.out.println("in thread run()");
 		new AutoBalancer();
 		gameTimer = new GameTimer();
 		
@@ -80,14 +79,12 @@ public class CheckTeamStatus extends Thread {
 			if(Common.currentPlayers.allReady()) {
 				System.out.println("All players are ready!");
 				Common.inProgress = true;
-				World gameWorld = Common.playerlist.get(0).worldObj; 
+				
+				World gameWorld = Common.playerlist.get(0).worldObj;
 				
 				//Set world time to zero and start timer.  
 				gameWorld.setWorldTime(0);
-				List<EntityPlayer> players = gameWorld.playerEntities;
-				
 				gameTimer.start();
-				
 			}
 			
 		} else {

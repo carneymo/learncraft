@@ -27,4 +27,10 @@ public class CommonProxy
 		// TODO Auto-generated method stub
 		
 	}
+
+	public void registerGui()
+	{
+		// TODO Auto-generated method stub
+		
+	}
 }
