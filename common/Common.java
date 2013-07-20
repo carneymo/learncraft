@@ -10,17 +10,12 @@ import mods.learncraft.commands.CommandResetAll;
 import mods.learncraft.commands.CommandTeam;
 import mods.learncraft.commands.CommandTeamscore;
 import mods.learncraft.commands.CommandGenGlowstone;
-import mods.learncraft.common.PlayerMap;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.EnumToolMaterial;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
-import cpw.mods.fml.common.Mod.Init;
 import cpw.mods.fml.common.Mod.Instance;
-import cpw.mods.fml.common.Mod.PostInit;
-import cpw.mods.fml.common.Mod.PreInit;
-import cpw.mods.fml.common.Mod.ServerStarting;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
@@ -250,7 +245,6 @@ public class Common {
 		}
 		
 		MinecraftForge.EVENT_BUS.register(new EventHookContainerClass());
-    	MinecraftForge.EVENT_BUS.register(new TeamScoreDisplay(Minecraft.getMinecraft()));
 		NetworkRegistry.instance().registerConnectionHandler(new ConnectionHandler());
 		
     }
@@ -258,6 +252,7 @@ public class Common {
     @EventHandler
     public void postInit(FMLPostInitializationEvent event) 
     {
+    	
     }
     
     @EventHandler

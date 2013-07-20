@@ -1,8 +1,5 @@
 package mods.learncraft.common;
 
-import java.util.Collection;
-import java.util.Iterator;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;

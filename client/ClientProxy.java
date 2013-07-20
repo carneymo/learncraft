@@ -1,9 +1,11 @@
 package mods.learncraft.client;
 
+import net.minecraft.client.Minecraft;
 import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import mods.learncraft.common.CommonProxy;
 import mods.learncraft.common.EventReceiver;
+import mods.learncraft.common.TeamScoreDisplay;
 import mods.learncraft.common.TileEntityLChest;
 import mods.learncraft.common.TileEntityTeamChest;
 
@@ -29,5 +31,6 @@ public class ClientProxy extends CommonProxy
 	public void registerGui()
 	{
 		MinecraftForge.EVENT_BUS.register(new EventReceiver());
+		MinecraftForge.EVENT_BUS.register(new TeamScoreDisplay(Minecraft.getMinecraft()));
 	}
 }
