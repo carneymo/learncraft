@@ -295,46 +295,7 @@ public class Common {
 
 	public static void teleportPlayerTo(EntityPlayer player, String loc, Boolean override) {
 		if(teleportOn == true || override == true) {
-
 			Common.coordinates.TeleportPlayer(player, loc);
-			
-			/*
-			if(loc.matches("choose_team")) {
-				// z = 604 - 592
-				// x = 55.45 - 58.1
-				x = 57.81;
-				y = 123;
-				z = 600.58;
-			}
-			if(loc.matches("gold_spawn")) {
-				// z = 604 - 592
-				// x = 218 - 202
-				x = 207.96;
-				y = 140;
-				z = 698.06;
-			}
-			if(loc.matches("blue_spawn")) {
-				x = 211;
-				y = 116.1;
-				z = 499;
-			}
-			if(loc.matches("gold_arena")) {
-				x = 117.17;
-				y = 74;
-				z = 548.35;
-			}
-			if(loc.matches("blue_arena")) {
-				x = 299.42;
-				y = 74;
-				z = 649.95;
-			}
-			if(loc.matches("maze_spawn")) {
-				x = 264.65;
-				y = 4.1;
-				z = 464.49;
-			}
-			*/
-			// player.setPosition(x, y, z);
 		} else {
 			player.addChatMessage("Teleport is currently off.");
 		}
