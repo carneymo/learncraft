@@ -1,10 +1,18 @@
 package mods.learncraft.common;
 
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
 import java.util.Iterator;
 import java.util.List;
 
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.network.PacketDispatcher;
+import cpw.mods.fml.relauncher.Side;
+
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
 
@@ -22,12 +30,18 @@ public class CheckTeamStatus extends Thread {
 				Thread.sleep(500);
 				checkScores();
 				pushNotifications();
+				sendPackets();
 			} catch(InterruptedException e) {
 				System.err.print(e);
 			}
 		}
 	}
 
+	public void sendPackets()
+	{
+
+	}
+	
 	public synchronized void pushNotifications()
 	{
 		Iterator<String> iterator = Common.notifications.iterator(); 

@@ -19,15 +19,20 @@ public class ConnectionHandler implements IConnectionHandler
 		EntityPlayer player1 = (EntityPlayer) player;
 		Common.currentPlayers.addPlayer(player1);
 		Common.playerlist.add(player1);
-		player1.addChatMessage("Welcome.  Please choose a team by activating a block.  Then execute the /ready command.");
-
-		if (null == Common.dbqueries)
-		{
-			player1.addChatMessage("The dbqueries is null.  Cannot start checkTeamStatus thread");
-		} else
-		{
-			Common.dbqueries.insertPlayerLoggedIn(player1.username);
-			Common.teleportPlayerTo(player1, "choose_team", true);
+		if(!Common.inProgress) {
+			player1.addChatMessage("Welcome.  Please choose a team by activating a block.  Then execute the /ready command.");
+	
+			if (null == Common.dbqueries)
+			{
+				player1.addChatMessage("The dbqueries is null.  Cannot start checkTeamStatus thread");
+			} else
+			{
+				Common.dbqueries.insertPlayerLoggedIn(player1.username);
+				Common.teleportPlayerTo(player1, "choose_team", true);
+			}
+		} else {
+			Team team = Common.getTeam(player1);
+			player1.addChatMessage("Welcome back! You are on the "+team.teamcolor+" team.");
 		}
 	}
 
