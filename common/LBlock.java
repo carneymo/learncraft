@@ -54,15 +54,18 @@ public class LBlock extends Block
 	 * Testing teleportation on block activation (right clicking a learning block)
 	 */
 	public boolean onBlockActivated(World world, int par2, int par3, int par4,
-			EntityPlayer player, int par6, float par7, float par8, float par9)
+			EntityPlayer playerEntity, int par6, float par7, float par8, float par9)
 	{
 		// Add a potion effect with id 1 (movement speed potion), duration of
 		// 20.83 * 1250 = 60 seconds, and amplifier of 1
-		player.addPotionEffect(new PotionEffect(1, 1250, 4));
-		player.addPotionEffect(new PotionEffect(8, 1250, 4));
-		player.setSprinting(true);
+		playerEntity.addPotionEffect(new PotionEffect(1, 1250, 4));
+		playerEntity.addPotionEffect(new PotionEffect(8, 1250, 4));
+		playerEntity.setSprinting(true);
 		//System.out.println("Playing sound.");
-		player.playSound("learncraft:starting", 1.0F, 1.0F);
-		return true;
+		playerEntity.playSound("learncraft:starting", 1.0F, 1.0F);
+		
+		
+	    
+		return false;
 	}
 }

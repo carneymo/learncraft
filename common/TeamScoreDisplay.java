@@ -23,6 +23,7 @@ public class TeamScoreDisplay extends Gui
 	private Minecraft mc;
 	private FontRenderer fontRender;
 	private String btext, otext;
+	public static int blueTeamScore = 0, orangeTeamScore = 0;
 	
 	private static final int ORANGE_TEXT_X = 10;
 	private static final int ORANGE_TEXT_Y = 10;
@@ -62,8 +63,8 @@ public class TeamScoreDisplay extends Gui
 		mc.entityRenderer.setupOverlayRendering();
 
 		//Update the text with the respective team points
-		otext = "Orange Team: " + Common.teams[1].points;
-		btext = "Blue Team: " + Common.teams[0].points;
+		otext = "Orange Team: " + orangeTeamScore;
+		btext = "Blue Team: " + blueTeamScore;
 
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		GL11.glDisable(GL11.GL_LIGHTING);

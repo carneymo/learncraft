@@ -33,8 +33,8 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.MinecraftForge;
 
-@Mod(modid="MC_LearnCraft", name="LearnCraft", version="1.1.1")
-@NetworkMod(clientSideRequired=true, serverSideRequired=false)
+@Mod(modid="MC_LearnCraft", name="LearnCraft", version="1.1.2")
+@NetworkMod(clientSideRequired=true, serverSideRequired=false, channels={"Learncraft"}, packetHandler = PacketHandler.class)
 
 public class Common {
 	
@@ -246,7 +246,7 @@ public class Common {
 		
 		MinecraftForge.EVENT_BUS.register(new EventHookContainerClass());
 		NetworkRegistry.instance().registerConnectionHandler(new ConnectionHandler());
-		
+		NetworkRegistry.instance().registerChannel(new PacketHandler(), "Learncraft");
     }
     
     @EventHandler
@@ -276,6 +276,8 @@ public class Common {
 		server.executeCommand("scoreboard teams add blue \"Blue Team\"");
 		server.executeCommand("scoreboard teams add orange \"Orange Team\"");
 		server.executeCommand("scoreboard objectives setdisplay sidebar teamscore");
+		server.executeCommand("time set 0");
+		server.executeCommand("gamerule doDaylightCycle false");
     }
     
     

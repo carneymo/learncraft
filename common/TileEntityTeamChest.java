@@ -1,19 +1,28 @@
 package mods.learncraft.common;
 
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.network.PacketDispatcher;
+import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.ContainerChest;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryLargeChest;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 
@@ -160,7 +169,39 @@ public class TileEntityTeamChest extends TileEntity implements IInventory
 	        		if(curteam != null) {
 	        			curteam.addScore(item.stackSize);
 	        			curteam.reportScore();
-	        			((ContainerChest)entityplayer.openContainer).getLowerChestInventory().setInventorySlotContents(a, null);
+	        			
+	        			//Aaron Mertz
+	        			//Begin sending a packet that tells the client what the teamscores are
+	        			ByteArrayOutputStream bos = new ByteArrayOutputStream(8);
+	        		    DataOutputStream outputStream = new DataOutputStream(bos);
+	        		    try {
+	        		            outputStream.writeInt(Common.teams[0].points);
+	        		            outputStream.writeInt(Common.teams[1].points);
+	        		    } catch (Exception ex) {
+	        		             ex.printStackTrace();
+	        		    }
+	        		     
+	        		    Packet250CustomPayload packet = new Packet250CustomPayload();
+	        		    packet.channel = "Learncraft";
+	        		    packet.data = bos.toByteArray();
+	        		    packet.length = bos.size();
+	        		     
+	        		    Side side = FMLCommonHandler.instance().getEffectiveSide();
+	        		    if (side == Side.SERVER) 
+	        		    {
+	        		    	   PacketDispatcher.sendPacketToAllPlayers(packet);
+	        		  
+	        		    } else if (side == Side.CLIENT) 
+	        		    {
+	        		           EntityClientPlayerMP player = (EntityClientPlayerMP) entityplayer;
+	        		           player.sendQueue.addToSendQueue(packet);
+	        		            
+	        		    } else 
+	        		    {
+	        		             // We are on the Bukkit server.
+	        		    }
+	        		     
+	        		    ((ContainerChest)entityplayer.openContainer).getLowerChestInventory().setInventorySlotContents(a, null);
 	        		}
 	        	}
 	        }

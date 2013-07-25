@@ -75,7 +75,7 @@ public class AutoBalancer
 						 largerTeam.removePlayer(player); //remove from larger team
 						 smallerTeam.addPlayer(player); //add to smaller team
 						 
-						 Common.teleportPlayerTo(player, teleportLocation); //teleport to the right team's base
+						 Common.teleportPlayerTo(player, teleportLocation, true); //teleport to the right team's base
 						 player.addChatMessage(message); //Notify the player they were switched
 					 }
 				 }
