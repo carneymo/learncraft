@@ -9,6 +9,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.relauncher.Side;
+import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 
@@ -64,16 +67,28 @@ public class Coordinates {
 		return null;
 	}
 	
-	public void TeleportPlayer(EntityPlayer player, String loc) {
+	public void TeleportPlayer(EntityPlayerMP player, String loc) 
+	{
 		Double[] coord = getCoordinates(loc);
-		EntityPlayerMP playerMP = (EntityPlayerMP) player;
-		
 		if(coord != null && coord.length==3) {
-			System.out.println("Teleporting " + player.username + " to " + coord[0] + ", " + coord[1] + ", " + coord[2] + ".");
-			playerMP.playerNetServerHandler.setPlayerLocation(coord[0], coord[1], coord[2], playerMP.rotationYaw, playerMP.rotationPitch);
+			System.out.println("Teleporting server " + player.username + " to " + coord[0] + ", " + coord[1] + ", " + coord[2] + ".");
+			player.playerNetServerHandler.setPlayerLocation(coord[0], coord[1], coord[2], player.cameraYaw, player.cameraPitch);
 		} else {
 			player.addChatMessage("Invalid teleporation location: "+loc);
 			if(coord==null) {player.addChatMessage("Null coord");}
 		}
+	}
+	
+	public void TeleportPlayer(EntityPlayer player, String loc)
+	{
+		Double[] coord = getCoordinates(loc);
+		if(coord != null && coord.length==3) {
+			System.out.println("Teleporting client " + player.username + " to " + coord[0] + ", " + coord[1] + ", " + coord[2] + ".");
+			player.setPositionAndUpdate(coord[0], coord[1], coord[2]);
+		} else {
+			player.addChatMessage("Invalid teleporation location: "+loc);
+			if(coord==null) {player.addChatMessage("Null coord");}
+		}
+		
 	}
 }

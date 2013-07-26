@@ -33,7 +33,6 @@ public class BlockTeamDesignateOrange extends Block {
     			// Do nothing, player is on another team
     		} else {
     			team.addPlayer(player);
-        		Common.teleportPlayerTo(player, color+"_spawn",true);
     		}
     	}
     	return false;

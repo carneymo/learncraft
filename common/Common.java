@@ -14,6 +14,7 @@ import mods.learncraft.commands.CommandGenGlowstone;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.EnumToolMaterial;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -26,10 +27,13 @@ import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
+import cpw.mods.fml.relauncher.Side;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.command.ICommandManager;
 import net.minecraft.command.ServerCommandManager;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.MinecraftForge;
@@ -301,7 +305,9 @@ public class Common {
 
 	public static void teleportPlayerTo(EntityPlayer player, String loc, Boolean override) {
 		if(teleportOn == true || override == true) {
-			Common.coordinates.TeleportPlayer(player, loc);
+			Side side = FMLCommonHandler.instance().getEffectiveSide();
+			if(side == Side.CLIENT) Common.coordinates.TeleportPlayer(player, loc);
+			if(side == Side.SERVER) Common.coordinates.TeleportPlayer((EntityPlayerMP) player, loc);
 		} else {
 			player.addChatMessage("Teleport is currently off.");
 		}
