@@ -34,7 +34,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.MinecraftForge;
 
-@Mod(modid="MC_LearnCraft", name="LearnCraft", version="1.1.2")
+@Mod(modid="MC_LearnCraft", name="LearnCraft", version="1.1.3")
 @NetworkMod(clientSideRequired=true, serverSideRequired=false, channels={"Learncraft"}, packetHandler = PacketHandler.class)
 
 public class Common {
