@@ -16,7 +16,6 @@ public class BlockTeamDesignateBlue extends Block {
 	       super(id, par2Material);
 	       this.setCreativeTab(CreativeTabs.tabBlock);
 	       this.setBlockUnbreakable();
-	       Common.addTeam(new Team(color));
 	}
 
 	@Override
@@ -27,10 +26,6 @@ public class BlockTeamDesignateBlue extends Block {
     @Override
 	public boolean onBlockActivated(World world, int par2, int par3, int par4, EntityPlayer player, int par6, float par7, float par8, float par9) {
     	Team team = Common.getTeam(color);
-    	if(team == null) {
-    		team = new Team(color);
-    		Common.addTeam(team);
-    	}
     	if(team.hasPlayer(player)) {
     		Common.teleportPlayerTo(player, color+"_spawn",true);
     	} else {

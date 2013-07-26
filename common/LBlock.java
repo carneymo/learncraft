@@ -60,12 +60,11 @@ public class LBlock extends Block
 		// 20.83 * 1250 = 60 seconds, and amplifier of 1
 		playerEntity.addPotionEffect(new PotionEffect(1, 1250, 4));
 		playerEntity.addPotionEffect(new PotionEffect(8, 1250, 4));
-		playerEntity.setSprinting(true);
 		//System.out.println("Playing sound.");
 		playerEntity.playSound("learncraft:starting", 1.0F, 1.0F);
 		
 		
 	    
-		return false;
+		return true;
 	}
 }

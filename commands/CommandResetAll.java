@@ -2,13 +2,17 @@ package mods.learncraft.commands;
 
 import java.util.Set;
 
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.relauncher.Side;
 import mods.learncraft.common.CheckTeamStatus;
 import mods.learncraft.common.Common;
+import mods.learncraft.common.PacketHandler;
 import mods.learncraft.common.Team;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.management.ServerConfigurationManager;
 
 public class CommandResetAll extends CommandBase
 {
@@ -18,6 +22,12 @@ public class CommandResetAll extends CommandBase
 	{
 		return "resetall";
 	}
+	
+	@Override
+	public int getRequiredPermissionLevel()
+    {
+        return 3;
+    }
 
 	@Override
 	public boolean canCommandSenderUseCommand(ICommandSender par1ICommandSender)
@@ -30,42 +40,30 @@ public class CommandResetAll extends CommandBase
 	{
 		if (icommandsender instanceof EntityPlayer)
 		{
-			boolean isOP = false;
-			EntityPlayer player = (EntityPlayer)icommandsender;
-			Set<String> ops = MinecraftServer.getServer().getConfigurationManager().getOps();
+			Common.teams[0].clear();
+			Common.teams[1].clear();
+			Common.currentPlayers.clear();
+			Common.playerlist.clear();
+			CheckTeamStatus.gameTimer.stop();
+			PacketHandler.sendOutTeamScoresPacket();
 			
-			for(String s : ops)
-			{
-				if(s.equalsIgnoreCase(player.username))
-				{
-					isOP = true;
-				}
-			}
+			Common.inProgress = false;
 			
-			if(true)
+			ServerConfigurationManager manager = MinecraftServer.getServer().getConfigurationManager();
+			
+			String phrase = manager.getPlayerListAsString();
+			String delims = "[,]+";
+			String[] tokens = phrase.split(delims);
+			
+			for(int i = 0; i < tokens.length; i++)
 			{
-				System.out.println("Player is OP, resetting.");
-				Common.teams[0].clear();
-				Common.teams[1].clear();
-				Common.currentPlayers.clear();
-				Common.playerlist.clear();
-				CheckTeamStatus.gameTimer.stop();
-				
-				Common.inProgress = false;
-				
-				String phrase = MinecraftServer.getServer().getConfigurationManager().getPlayerListAsString();
-				String delims = "[,]+";
-				String[] tokens = phrase.split(delims);
-				
-				for(int i = 0; i < tokens.length; i++)
-				{
-					EntityPlayer player1 = MinecraftServer.getServer().getConfigurationManager().getPlayerForUsername(tokens[i]);
-					Common.currentPlayers.addPlayer(player1);
-					Common.playerlist.add(player1);
-					Common.teleportPlayerTo(player1, "choose_team", true);
-				}
+				EntityPlayer player1 = manager.getPlayerForUsername(tokens[i]);
+				Common.currentPlayers.addPlayer(player1);
+				Common.playerlist.add(player1);
+				Common.teleportPlayerTo(player1, "choose_team", true);
 			}
 		}
+		
 	}
 
 	@Override

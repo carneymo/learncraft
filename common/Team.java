@@ -1,7 +1,9 @@
 package mods.learncraft.common;
 
 import java.util.ArrayList;
+
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.server.MinecraftServer;
 
 public class Team {
 
@@ -16,11 +18,12 @@ public class Team {
 	}
 	
 	public void addPlayer(EntityPlayer player) {
-		
 		roster.addPlayer(player, numroster);
 		numroster++;
 		
-		Common.announce("Added "+player.username+" to the "+teamcolor+" team!");
+		Common.teleportPlayerTo(player, this.teamcolor + "_spawn", true);
+		MinecraftServer.getServer().executeCommand("scoreboard teams join " + teamcolor + " " + player.username);
+		Common.announce("Added "+player.username+" to the " + teamcolor + " team!");
 	}
 	
 	public boolean hasPlayer(EntityPlayer player) {

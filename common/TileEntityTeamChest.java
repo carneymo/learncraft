@@ -169,39 +169,9 @@ public class TileEntityTeamChest extends TileEntity implements IInventory
 	        		if(curteam != null) {
 	        			curteam.addScore(item.stackSize);
 	        			curteam.reportScore();
-	        			
-	        			//Aaron Mertz
-	        			//Begin sending a packet that tells the client what the teamscores are
-	        			ByteArrayOutputStream bos = new ByteArrayOutputStream(8);
-	        		    DataOutputStream outputStream = new DataOutputStream(bos);
-	        		    try {
-	        		            outputStream.writeInt(Common.teams[0].points);
-	        		            outputStream.writeInt(Common.teams[1].points);
-	        		    } catch (Exception ex) {
-	        		             ex.printStackTrace();
-	        		    }
-	        		     
-	        		    Packet250CustomPayload packet = new Packet250CustomPayload();
-	        		    packet.channel = "Learncraft";
-	        		    packet.data = bos.toByteArray();
-	        		    packet.length = bos.size();
-	        		     
-	        		    Side side = FMLCommonHandler.instance().getEffectiveSide();
-	        		    if (side == Side.SERVER) 
-	        		    {
-	        		    	   PacketDispatcher.sendPacketToAllPlayers(packet);
-	        		  
-	        		    } else if (side == Side.CLIENT) 
-	        		    {
-	        		           EntityClientPlayerMP player = (EntityClientPlayerMP) entityplayer;
-	        		           player.sendQueue.addToSendQueue(packet);
-	        		            
-	        		    } else 
-	        		    {
-	        		             // We are on the Bukkit server.
-	        		    }
-	        		     
 	        		    ((ContainerChest)entityplayer.openContainer).getLowerChestInventory().setInventorySlotContents(a, null);
+	        		    
+	        		    PacketHandler.sendOutTeamScoresPacket();
 	        		}
 	        	}
 	        }

@@ -47,7 +47,6 @@ public class CommandTeam extends CommandBase {
 					Team newteam = Common.getTeam(astring[0]);
 					newteam.addPlayer(player);
 					Common.announce("Player "+player.username+" has joined team "+newteam.teamcolor.toUpperCase()+" Team");
-					Common.teleportPlayerTo(player, newteam.teamcolor+"_spawn", true);
 				}
 			} else {
 				if(Common.inProgress == false) {
@@ -56,7 +55,6 @@ public class CommandTeam extends CommandBase {
 						Team newteam = Common.getTeam(astring[0]);
 						newteam.addPlayer(player);
 						player.addChatMessage("Switch teams from "+team.teamcolor.toUpperCase()+" Team to "+astring[0].toUpperCase()+" Team.");
-						Common.teleportPlayerTo(player, newteam.teamcolor+"_spawn", true);
 					} else {
 						if(astring.length != 1) {
 							player.addChatMessage("Incorrect usage of the command /team.");

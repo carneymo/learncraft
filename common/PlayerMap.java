@@ -15,16 +15,18 @@ public class PlayerMap
 	
 	public void addPlayer(EntityPlayer player)
 	{
-		if(!playerList.contains(player))
-			playerList.add(new PlayerMapItem(player, false));
+		if(!contains(player)) playerList.add(new PlayerMapItem(player, false));
 	}
 	
 	public boolean contains(EntityPlayer player)
 	{
 		for(PlayerMapItem item : playerList)
 		{
-			if(item.getPlayer().getEntityName().equals(player.getEntityName()))
+			if(item.getPlayer().username.equals(player.username))
+			{
+				System.out.println("Player already exists.");
 				return true;
+			}
 		}
 		
 		return false;
@@ -34,7 +36,7 @@ public class PlayerMap
 	{
 		for(PlayerMapItem item : playerList)
 		{
-			if(item.getPlayer() == player)
+			if(item.getPlayer().username.equals(player.username))
 			{
 				item.setReady(true);
 				return;

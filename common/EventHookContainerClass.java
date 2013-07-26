@@ -32,6 +32,8 @@ public class EventHookContainerClass {
 			EntityPlayer player = (EntityPlayer) event.entityLiving;
 			event.setCanceled(true);
 			player.setEntityHealth(20);
+			player.getFoodStats().setFoodLevel(20);
+			
 			int BlueDoorID = Common.BlueTeamDoor.itemID;
 			int OrangeDoorID = Common.OrangeTeamDoor.itemID;
 			int BlueDefenseID = 525;

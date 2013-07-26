@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 
 public class Coordinates {
 
@@ -65,11 +66,11 @@ public class Coordinates {
 	
 	public void TeleportPlayer(EntityPlayer player, String loc) {
 		Double[] coord = getCoordinates(loc);
+		EntityPlayerMP playerMP = (EntityPlayerMP) player;
+		
 		if(coord != null && coord.length==3) {
-			System.out.println(coord[0]);
-			System.out.println(coord[1]);
-			System.out.println(coord[2]);
-			player.setPosition(coord[0],coord[1],coord[2]);
+			System.out.println("Teleporting " + player.username + " to " + coord[0] + ", " + coord[1] + ", " + coord[2] + ".");
+			playerMP.playerNetServerHandler.setPlayerLocation(coord[0], coord[1], coord[2], playerMP.rotationYaw, playerMP.rotationPitch);
 		} else {
 			player.addChatMessage("Invalid teleporation location: "+loc);
 			if(coord==null) {player.addChatMessage("Null coord");}

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import mods.learncraft.commands.CommandGameSettings;
 import mods.learncraft.commands.CommandReady;
 import mods.learncraft.commands.CommandResetAll;
 import mods.learncraft.commands.CommandTeam;
@@ -270,12 +271,15 @@ public class Common {
 		serverCommand.registerCommand(new CommandReady());
 		serverCommand.registerCommand(new CommandGenGlowstone());
 		serverCommand.registerCommand(new CommandResetAll());
+		serverCommand.registerCommand(new CommandGameSettings());
 		
 		//Server commands for setting up the scoreboard
-		server.executeCommand("scoreboard objectives add teamscore dummy \"Team Score\"");
 		server.executeCommand("scoreboard teams add blue \"Blue Team\"");
 		server.executeCommand("scoreboard teams add orange \"Orange Team\"");
-		server.executeCommand("scoreboard objectives setdisplay sidebar teamscore");
+		server.executeCommand("scoreboard teams option blue friendlyfire false");
+		server.executeCommand("scoreboard teams option orange friendlyfire false");
+		server.executeCommand("scoreboard teams option blue color blue");
+		server.executeCommand("scoreboard teams option orange color gold");
 		server.executeCommand("time set 0");
 		server.executeCommand("gamerule doDaylightCycle false");
     }
