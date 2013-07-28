@@ -24,58 +24,65 @@ public class PacketHandler implements IPacketHandler
 	{
 		if (packet.channel.equals("Learncraft")) handleTeamScores(packet);
 	}
-	
+
 	private void handleTeamScores(Packet250CustomPayload packet)
 	{
-		 DataInputStream inputStream = new DataInputStream(new ByteArrayInputStream(packet.data));
-         
-         int blueTeamScore;
-         int orangeTeamScore;
-         try {
-                 blueTeamScore = inputStream.readInt();
-                 orangeTeamScore = inputStream.readInt();
-         } catch (IOException e) {
-                 e.printStackTrace();
-                 return;
-         }
-         
-         TeamScoreDisplay.blueTeamScore = blueTeamScore;
-         TeamScoreDisplay.orangeTeamScore = orangeTeamScore;
+		DataInputStream inputStream = new DataInputStream(new ByteArrayInputStream(packet.data));
+
+		int blueTeamScore, orangeTeamScore, scoreAdded;
+		String teamColor;
+		
+		try {
+			blueTeamScore = inputStream.readInt();
+			orangeTeamScore = inputStream.readInt();
+			scoreAdded = inputStream.readInt();
+			teamColor = inputStream.readUTF();
+		} catch (IOException e) {
+			e.printStackTrace();
+			return;
+		}
+
+		TeamScoreDisplay.blueTeamScore = blueTeamScore;
+		TeamScoreDisplay.orangeTeamScore = orangeTeamScore;
+		
+		if(teamColor.equals("blue")) TeamScoreDisplay.blueScorePlus = scoreAdded;
+		else if(teamColor.equals("orange")) TeamScoreDisplay.orangeScorePlus = scoreAdded;
+		
+		TeamScoreDisplay.receivedPacket = true;
 	}
-	
-	public static void sendOutTeamScoresPacket()
+
+	public static void sendOutTeamScoresPacket(int scoreAdded, String teamColor)
 	{
 		//Aaron Mertz
 		//Begin sending a packet that tells the client what the teamscores are
-		ByteArrayOutputStream bos = new ByteArrayOutputStream(8);
-	    DataOutputStream outputStream = new DataOutputStream(bos);
-	    try {
-	            outputStream.writeInt(Common.teams[0].points);
-	            outputStream.writeInt(Common.teams[1].points);
-	    } catch (Exception ex) {
-	             ex.printStackTrace();
-	    }
-	     
-	    Packet250CustomPayload packet = new Packet250CustomPayload();
-	    packet.channel = "Learncraft";
-	    packet.data = bos.toByteArray();
-	    packet.length = bos.size();
-	     
-	    Side side = FMLCommonHandler.instance().getEffectiveSide();
-	    if (side == Side.SERVER) 
-	    {
-	    	   PacketDispatcher.sendPacketToAllPlayers(packet);
-	  
-	    } else if (side == Side.CLIENT) 
-	    {
-	           EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
-	           player.sendQueue.addToSendQueue(packet);
-	            
-	    } else 
-	    {
-	             // We are on the Bukkit server.
-	    }
+		ByteArrayOutputStream bos = new ByteArrayOutputStream(8 + teamColor.length()*2);
+		DataOutputStream outputStream = new DataOutputStream(bos);
 		
+		try {
+			outputStream.writeInt(Common.teams[0].points);
+			outputStream.writeInt(Common.teams[1].points);
+			outputStream.writeInt(scoreAdded);
+			outputStream.writeUTF(teamColor);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+
+		Packet250CustomPayload packet = new Packet250CustomPayload();
+		packet.channel = "Learncraft";
+		packet.data = bos.toByteArray();
+		packet.length = bos.size();
+
+		Side side = FMLCommonHandler.instance().getEffectiveSide();
+		if (side == Side.SERVER) 
+		{
+			PacketDispatcher.sendPacketToAllPlayers(packet);
+
+		} else if (side == Side.CLIENT) 
+		{
+			EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
+			player.sendQueue.addToSendQueue(packet);
+		} 
+
 	}
-	
+
 }

@@ -170,8 +170,7 @@ public class TileEntityTeamChest extends TileEntity implements IInventory
 	        			curteam.addScore(item.stackSize);
 	        			curteam.reportScore();
 	        		    ((ContainerChest)entityplayer.openContainer).getLowerChestInventory().setInventorySlotContents(a, null);
-	        		    
-	        		    PacketHandler.sendOutTeamScoresPacket();
+	        		    PacketHandler.sendOutTeamScoresPacket(item.stackSize, curteam.teamcolor);
 	        		}
 	        	}
 	        }

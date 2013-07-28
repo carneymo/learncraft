@@ -22,8 +22,8 @@ public class Team {
 		numroster++;
 		
 		Common.teleportPlayerTo(player, this.teamcolor + "_spawn", true);
-		MinecraftServer.getServer().executeCommand("scoreboard teams join " + teamcolor + " " + player.username);
 		Common.announce("Added "+player.username+" to the " + teamcolor + " team!");
+		Common.serverScoreboardTeamJoin(player, this.teamcolor);
 	}
 	
 	public boolean hasPlayer(EntityPlayer player) {

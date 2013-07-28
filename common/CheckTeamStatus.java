@@ -52,13 +52,16 @@ public class CheckTeamStatus extends Thread {
 			}
 			if(teams.length == 1) {
 				Common.announce(teams[0].teamcolor.toUpperCase()+" Team Wins!");
-
+				
 				for(int a=0;a<Common.teams.length;a++) {
 					Common.announce(Common.teams[a].teamcolor.toUpperCase()+" has "+Common.teams[a].points+" points.");
 					Common.teams[a].moveToSpawnAndFreeze();
 				}
 				Common.winningteam = teams[0];
 				Common.teleportOn = false;
+				Common.teams[0].clear();
+				Common.teams[1].clear();
+				Common.serverScoreboardClear();
 			// For now, the first team in the list is the winner (this is used for 3+ teams)
 			} else if(teams.length > 1) {
 				Common.announce(teams[0].teamcolor.toUpperCase()+" Team Wins!");
@@ -69,6 +72,9 @@ public class CheckTeamStatus extends Thread {
 				}
 				Common.winningteam = teams[0];
 				Common.teleportOn = false;
+				Common.teams[0].clear();
+				Common.teams[1].clear();
+				Common.serverScoreboardClear();
 			} else {
 				// No winners yet
 			}

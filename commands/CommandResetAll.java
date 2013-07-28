@@ -43,12 +43,14 @@ public class CommandResetAll extends CommandBase
 		{
 			Common.teams[0].clear();
 			Common.teams[1].clear();
+			Common.serverScoreboardClear();
 			Common.currentPlayers.clear();
 			Common.playerlist.clear();
 			CheckTeamStatus.gameTimer.stop();
-			PacketHandler.sendOutTeamScoresPacket();
+			PacketHandler.sendOutTeamScoresPacket(0, "");
 			
 			Common.inProgress = false;
+			Common.teleportOn = false;
 			boolean firstName = true;
 			ServerConfigurationManager manager = MinecraftServer.getServer().getConfigurationManager();
 			

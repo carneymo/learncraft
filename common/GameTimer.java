@@ -2,6 +2,7 @@ package mods.learncraft.common;
 
 import java.util.Timer;
 import java.util.TimerTask;
+
 import net.minecraft.world.World;
 
 public class GameTimer {
@@ -43,6 +44,11 @@ public class GameTimer {
 				Common.teams[a].moveToSpawnAndFreeze();
 			}
 			Common.teleportOn = false;
+			Common.inProgress = false;
+			
+			Common.teams[0].clear();
+			Common.teams[1].clear();
+			
 			timer.cancel(); // Terminate the timer thread
 		}
 	}

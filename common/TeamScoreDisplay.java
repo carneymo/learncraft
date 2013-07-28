@@ -22,13 +22,22 @@ public class TeamScoreDisplay extends Gui
 {
 	private Minecraft mc;
 	private FontRenderer fontRender;
-	private String btext, otext;
-	public static int blueTeamScore = 0, orangeTeamScore = 0;
+	private String bText, oText, bTextPlus, oTextPlus;
+	private int renderTime;
+	private boolean renderTimeCounting;
+	public static boolean receivedPacket;
+	public static int blueTeamScore, orangeTeamScore, orangeScorePlus, blueScorePlus;
 	
 	private static final int ORANGE_TEXT_X = 10;
 	private static final int ORANGE_TEXT_Y = 10;
+	private static final int ORANGE_TEXT_PLUS_Y = 10;
+	private static final int ORANGE_TEXT_PLUS_X = 100;
+	
 	private static final int BLUE_TEXT_X = ORANGE_TEXT_X;
 	private static final int BLUE_TEXT_Y = ORANGE_TEXT_Y + 13;
+	private static final int BLUE_TEXT_PLUS_Y = BLUE_TEXT_Y;
+	private static final int BLUE_TEXT_PLUS_X = 100;
+	
 	private static final int TEXTURED_RECT_X = ORANGE_TEXT_X - 7;
 	private static final int TEXTURED_RECT_Y = ORANGE_TEXT_Y - 5;
 
@@ -39,6 +48,15 @@ public class TeamScoreDisplay extends Gui
 		// We need this to invoke the render engine.
 		this.mc = mc;
 		fontRender = mc.fontRenderer;
+		
+		blueTeamScore = 0;
+		orangeTeamScore = 0;
+		orangeScorePlus = 0;
+		blueScorePlus = 0;
+		renderTime = 0;
+		
+		renderTimeCounting = false;
+		receivedPacket = false;
 	}
 
 	//
@@ -59,12 +77,12 @@ public class TeamScoreDisplay extends Gui
 		{
 			return;
 		}
-
+		
 		mc.entityRenderer.setupOverlayRendering();
 
 		//Update the text with the respective team points
-		otext = "Orange Team: " + orangeTeamScore;
-		btext = "Blue Team: " + blueTeamScore;
+		oText = "Orange Team: " + orangeTeamScore;
+		bText = "Blue Team: " + blueTeamScore;
 
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		GL11.glDisable(GL11.GL_LIGHTING);
@@ -76,7 +94,38 @@ public class TeamScoreDisplay extends Gui
 		//the "slice" of texture, height of the "slice" of texture)
 		this.drawTexturedModalRect(TEXTURED_RECT_X, TEXTURED_RECT_Y, 0, 166, 150, 32);
 
-		fontRender.drawStringWithShadow(otext, ORANGE_TEXT_X, ORANGE_TEXT_Y, 0xFF8400);
-		fontRender.drawStringWithShadow(btext, BLUE_TEXT_X, BLUE_TEXT_Y, 0x009DFF);
+		fontRender.drawStringWithShadow(oText, ORANGE_TEXT_X, ORANGE_TEXT_Y, 0xFF8400);
+		fontRender.drawStringWithShadow(bText, BLUE_TEXT_X, BLUE_TEXT_Y, 0x009DFF);
+		
+		if(receivedPacket == true)
+		{
+			renderTime = 0;
+			renderTimeCounting = true;
+			receivedPacket = false;
+		}
+		
+		if(renderTimeCounting == true && renderTime < 500)
+		{
+			renderTime++;
+		}
+		else if(renderTime == 500)
+		{
+			renderTime = 0;
+			renderTimeCounting = false;
+			orangeScorePlus = 0;
+			blueScorePlus = 0;
+		}
+		
+		if(orangeScorePlus != 0)
+		{
+			oTextPlus = "+" + orangeScorePlus;
+			fontRender.drawStringWithShadow(oTextPlus, ORANGE_TEXT_PLUS_X, ORANGE_TEXT_PLUS_Y, 0xFF8400);
+		}
+		
+		if(blueScorePlus != 0)
+		{
+			bTextPlus = "+" + blueScorePlus;
+			fontRender.drawStringWithShadow(bTextPlus, BLUE_TEXT_PLUS_X, BLUE_TEXT_PLUS_Y, 0x009DFF);
+		}
 	}
 }
