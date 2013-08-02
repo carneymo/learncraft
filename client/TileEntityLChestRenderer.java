@@ -46,9 +46,9 @@ public class TileEntityLChestRenderer extends TileEntitySpecialRenderer
             this.isChristmas = true;
         }
     }
-    
+
     @Override
-	protected void func_110628_a(ResourceLocation par1ResourceLocation)
+    protected void func_110628_a(ResourceLocation par1ResourceLocation)
     {
         TextureManager texturemanager = this.tileEntityRenderer.renderEngine;
 
@@ -83,8 +83,9 @@ public class TileEntityLChestRenderer extends TileEntitySpecialRenderer
                 catch (ClassCastException e)
                 {
                     FMLLog.severe("Attempted to render a chest at %d,  %d, %d that was not a chest",
-                            par1TileEntityChest.xCoord, par1TileEntityChest.yCoord, par1TileEntityChest.zCoord);
+                                  par1TileEntityChest.xCoord, par1TileEntityChest.yCoord, par1TileEntityChest.zCoord);
                 }
+
                 i = par1TileEntityChest.getBlockMetadata();
             }
 
@@ -202,7 +203,7 @@ public class TileEntityLChestRenderer extends TileEntitySpecialRenderer
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         }
     }
-    
+
     public void renderTileEntityChestAt(TileEntityTeamChest par1TileEntityChest, double par2, double par4, double par6, float par8)
     {
         int i;
@@ -225,8 +226,9 @@ public class TileEntityLChestRenderer extends TileEntitySpecialRenderer
                 catch (ClassCastException e)
                 {
                     FMLLog.severe("Attempted to render a chest at %d,  %d, %d that was not a chest",
-                            par1TileEntityChest.xCoord, par1TileEntityChest.yCoord, par1TileEntityChest.zCoord);
+                                  par1TileEntityChest.xCoord, par1TileEntityChest.yCoord, par1TileEntityChest.zCoord);
                 }
+
                 i = par1TileEntityChest.getBlockMetadata();
             }
 
@@ -346,11 +348,15 @@ public class TileEntityLChestRenderer extends TileEntitySpecialRenderer
     }
 
     @Override
-	public void renderTileEntityAt(TileEntity par1TileEntity, double par2, double par4, double par6, float par8)
+    public void renderTileEntityAt(TileEntity par1TileEntity, double par2, double par4, double par6, float par8)
     {
-    	if(par1TileEntity instanceof TileEntityLChest)
-        this.renderTileEntityChestAt((TileEntityLChest) par1TileEntity, par2, par4, par6, par8);
-    	else if(par1TileEntity instanceof TileEntityTeamChest)
-        this.renderTileEntityChestAt((TileEntityTeamChest) par1TileEntity, par2, par4, par6, par8);
+        if (par1TileEntity instanceof TileEntityLChest)
+        {
+            this.renderTileEntityChestAt((TileEntityLChest) par1TileEntity, par2, par4, par6, par8);
+        }
+        else if (par1TileEntity instanceof TileEntityTeamChest)
+        {
+            this.renderTileEntityChestAt((TileEntityTeamChest) par1TileEntity, par2, par4, par6, par8);
+        }
     }
 }

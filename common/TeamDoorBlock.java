@@ -18,8 +18,9 @@ import net.minecraft.world.World;
 
 public class TeamDoorBlock extends Block
 {
-    private static final String[] doorIconNames = new String[] {"learncraft:orangeDoorLower", "learncraft:orangeDoorUpper", 
-    															"learncraft:blueDoorLower", "learncraft:blueDoorUpper"};
+    private static final String[] doorIconNames = new String[] {"learncraft:orangeDoorLower", "learncraft:orangeDoorUpper",
+            "learncraft:blueDoorLower", "learncraft:blueDoorUpper"
+                                                               };
 
     /** Used for pointing at icon names. */
     private final int doorTypeForIcon;
@@ -30,7 +31,6 @@ public class TeamDoorBlock extends Block
     public TeamDoorBlock(int par1, Material par2Material)
     {
         super(par1, par2Material);
-        
         doorMaterial = par2Material;
 
         if (par2Material == Material.iron)
@@ -48,11 +48,9 @@ public class TeamDoorBlock extends Block
         this.setResistance(Block.obsidian.blockResistance);
         this.setBlockUnbreakable();
     }
-    
-
 
     @Override
-	@SideOnly(Side.CLIENT)
+    @SideOnly(Side.CLIENT)
 
     /**
      * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
@@ -63,7 +61,7 @@ public class TeamDoorBlock extends Block
     }
 
     @Override
-	@SideOnly(Side.CLIENT)
+    @SideOnly(Side.CLIENT)
 
     /**
      * Retrieves the block texture to use based on the display side. Args: iBlockAccess, x, y, z, side
@@ -131,7 +129,7 @@ public class TeamDoorBlock extends Block
     }
 
     @Override
-	@SideOnly(Side.CLIENT)
+    @SideOnly(Side.CLIENT)
 
     /**
      * When this method is called, your block should register all the icons it needs with the given IconRegister. This
@@ -153,13 +151,13 @@ public class TeamDoorBlock extends Block
      * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
      */
     @Override
-	public boolean isOpaqueCube()
+    public boolean isOpaqueCube()
     {
         return false;
     }
 
     @Override
-	public boolean getBlocksMovement(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
+    public boolean getBlocksMovement(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
     {
         int l = this.getFullMetadata(par1IBlockAccess, par2, par3, par4);
         return (l & 4) != 0;
@@ -169,7 +167,7 @@ public class TeamDoorBlock extends Block
      * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
      */
     @Override
-	public boolean renderAsNormalBlock()
+    public boolean renderAsNormalBlock()
     {
         return false;
     }
@@ -178,13 +176,13 @@ public class TeamDoorBlock extends Block
      * The type of render function that is called for this block
      */
     @Override
-	public int getRenderType()
+    public int getRenderType()
     {
         return 7;
     }
 
     @Override
-	@SideOnly(Side.CLIENT)
+    @SideOnly(Side.CLIENT)
 
     /**
      * Returns the bounding box of the wired rectangular prism to render.
@@ -200,7 +198,7 @@ public class TeamDoorBlock extends Block
      * cleared to be reused)
      */
     @Override
-	public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4)
+    public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4)
     {
         this.setBlockBoundsBasedOnState(par1World, par2, par3, par4);
         return super.getCollisionBoundingBoxFromPool(par1World, par2, par3, par4);
@@ -210,7 +208,7 @@ public class TeamDoorBlock extends Block
      * Updates the blocks bounds based on its current state. Args: world, x, y, z
      */
     @Override
-	public void setBlockBoundsBasedOnState(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
+    public void setBlockBoundsBasedOnState(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
     {
         this.setDoorRotation(this.getFullMetadata(par1IBlockAccess, par2, par3, par4));
     }
@@ -315,37 +313,44 @@ public class TeamDoorBlock extends Block
      */
 
     @Override
-	public void onBlockClicked(World par1World, int par2, int par3, int par4, EntityPlayer player) 
+    public void onBlockClicked(World par1World, int par2, int par3, int par4, EntityPlayer player)
     {
-    	Team team = Common.getTeam(player);
-    	if(team.teamcolor == "orange" && doorMaterial == Material.wood) {
-    		this.setHardness(0.1F);
-    	}
-    	else if(team.teamcolor == "blue" && doorMaterial == Material.iron) {
-    		this.setHardness(0.1F);
-    	}
-    	else {
-    		this.setBlockUnbreakable();
-    	}
+        Team team = Common.getTeam(player);
+
+        if (team.teamcolor == "orange" && doorMaterial == Material.wood)
+        {
+            this.setHardness(0.1F);
+        }
+        else if (team.teamcolor == "blue" && doorMaterial == Material.iron)
+        {
+            this.setHardness(0.1F);
+        }
+        else
+        {
+            this.setBlockUnbreakable();
+        }
     }
 
     /**
      * Called upon block activation (right click on the block.)
      */
     @Override
-	public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer player, int par6, float par7, float par8, float par9)
+    public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer player, int par6, float par7, float par8, float par9)
     {
-    	Team team = Common.getTeam(player);
-    	if(team == null) {
-    		return true;
-    	}
+        Team team = Common.getTeam(player);
+
+        if (team == null)
+        {
+            return true;
+        }
+
         if (team.teamcolor != "orange" && doorMaterial == Material.wood)
         {
             return false; //Allow items to interact with the door
         }
-        else if(team.teamcolor != "blue" && doorMaterial == Material.iron)
+        else if (team.teamcolor != "blue" && doorMaterial == Material.iron)
         {
-        	return false;
+            return false;
         }
         else
         {
@@ -402,7 +407,7 @@ public class TeamDoorBlock extends Block
      * their own) Args: x, y, z, neighbor blockID
      */
     @Override
-	public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, int par5)
+    public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, int par5)
     {
         int i1 = par1World.getBlockMetadata(par2, par3, par4);
 
@@ -462,9 +467,9 @@ public class TeamDoorBlock extends Block
      * Returns the ID of the items to drop on destruction.
      */
     @Override
-	public int idDropped(int par1, Random par2Random, int par3)
+    public int idDropped(int par1, Random par2Random, int par3)
     {
-    	 return (par1 & 8) != 0 ? 0 : (this.blockMaterial == Material.iron ? Common.BlueTeamDoor.itemID : Common.OrangeTeamDoor.itemID);
+        return (par1 & 8) != 0 ? 0 : (this.blockMaterial == Material.iron ? Common.BlueTeamDoor.itemID : Common.OrangeTeamDoor.itemID);
     }
 
     /**
@@ -472,7 +477,7 @@ public class TeamDoorBlock extends Block
      * x, y, z, startVec, endVec
      */
     @Override
-	public MovingObjectPosition collisionRayTrace(World par1World, int par2, int par3, int par4, Vec3 par5Vec3, Vec3 par6Vec3)
+    public MovingObjectPosition collisionRayTrace(World par1World, int par2, int par3, int par4, Vec3 par5Vec3, Vec3 par6Vec3)
     {
         this.setBlockBoundsBasedOnState(par1World, par2, par3, par4);
         return super.collisionRayTrace(par1World, par2, par3, par4, par5Vec3, par6Vec3);
@@ -482,7 +487,7 @@ public class TeamDoorBlock extends Block
      * Checks to see if its valid to put this block at the specified coordinates. Args: world, x, y, z
      */
     @Override
-	public boolean canPlaceBlockAt(World par1World, int par2, int par3, int par4)
+    public boolean canPlaceBlockAt(World par1World, int par2, int par3, int par4)
     {
         return par3 >= 255 ? false : par1World.doesBlockHaveSolidTopSurface(par2, par3 - 1, par4) && super.canPlaceBlockAt(par1World, par2, par3, par4) && super.canPlaceBlockAt(par1World, par2, par3 + 1, par4);
     }
@@ -492,7 +497,7 @@ public class TeamDoorBlock extends Block
      * and stop pistons
      */
     @Override
-	public int getMobilityFlag()
+    public int getMobilityFlag()
     {
         return 1;
     }
@@ -521,15 +526,15 @@ public class TeamDoorBlock extends Block
         boolean flag1 = (j1 & 1) != 0;
         return i1 & 7 | (flag ? 8 : 0) | (flag1 ? 16 : 0);
     }
-    
+
     @Override
-	public int quantityDropped(Random random)
+    public int quantityDropped(Random random)
     {
-    	return 1;
+        return 1;
     }
 
     @Override
-	@SideOnly(Side.CLIENT)
+    @SideOnly(Side.CLIENT)
 
     /**
      * only called by clickMiddleMouseButton , and passed to inventory.setCurrentItem (along with isCreative)
@@ -543,7 +548,7 @@ public class TeamDoorBlock extends Block
      * Called when the block is attempted to be harvested
      */
     @Override
-	public void onBlockHarvested(World par1World, int par2, int par3, int par4, int par5, EntityPlayer par6EntityPlayer)
+    public void onBlockHarvested(World par1World, int par2, int par3, int par4, int par5, EntityPlayer par6EntityPlayer)
     {
         if (par6EntityPlayer.capabilities.isCreativeMode && (par5 & 8) != 0 && par1World.getBlockId(par2, par3 - 1, par4) == this.blockID)
         {

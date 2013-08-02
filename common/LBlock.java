@@ -13,7 +13,6 @@ import net.minecraft.world.World;
 
 public class LBlock extends Block
 {
-
 	/**
 	 * Call parent's constructor and set tab in creative mode
 	 */
@@ -53,18 +52,15 @@ public class LBlock extends Block
 	/**
 	 * Testing teleportation on block activation (right clicking a learning block)
 	 */
-	public boolean onBlockActivated(World world, int par2, int par3, int par4,
-			EntityPlayer playerEntity, int par6, float par7, float par8, float par9)
+	public boolean onBlockActivated(World world, int par2, int par3, int par4, EntityPlayer playerEntity, int par6, float par7, float par8, float par9)
 	{
 		// Add a potion effect with id 1 (movement speed potion), duration of
 		// 20.83 * 1250 = 60 seconds, and amplifier of 1
 		playerEntity.addPotionEffect(new PotionEffect(1, 1250, 4));
 		playerEntity.addPotionEffect(new PotionEffect(8, 1250, 4));
-		//System.out.println("Playing sound.");
+		
+		// System.out.println("Playing sound.");
 		playerEntity.playSound("learncraft:starting", 1.0F, 1.0F);
-		
-		
-	    
 		return true;
 	}
 }

@@ -65,7 +65,7 @@ public class TileEntityLChest extends TileEntity implements IInventory
      * Returns the number of slots in the inventory.
      */
     @Override
-	public int getSizeInventory()
+    public int getSizeInventory()
     {
         return 27;
     }
@@ -74,7 +74,7 @@ public class TileEntityLChest extends TileEntity implements IInventory
      * Returns the stack in slot i
      */
     @Override
-	public ItemStack getStackInSlot(int par1)
+    public ItemStack getStackInSlot(int par1)
     {
         return this.chestContents[par1];
     }
@@ -84,7 +84,7 @@ public class TileEntityLChest extends TileEntity implements IInventory
      * new stack.
      */
     @Override
-	public ItemStack decrStackSize(int par1, int par2)
+    public ItemStack decrStackSize(int par1, int par2)
     {
         if (this.chestContents[par1] != null)
         {
@@ -121,7 +121,7 @@ public class TileEntityLChest extends TileEntity implements IInventory
      * like when you close a workbench GUI.
      */
     @Override
-	public ItemStack getStackInSlotOnClosing(int par1)
+    public ItemStack getStackInSlotOnClosing(int par1)
     {
         if (this.chestContents[par1] != null)
         {
@@ -139,7 +139,7 @@ public class TileEntityLChest extends TileEntity implements IInventory
      * Sets the given item stack to the specified slot in the inventory (can be crafting or armor sections).
      */
     @Override
-	public void setInventorySlotContents(int par1, ItemStack par2ItemStack)
+    public void setInventorySlotContents(int par1, ItemStack par2ItemStack)
     {
         this.chestContents[par1] = par2ItemStack;
 
@@ -155,7 +155,7 @@ public class TileEntityLChest extends TileEntity implements IInventory
      * Returns the name of the inventory.
      */
     @Override
-	public String getInvName()
+    public String getInvName()
     {
         return this.isInvNameLocalized() ? this.field_94045_s : "container.chest";
     }
@@ -165,7 +165,7 @@ public class TileEntityLChest extends TileEntity implements IInventory
      * language. Otherwise it will be used directly.
      */
     @Override
-	public boolean isInvNameLocalized()
+    public boolean isInvNameLocalized()
     {
         return this.field_94045_s != null && this.field_94045_s.length() > 0;
     }
@@ -182,7 +182,7 @@ public class TileEntityLChest extends TileEntity implements IInventory
      * Reads a tile entity from NBT.
      */
     @Override
-	public void readFromNBT(NBTTagCompound par1NBTTagCompound)
+    public void readFromNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.readFromNBT(par1NBTTagCompound);
         NBTTagList nbttaglist = par1NBTTagCompound.getTagList("Items");
@@ -209,7 +209,7 @@ public class TileEntityLChest extends TileEntity implements IInventory
      * Writes a tile entity to NBT.
      */
     @Override
-	public void writeToNBT(NBTTagCompound par1NBTTagCompound)
+    public void writeToNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.writeToNBT(par1NBTTagCompound);
         NBTTagList nbttaglist = new NBTTagList();
@@ -238,7 +238,7 @@ public class TileEntityLChest extends TileEntity implements IInventory
      * this more of a set than a get?*
      */
     @Override
-	public int getInventoryStackLimit()
+    public int getInventoryStackLimit()
     {
         return 64;
     }
@@ -247,7 +247,7 @@ public class TileEntityLChest extends TileEntity implements IInventory
      * Do not make give this method the name canInteractWith because it clashes with Container
      */
     @Override
-	public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
+    public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
     {
         return this.worldObj.getBlockTileEntity(this.xCoord, this.yCoord, this.zCoord) != this ? false : par1EntityPlayer.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <= 64.0D;
     }
@@ -257,7 +257,7 @@ public class TileEntityLChest extends TileEntity implements IInventory
      * of chests, the adjcacent chest check
      */
     @Override
-	public void updateContainingBlockInfo()
+    public void updateContainingBlockInfo()
     {
         super.updateContainingBlockInfo();
         this.adjacentChestChecked = false;
@@ -280,6 +280,7 @@ public class TileEntityLChest extends TileEntity implements IInventory
                     }
 
                     break;
+
                 case 1:
                     if (this.adjacentChestXNeg != par1TileEntityChest)
                     {
@@ -287,6 +288,7 @@ public class TileEntityLChest extends TileEntity implements IInventory
                     }
 
                     break;
+
                 case 2:
                     if (this.adjacentChestZNeg != par1TileEntityChest)
                     {
@@ -294,6 +296,7 @@ public class TileEntityLChest extends TileEntity implements IInventory
                     }
 
                     break;
+
                 case 3:
                     if (this.adjacentChestXPos != par1TileEntityChest)
                     {
@@ -369,7 +372,7 @@ public class TileEntityLChest extends TileEntity implements IInventory
      * ticks and creates a new spawn inside its implementation.
      */
     @Override
-	public void updateEntity()
+    public void updateEntity()
     {
         super.updateEntity();
         this.checkForAdjacentChests();
@@ -470,7 +473,7 @@ public class TileEntityLChest extends TileEntity implements IInventory
      * Called when a client event is received with the event number and argument, see World.sendClientEvent
      */
     @Override
-	public boolean receiveClientEvent(int par1, int par2)
+    public boolean receiveClientEvent(int par1, int par2)
     {
         if (par1 == 1)
         {
@@ -484,7 +487,7 @@ public class TileEntityLChest extends TileEntity implements IInventory
     }
 
     @Override
-	public void openChest()
+    public void openChest()
     {
         if (this.numUsingPlayers < 0)
         {
@@ -498,7 +501,7 @@ public class TileEntityLChest extends TileEntity implements IInventory
     }
 
     @Override
-	public void closeChest()
+    public void closeChest()
     {
         if (this.getBlockType() != null && this.getBlockType() instanceof LBlockChest)
         {
@@ -513,7 +516,7 @@ public class TileEntityLChest extends TileEntity implements IInventory
      * Returns true if automation is allowed to insert the given stack (ignoring stack size) into the given slot.
      */
     @Override
-	public boolean isItemValidForSlot(int par1, ItemStack par2ItemStack)
+    public boolean isItemValidForSlot(int par1, ItemStack par2ItemStack)
     {
         return true;
     }
@@ -522,7 +525,7 @@ public class TileEntityLChest extends TileEntity implements IInventory
      * invalidates a tile entity
      */
     @Override
-	public void invalidate()
+    public void invalidate()
     {
         super.invalidate();
         this.updateContainingBlockInfo();

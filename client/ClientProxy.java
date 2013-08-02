@@ -11,26 +11,25 @@ import mods.learncraft.common.TileEntityTeamChest;
 
 public class ClientProxy extends CommonProxy
 {
+    @Override
+    public void registerTileEntitySpecialRenderer()
+    {
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityLChest.class,
+                new TileEntityLChestRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTeamChest.class,
+                new TileEntityLChestRenderer());
+    }
 
-	@Override
-	public void registerTileEntitySpecialRenderer()
-	{
-		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityLChest.class,
-				new TileEntityLChestRenderer());
-		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTeamChest.class,
-				new TileEntityLChestRenderer());
-	}
+    @Override
+    public void registerSounds()
+    {
+        MinecraftForge.EVENT_BUS.register(new Learncraft_EventSounds());
+    }
 
-	@Override
-	public void registerSounds()
-	{
-		MinecraftForge.EVENT_BUS.register(new Learncraft_EventSounds());
-	}
-	
-	@Override
-	public void registerGui()
-	{
-		MinecraftForge.EVENT_BUS.register(new EventReceiver());
-		MinecraftForge.EVENT_BUS.register(new TeamScoreDisplay(Minecraft.getMinecraft()));
-	}
+    @Override
+    public void registerGui()
+    {
+        MinecraftForge.EVENT_BUS.register(new EventReceiver());
+        MinecraftForge.EVENT_BUS.register(new TeamScoreDisplay(Minecraft.getMinecraft()));
+    }
 }

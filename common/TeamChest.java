@@ -48,7 +48,7 @@ public class TeamChest extends BlockContainer
      * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
      */
     @Override
-	public boolean isOpaqueCube()
+    public boolean isOpaqueCube()
     {
         return false;
     }
@@ -57,7 +57,7 @@ public class TeamChest extends BlockContainer
      * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
      */
     @Override
-	public boolean renderAsNormalBlock()
+    public boolean renderAsNormalBlock()
     {
         return false;
     }
@@ -66,7 +66,7 @@ public class TeamChest extends BlockContainer
      * The type of render function that is called for this block
      */
     @Override
-	public int getRenderType()
+    public int getRenderType()
     {
         return 22;
     }
@@ -75,7 +75,7 @@ public class TeamChest extends BlockContainer
      * Updates the blocks bounds based on its current state. Args: world, x, y, z
      */
     @Override
-	public void setBlockBoundsBasedOnState(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
+    public void setBlockBoundsBasedOnState(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
     {
         if (par1IBlockAccess.getBlockId(par2, par3, par4 - 1) == this.blockID)
         {
@@ -103,7 +103,7 @@ public class TeamChest extends BlockContainer
      * Called whenever the block is added into the world. Args: world, x, y, z
      */
     @Override
-	public void onBlockAdded(World par1World, int par2, int par3, int par4)
+    public void onBlockAdded(World par1World, int par2, int par3, int par4)
     {
         super.onBlockAdded(par1World, par2, par3, par4);
         this.unifyAdjacentChests(par1World, par2, par3, par4);
@@ -137,7 +137,7 @@ public class TeamChest extends BlockContainer
      * Called when the block is placed in the world.
      */
     @Override
-	public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack)
+    public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack)
     {
         int l = par1World.getBlockId(par2, par3, par4 - 1);
         int i1 = par1World.getBlockId(par2, par3, par4 + 1);
@@ -323,7 +323,7 @@ public class TeamChest extends BlockContainer
      * Checks to see if its valid to put this block at the specified coordinates. Args: world, x, y, z
      */
     @Override
-	public boolean canPlaceBlockAt(World par1World, int par2, int par3, int par4)
+    public boolean canPlaceBlockAt(World par1World, int par2, int par3, int par4)
     {
         int l = 0;
 
@@ -363,7 +363,7 @@ public class TeamChest extends BlockContainer
      * their own) Args: x, y, z, neighbor blockID
      */
     @Override
-	public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, int par5)
+    public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, int par5)
     {
         super.onNeighborBlockChange(par1World, par2, par3, par4, par5);
         TileEntityTeamChest TileEntityTeamChest = (TileEntityTeamChest)par1World.getBlockTileEntity(par2, par3, par4);
@@ -378,7 +378,7 @@ public class TeamChest extends BlockContainer
      * ejects contained items into the world, and notifies neighbours of an update, as appropriate
      */
     @Override
-	public void breakBlock(World par1World, int par2, int par3, int par4, int par5, int par6)
+    public void breakBlock(World par1World, int par2, int par3, int par4, int par5, int par6)
     {
         TileEntityTeamChest TileEntityTeamChest = (TileEntityTeamChest)par1World.getBlockTileEntity(par2, par3, par4);
 
@@ -428,7 +428,7 @@ public class TeamChest extends BlockContainer
      * Called upon block activation (right click on the block.)
      */
     @Override
-	public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9)
+    public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9)
     {
         if (par1World.isRemote)
         {
@@ -436,14 +436,14 @@ public class TeamChest extends BlockContainer
         }
         else
         {
-	        IInventory iinventory = this.getInventory(par1World, par2, par3, par4);
-	
-	        if (iinventory != null)
-	        {
-	            par5EntityPlayer.displayGUIChest(iinventory);
-	        }
-	
-	        return true;
+            IInventory iinventory = this.getInventory(par1World, par2, par3, par4);
+
+            if (iinventory != null)
+            {
+                par5EntityPlayer.displayGUIChest(iinventory);
+            }
+
+            return true;
         }
     }
 
@@ -513,7 +513,7 @@ public class TeamChest extends BlockContainer
      * Returns a new instance of a block's tile entity class. Called on placing the block.
      */
     @Override
-	public TileEntity createNewTileEntity(World par1World)
+    public TileEntity createNewTileEntity(World par1World)
     {
         TileEntityTeamChest TileEntityTeamChest = new TileEntityTeamChest();
         return TileEntityTeamChest;
@@ -523,7 +523,7 @@ public class TeamChest extends BlockContainer
      * Can this block provide power. Only wire currently seems to have this change based on its state.
      */
     @Override
-	public boolean canProvidePower()
+    public boolean canProvidePower()
     {
         return this.isTrapped == 1;
     }
@@ -534,7 +534,7 @@ public class TeamChest extends BlockContainer
      * Y, Z, side. Note that the side is reversed - eg it is 1 (up) when checking the bottom of the block.
      */
     @Override
-	public int isProvidingWeakPower(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
+    public int isProvidingWeakPower(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
     {
         if (!this.canProvidePower())
         {
@@ -552,7 +552,7 @@ public class TeamChest extends BlockContainer
      * side. Note that the side is reversed - eg it is 1 (up) when checking the bottom of the block.
      */
     @Override
-	public int isProvidingStrongPower(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
+    public int isProvidingStrongPower(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
     {
         return par5 == 1 ? this.isProvidingWeakPower(par1IBlockAccess, par2, par3, par4, par5) : 0;
     }
@@ -586,7 +586,7 @@ public class TeamChest extends BlockContainer
      * getComparatorInputOverride instead of the actual redstone signal strength.
      */
     @Override
-	public boolean hasComparatorInputOverride()
+    public boolean hasComparatorInputOverride()
     {
         return true;
     }
@@ -596,16 +596,16 @@ public class TeamChest extends BlockContainer
      * strength when this block inputs to a comparator.
      */
     @Override
-	public int getComparatorInputOverride(World par1World, int par2, int par3, int par4, int par5)
+    public int getComparatorInputOverride(World par1World, int par2, int par3, int par4, int par5)
     {
         return Container.calcRedstoneFromInventory(this.getInventory(par1World, par2, par3, par4));
     }
-    
+
     @Override
     @SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister reg) 
-	{
-    	System.out.println("Registering TeamChest icon.");
-		this.blockIcon = reg.registerIcon("obsidian");
-	}
+    public void registerIcons(IconRegister reg)
+    {
+        System.out.println("Registering TeamChest icon.");
+        this.blockIcon = reg.registerIcon("obsidian");
+    }
 }

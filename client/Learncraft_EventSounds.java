@@ -5,17 +5,17 @@ import net.minecraftforge.event.ForgeSubscribe;
 
 public class Learncraft_EventSounds
 {
-
-	@ForgeSubscribe
-	public void onSound(SoundLoadEvent event)
-	{
-		try
-		{
-			event.manager.addSound("learncraft:greeting.ogg");
-			event.manager.addSound("learncraft:starting.ogg");
-		} catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-	}
+    @ForgeSubscribe
+    public void onSound(SoundLoadEvent event)
+    {
+        try
+        {
+            event.manager.addSound("learncraft:greeting.ogg");
+            event.manager.addSound("learncraft:starting.ogg");
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
 }

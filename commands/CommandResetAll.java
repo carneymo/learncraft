@@ -17,18 +17,17 @@ import net.minecraft.server.management.ServerConfigurationManager;
 
 public class CommandResetAll extends CommandBase
 {
-
 	@Override
 	public String getCommandName()
 	{
 		return "resetall";
 	}
-	
+
 	@Override
 	public int getRequiredPermissionLevel()
-    {
-        return 3;
-    }
+	{
+		return 3;
+	}
 
 	@Override
 	public boolean canCommandSenderUseCommand(ICommandSender par1ICommandSender)
@@ -52,29 +51,30 @@ public class CommandResetAll extends CommandBase
 			Common.inProgress = false;
 			Common.teleportOn = false;
 			boolean firstName = true;
-			ServerConfigurationManager manager = MinecraftServer.getServer().getConfigurationManager();
 			
+			ServerConfigurationManager manager = MinecraftServer.getServer().getConfigurationManager();
 			String phrase = manager.getPlayerListAsString();
 			String delims = ",";
 			StringTokenizer tokenizer = new StringTokenizer(phrase, delims);
-			System.out.println("Player list as string: " + phrase);
-			
-			while(tokenizer.hasMoreElements())
+
+			while (tokenizer.hasMoreElements())
 			{
 				String nextToken = tokenizer.nextToken();
-				
-				if(firstName == true) firstName = false;
-				else nextToken = nextToken.substring(1, nextToken.length());
-				
-				System.out.println(nextToken);
-				
+
+				if (firstName == true)
+				{
+					firstName = false;
+				} else
+				{
+					nextToken = nextToken.substring(1, nextToken.length());
+				}
+
 				EntityPlayer player1 = manager.getPlayerForUsername(nextToken);
 				Common.currentPlayers.addPlayer(player1);
 				Common.playerlist.add(player1);
 				Common.teleportPlayerTo(player1, "choose_team", true);
 			}
 		}
-		
 	}
 
 	@Override

@@ -23,13 +23,13 @@ public class InventoryLChest extends InventoryBasic
      * Do not make give this method the name canInteractWith because it clashes with Container
      */
     @Override
-	public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
+    public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
     {
         return this.associatedChest != null && !this.associatedChest.isUseableByPlayer(par1EntityPlayer) ? false : super.isUseableByPlayer(par1EntityPlayer);
     }
 
     @Override
-	public void openChest()
+    public void openChest()
     {
         if (this.associatedChest != null)
         {
@@ -40,7 +40,7 @@ public class InventoryLChest extends InventoryBasic
     }
 
     @Override
-	public void closeChest()
+    public void closeChest()
     {
         if (this.associatedChest != null)
         {

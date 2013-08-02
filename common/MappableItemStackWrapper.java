@@ -2,7 +2,8 @@ package mods.learncraft.common;
 
 import net.minecraft.item.ItemStack;
 
-public class MappableItemStackWrapper {
+public class MappableItemStackWrapper
+{
     private ItemStack wrap;
 
     public MappableItemStackWrapper(ItemStack toWrap)
@@ -13,8 +14,13 @@ public class MappableItemStackWrapper {
     @Override
     public boolean equals(Object obj)
     {
-        if (!(obj instanceof MappableItemStackWrapper)) return false;
+        if (!(obj instanceof MappableItemStackWrapper))
+        {
+            return false;
+        }
+
         MappableItemStackWrapper isw = (MappableItemStackWrapper) obj;
+
         if (wrap.getHasSubtypes())
         {
             return isw.wrap.isItemEqual(wrap);

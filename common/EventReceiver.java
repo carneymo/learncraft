@@ -6,6 +6,6 @@ import net.minecraftforge.event.ForgeSubscribe;
 
 public class EventReceiver
 {
-	@ForgeSubscribe(priority = EventPriority.NORMAL)
-    public void eventHandler(RenderGameOverlayEvent event){}
+    @ForgeSubscribe(priority = EventPriority.NORMAL)
+    public void eventHandler(RenderGameOverlayEvent event) {}
 }

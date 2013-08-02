@@ -21,12 +21,18 @@ public class TeamDoor extends Item
         this.maxStackSize = 1;
         this.setCreativeTab(CreativeTabs.tabMisc);
     }
-    
+
     @Override
-	public void registerIcons(IconRegister reg)
+    public void registerIcons(IconRegister reg)
     {
-    	if(doorMaterial == Material.wood) itemIcon = reg.registerIcon("learncraft:orangeDoorUpper");
-    	else itemIcon = reg.registerIcon("learncraft:blueDoorUpper");
+        if (doorMaterial == Material.wood)
+        {
+            itemIcon = reg.registerIcon("learncraft:orangeDoorUpper");
+        }
+        else
+        {
+            itemIcon = reg.registerIcon("learncraft:blueDoorUpper");
+        }
     }
 
     /**
@@ -34,7 +40,7 @@ public class TeamDoor extends Item
      * True if something happen and false if it don't. This is for ITEMS, not BLOCKS
      */
     @Override
-	public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4, int par5, int par6, int par7, float par8, float par9, float par10)
+    public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4, int par5, int par6, int par7, float par8, float par9, float par10)
     {
         if (par7 != 1)
         {
