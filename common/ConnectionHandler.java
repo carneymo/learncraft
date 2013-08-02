@@ -30,10 +30,11 @@ public class ConnectionHandler implements IConnectionHandler
 				Common.dbqueries.insertPlayerLoggedIn(player1.username);
 				Common.teleportPlayerTo(player1, "choose_team", true);
 			}
-		} else
+		} 
+		else
 		{
 			Team team = Common.getTeam(player1);
-			player1.addChatMessage("Welcome back! You are on the " + team.teamcolor + " team.");
+			if(team != null) player1.addChatMessage("Welcome back! You are on the " + team.teamcolor + " team.");
 			PacketHandler.sendOutTeamScoresPacket(0, "");
 		}
 	}
