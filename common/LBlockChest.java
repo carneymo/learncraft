@@ -450,7 +450,7 @@ public class LBlockChest extends BlockContainer
 
                 try
                 {
-                    while (rs.next())
+                    while (rs != null && rs.next())
                     {
                         int id		= rs.getInt("id");
                         itemid 		= rs.getInt("itemid");
@@ -622,7 +622,7 @@ public class LBlockChest extends BlockContainer
 
         return true;
     }
-
+    
     /**
      * If this returns true, then comparators facing away from this block will use the value from
      * getComparatorInputOverride instead of the actual redstone signal strength.
